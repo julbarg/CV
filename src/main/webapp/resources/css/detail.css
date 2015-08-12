@@ -1,0 +1,20 @@
+.contenedor {
+	display: table;
+	margin: 0 auto;
+}
+
+.contenidos {
+	display: table-row;
+}
+
+.columna {
+	display: table-cell;
+	vertical-align: middle;
+	padding-top: 5px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.title {
+	font-weight: bold;
+}

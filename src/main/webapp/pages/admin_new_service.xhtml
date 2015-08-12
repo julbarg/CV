@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Hoja de Vida - Maps</title>
+	<h:outputStylesheet library="css" name="style_cv.css" />
+	<h:outputStylesheet library="css" name="creation.css" />
+	<h:outputStylesheet library="css" name="search.css" />
+	<h:outputStylesheet library="css" name="admin.css" />
+	<h:outputStylesheet library="css" name="edit.css" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript library="js" name="new.js" />
+	<h:outputScript library="js" name="animation.js" />
+	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
+	<script>
+		google.maps.event.addDomListener(window, 'load', initialize)
+	</script>
+</h:head>
+<h:body>
+	<p:panel styleClass="panel_header">
+		<p:panel styleClass="panel_logo">
+			<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
+		</p:panel>
+		<p:panel styleClass="panel_header_info">
+			<h:form>
+				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
+					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:commandButton image="../resources/img/settings.png" styleClass="button_menu_header" />
+				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
+					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+			</h:form>
+		</p:panel>
+	</p:panel>
+	<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
+		<p:panel styleClass="panel_menu">
+			<h:form id="form_menu">
+				<p:menu styleClass="main_menu">
+					<p:menuitem value="Consultas" actionListener="#{menuView.save}" icon="iconmaps"
+						containerStyleClass="span_main_menu" outcome="search" />
+					<p:menuitem value="Creación" actionListener="#{menuView.consulta}" icon="iconedit"
+						containerStyleClass="span_main_menu" outcome="create" />
+					<p:menuitem value="Administración" actionListener="#{menuView.consulta}" icon="iconadmin"
+						containerStyleClass="span_main_menu" outcome="admin" styleClass="menu_select" />
+				</p:menu>
+			</h:form>
+		</p:panel>
+		<h:panelGroup>
+			<div id="div_step_two">
+				<p:panel id="panel_creation_step_two" styleClass="panel_content">
+					<h:form id="form_map">
+						<h:panelGrid cellspacing="15">
+							<span id="total2"></span>
+							<h2 style="text-align: center;">G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
+							<h2>Adicionar Servicio</h2>
+							<input id="pac-input" class="controls pac-input" type="text" placeholder="Buscar..."
+								style="float: left;" />
+							<div id="map-canvas" class="map-canvas" />
+							<h:panelGrid columns="2">
+								<h:inputHidden id="lat" styleClass="input_create_contact" />
+								<h:inputHidden id="lng" styleClass="input_create_contact" />
+
+								<p:selectOneMenu styleClass="select_post">
+									<f:selectItem itemLabel="Departamento" />
+									<f:selectItem itemLabel="Atlantico" itemValue="1" />
+									<f:selectItem itemLabel="Bolivar" itemValue="2" />
+									<f:selectItem itemLabel="Cundinamarca" itemValue="3" />
+								</p:selectOneMenu>
+
+								<p:selectOneMenu styleClass="select_post">
+									<f:selectItem itemLabel="Ciudad" />
+									<f:selectItem itemLabel="Barranquilla" itemValue="1" />
+									<f:selectItem itemLabel="Bogota" itemValue="2" />
+									<f:selectItem itemLabel="Cartagena" itemValue="3" />
+								</p:selectOneMenu>
+
+								<p:inputText placeholder="Dirección" styleClass="input_create_contact" />
+								<p:inputText placeholder="Alias" styleClass="input_create_contact" />
+								<p:selectOneMenu id="type_service" styleClass="select_post" label="Tipo de Contacto">
+									<f:selectItem itemLabel="Tipo de Servicio" />
+									<f:selectItem itemLabel="Servicio Tipo 1" itemValue="1" />
+									<f:selectItem itemLabel="Servicio Tipo 2" itemValue="2" />
+									<f:selectItem itemLabel="Servicio Tipo 3" itemValue="3" />
+								</p:selectOneMenu>
+								<p:inputText placeholder="Codigo de Servicio" styleClass="input_create_contact" />
+							</h:panelGrid>
+
+							<h:panelGrid columns="4">
+								<p:outputLabel for="main_point" value="Punto Principal: " style="margin-right: 8px;" />
+								<p:selectBooleanButton id="main_point" value="" onLabel="Si" offLabel="No" />
+								<p:outputLabel for="main_enlace" value="Enlace BackUp: "
+									style="margin-left: 20px; margin-right: 8px;" />
+								<p:selectBooleanButton id="main_enlace" value="" onLabel="Si" offLabel="No" />
+							</h:panelGrid>
+
+							<p:outputLabel value="Ultima Configuración" styleClass="label_post" />
+							<p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced"
+								uploadLabel="Cargar" label="Examinar" />
+
+
+							<p:selectOneMenu id="type_um" styleClass="select_post" label="Tipo de Contacto">
+								<f:selectItem itemLabel="Proveedor Ultima Milla" />
+								<f:selectItem itemLabel="Claro" itemValue="1" />
+								<f:selectItem itemLabel="ETB" itemValue="2" />
+								<f:selectItem itemLabel="Movistar" itemValue="3" />
+							</p:selectOneMenu>
+
+							<p:panel styleClass="panel_contactos">
+								<h3>Contactos en Sitio</h3>
+								<h:panelGrid columns="2">
+									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact" />
+									<p:inputText placeholder="Telefono" styleClass="input_create_contact" />
+									<p:inputText placeholder="Celular" styleClass="input_create_contact" />
+									<p:selectOneMenu id="type_contact" styleClass="select_post" label="Horario de Atencion">
+										<f:selectItem itemLabel="Horario de Atencion" />
+										<f:selectItem itemLabel="Lun-Vie 8.00 am - 6.00 pm" itemValue="1" />
+										<f:selectItem itemLabel="Sab-Dom 8.00 am - 6.00 pm" itemValue="2" />
+										<f:selectItem itemLabel="Lun-Vie 8.00 pm - 6.00 am" itemValue="3" />
+									</p:selectOneMenu>
+								</h:panelGrid>
+								<p:commandButton value="Add Contact" styleClass="button_post_add"
+									style="margin-bottom: 10px;" />
+								<p:dataTable styleClass="data_table_contacts_inside">
+									<p:column headerText="Nombre">
+									</p:column>
+									<p:column headerText="Telefono">
+									</p:column>
+									<p:column headerText="Celular">
+									</p:column>
+									<p:column headerText="Horario de Atencion">
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+
+
+							<p:commandButton value="Add Service" styleClass="button_post_add" />
+							<p:dataTable styleClass="data_table_contacts">
+								<p:column headerText="Ciudad">
+								</p:column>
+								<p:column headerText="Direccion">
+								</p:column>
+								<p:column headerText="Alias">
+								</p:column>
+							</p:dataTable>
+
+							<h:panelGrid columns="2">
+								<p:commandButton value="Regresar" styleClass="button_post_double"
+									action="admin_edit.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+								<p:commandButton value="Guardar" styleClass="button_post_double" />
+							</h:panelGrid>
+						</h:panelGrid>
+					</h:form>
+				</p:panel>
+			</div>
+		</h:panelGroup>
+	</h:panelGrid>
+
+
+</h:body>
+</html>

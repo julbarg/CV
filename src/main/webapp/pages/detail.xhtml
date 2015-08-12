@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Hoja de Vida - Maps</title>
+	<h:outputStylesheet library="css" name="style_cv.css" />
+	<h:outputStylesheet library="css" name="creation.css" />
+	<h:outputStylesheet library="css" name="detail.css" />
+	<h:outputScript library="js" name="detail.js" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript library="js" name="animation.js" />
+	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
+
+	<script>
+		google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+</h:head>
+<h:body>
+	<h:form>
+		<p:panel styleClass="panel_header">
+			<p:panel styleClass="panel_logo">
+				<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
+			</p:panel>
+			<p:panel styleClass="panel_header_info">
+
+				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
+					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:commandButton image="../resources/img/settings.png" styleClass="button_menu_header" />
+				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
+					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+
+			</p:panel>
+		</p:panel>
+		<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
+			<p:panel styleClass="panel_menu">
+
+				<p:menu styleClass="main_menu">
+					<p:menuitem value="Consultas" actionListener="#{menuView.save}" icon="iconmaps"
+						containerStyleClass="span_main_menu" styleClass="menu_select" outcome="search" />
+					<p:menuitem value="Creación" actionListener="#{menuView.consulta}" icon="iconedit"
+						containerStyleClass="span_main_menu" outcome="create" />
+					<p:menuitem value="Administración" actionListener="#{menuView.consulta}" icon="iconadmin"
+						containerStyleClass="span_main_menu" outcome="admin" />
+				</p:menu>
+
+			</p:panel>
+			<h:panelGroup>
+				<div id="div_step_two">
+					<p:panel id="panel_creation_step_two" styleClass="panel_content">
+
+						<h:panelGrid cellspacing="15">
+							<span id="total2"></span>
+							<h2>G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
+							<div id="map-canvas" class="map-canvas" />
+							<p:commandButton value="Regresar" styleClass="button_post"
+								action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+						</h:panelGrid>
+
+					</p:panel>
+				</div>
+
+				<div style="display: none;">
+					<p:panel id="step_two" styleClass="panel_content">
+						<h3 style="text-align: center;">G4S CASH SOLUTIONS COLOMBIA LTDA.</h3>
+						<div class="contenedor">
+							<div class="contenidos">
+								<div class="columna title">Tipo de Servicio</div>
+								<div class="columna">Tipo 1</div>
+							</div>
+							<div class="contenidos">
+								<div class="columna title">Punto Principal Cliente</div>
+								<div class="columna">Si</div>
+							</div>
+							<div class="contenidos">
+								<div class="columna title">Contacto</div>
+								<div class="columna">
+									Andres Vallen Jaime Gonzales<br />1-7054040 Ext 1913<br />310 888 8777<br />andres.vallen@co.g4s.com
+								</div>
+							</div>
+							<div class="contenidos">
+								<div class="columna title">Direccion</div>
+								<div class="columna">Carrera 78 #2-54C Sur</div>
+							</div>
+							<div class="contenidos">
+								<div class="columna title">Horario</div>
+								<div class="columna">Lun-Vie 8.00 am - 5.00 am</div>
+							</div>
+							<div class="contenidos">
+								<div class="columna title">Ultima Configuracion</div>
+								<div class="columna">
+									<a href="#">Descargar</a>
+								</div>
+							</div>
+							<div class="contenidos">
+								<div class="columna title">Canal Principal</div>
+								<div class="columna">Si</div>
+							</div>
+							<div class="contenidos">
+								<div class="columna title">Canal BackUp</div>
+								<div class="columna">Si</div>
+							</div>
+						</div>
+					</p:panel>
+				</div>
+			</h:panelGroup>
+		</h:panelGrid>
+	</h:form>
+
+</h:body>
+</html>

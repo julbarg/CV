@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/main/java/LDAP/LDAPAuthenticationServices.java=UTF-8
+encoding//src/main/java/LDAP/LDAPAuthenticationServicesService.java=UTF-8
+encoding//src/main/java/LDAP/LDAPAuthenticationServicesServiceLocator.java=UTF-8
+encoding//src/main/java/LDAP/LDAPAuthenticationServicesSoapBindingStub.java=UTF-8
+encoding//src/main/resources/co/com/claro/sisges/ldap/service/LDAPAuthenticationServices.java=UTF-8
+encoding//src/main/resources/co/com/claro/sisges/ldap/service/LDAPAuthenticationServicesService.java=UTF-8
+encoding//src/main/resources/co/com/claro/sisges/ldap/service/LDAPAuthenticationServicesServiceLocator.java=UTF-8
+encoding//src/main/resources/co/com/claro/sisges/ldap/service/LDAPAuthenticationServicesSoapBindingStub.java=UTF-8

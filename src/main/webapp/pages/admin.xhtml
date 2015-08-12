@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Hoja de Vida - Maps</title>
+	<h:outputStylesheet library="css" name="style_cv.css" />
+	<h:outputStylesheet library="css" name="creation.css" />
+	<h:outputStylesheet library="css" name="search.css" />
+	<h:outputStylesheet library="css" name="admin.css" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript library="js" name="animation.js" />
+	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
+	<script>
+		
+	</script>
+</h:head>
+<h:body>
+	<p:panel styleClass="panel_header">
+		<p:panel styleClass="panel_logo">
+			<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
+		</p:panel>
+		<p:panel styleClass="panel_header_info">
+			<h:form>
+				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
+					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:commandButton image="../resources/img/settings.png" styleClass="button_menu_header" />
+				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
+					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+			</h:form>
+		</p:panel>
+	</p:panel>
+	<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
+		<p:panel styleClass="panel_menu">
+			<h:form id="form_menu">
+				<p:menu styleClass="main_menu">
+					<p:menuitem value="Consultas" actionListener="#{menuView.save}" icon="iconmaps"
+						containerStyleClass="span_main_menu" outcome="search" />
+					<p:menuitem value="Creación" actionListener="#{menuView.consulta}" icon="iconedit"
+						containerStyleClass="span_main_menu" outcome="create" />
+					<p:menuitem value="Administración" actionListener="#{menuView.consulta}" icon="iconadmin"
+						containerStyleClass="span_main_menu" outcome="admin" styleClass="menu_select" />
+				</p:menu>
+			</h:form>
+		</p:panel>
+		<h:panelGroup>
+			<div id="div_step_one">
+				<p:panel id="panel_creation_step_one" styleClass="panel_content">
+					<h:panelGrid cellspacing="15">
+						<span id="total"></span>
+						<h2>Consultar Cliente - Administrador</h2>
+						<p:inputText placeholder="Nombre del Cliente" styleClass="input_create" />
+						<p:inputText placeholder="ID" styleClass="input_create" />
+						<p:inputText placeholder="NIT" styleClass="input_create" />
+						<p:inputText placeholder="Codigo de Servicio" styleClass="input_create" />
+						<p:selectOneMenu id="state" styleClass="select_post" label="Estado">
+							<f:selectItem itemLabel="Estado" />
+							<f:selectItem itemLabel="Activo" itemValue="1" />
+							<f:selectItem itemLabel="Inactivo" itemValue="2" />
+							<f:selectItem itemLabel="Suspendido" itemValue="3" />
+						</p:selectOneMenu>
+
+						<p:commandButton value="Consultar" styleClass="button_post" immediate="true" />
+					</h:panelGrid>
+
+					<p:dataTable styleClass="data_table_contacts">
+						<p:column headerText="Nombre del Cliente">
+						</p:column>
+						<p:column headerText="ID">
+						</p:column>
+						<p:column headerText="NIT">
+						</p:column>
+						<p:column headerText="Estado">
+						</p:column>
+						<p:column headerText="Acciones">
+						</p:column>
+					</p:dataTable>
+					<h:form>
+						<p:commandLink value="Editar" action="admin_edit.xhtml?faces-redirect=true" ajax="false" />
+					</h:form>
+
+				</p:panel>
+			</div>
+		</h:panelGroup>
+	</h:panelGrid>
+
+
+</h:body>
+</html>

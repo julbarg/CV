@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Hoja de Vida - Maps</title>
+	<h:outputStylesheet library="css" name="style_cv.css" />
+	<h:outputStylesheet library="css" name="creation.css" />
+	<h:outputStylesheet library="css" name="search.css" />
+	<h:outputStylesheet library="css" name="admin.css" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript library="js" name="admin.js" />
+	<h:outputScript library="js" name="animation.js" />
+	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
+	<script>
+		google.maps.event.addDomListener(window, 'load', initialize)
+	</script>
+</h:head>
+<h:body>
+	<p:panel styleClass="panel_header">
+		<p:panel styleClass="panel_logo">
+			<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
+		</p:panel>
+		<p:panel styleClass="panel_header_info">
+			<h:form>
+				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
+					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:commandButton image="../resources/img/settings.png" styleClass="button_menu_header" />
+				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
+					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+			</h:form>
+		</p:panel>
+	</p:panel>
+	<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
+		<p:panel styleClass="panel_menu">
+			<h:form id="form_menu">
+				<p:menu styleClass="main_menu">
+					<p:menuitem value="Consultas" actionListener="#{menuView.save}" icon="iconmaps"
+						containerStyleClass="span_main_menu" outcome="search" />
+					<p:menuitem value="Creación" actionListener="#{menuView.consulta}" icon="iconedit"
+						containerStyleClass="span_main_menu" outcome="create" />
+					<p:menuitem value="Administración" actionListener="#{menuView.consulta}" icon="iconadmin"
+						containerStyleClass="span_main_menu" outcome="admin" styleClass="menu_select" />
+				</p:menu>
+			</h:form>
+		</p:panel>
+		<h:panelGroup>
+			<div id="div_step_two">
+				<p:panel id="panel_creation_step_two" styleClass="panel_content">
+					<h:form id="form_map">
+						<h:panelGrid cellspacing="15">
+							<span id="total2"></span>
+							<h2 style="text-align: center;">G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
+							<h:panelGrid columns="4">
+								<p:outputLabel styleClass="label_edit" value="Nombre del Cliente: " />
+								<p:inputText value="G4S CASH SOLUTIONS COLOMBIA LTDA." styleClass="input_edit" />
+								<p:outputLabel styleClass="label_edit" value="ID: " />
+								<p:inputText value="798545t3" styleClass="input_edit" />
+								<p:outputLabel styleClass="label_edit" value="NIT: " />
+								<p:inputText value="880809890342-2" styleClass="input_edit" />
+								<p:outputLabel value="Estado: " styleClass=" label_edit" />
+								<p:selectOneMenu styleClass="select_post" value="1">
+									<f:selectItem itemLabel="Estado" />
+									<f:selectItem itemLabel="Activo" itemValue="1" />
+									<f:selectItem itemLabel="Incativo" itemValue="2" />
+									<f:selectItem itemLabel="Pendiente" itemValue="3" />
+								</p:selectOneMenu>
+
+							</h:panelGrid>
+							<p:panel styleClass="panel_contactos">
+								<h3>Contactos</h3>
+								<h:panelGrid columns="2">
+									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact" />
+									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact" />
+									<p:inputText placeholder="Telefono" styleClass="input_create_contact" />
+									<p:selectOneMenu id="type_contact" styleClass="select_post" label="Tipo de Contacto">
+										<f:selectItem itemLabel="Tipo de Contacto" />
+										<f:selectItem itemLabel="Escalamiento 1" itemValue="1" />
+										<f:selectItem itemLabel="Escalamiento 2" itemValue="2" />
+										<f:selectItem itemLabel="Escalamiento 3" itemValue="3" />
+									</p:selectOneMenu>
+								</h:panelGrid>
+								<p:commandButton value="Add" styleClass="button_post_add" style="margin-bottom: 10px;" />
+								<p:dataTable styleClass="data_table_contacts">
+									<p:column headerText="Nombre">
+									</p:column>
+									<p:column headerText="Correo">
+									</p:column>
+									<p:column headerText="Tipo de Contacto">
+									</p:column>
+									<p:column headerText="Acciones">
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+							<h2>G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
+							<div id="map-canvas" class="map-canvas" />
+
+
+							<p:panel styleClass="panel_contactos">
+								<h:panelGrid columns="2" style="width: 97%;">
+									<h3>Codigos de Servicios</h3>
+									<p:panel styleClass="panel_button">
+										<p:commandButton style="text-aling: right;" value="Add" styleClass="button_post_add"
+											action="admin_new_service.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+									</p:panel>
+								</h:panelGrid>
+								<p:dataTable styleClass="data_table_contacts">
+									<p:column headerText="Alias" filterBy="">
+									</p:column>
+									<p:column headerText="Codigo del Servicio" filterBy="">
+									</p:column>
+									<p:column headerText="Tipo Servicio" filterBy="">
+									</p:column>
+									<p:column headerText="Direccion" filterBy="">
+									</p:column>
+									<p:column headerText="Ciudad" filterBy="">
+									</p:column>
+									<p:column headerText="Acciones" filterBy="">
+									</p:column>
+								</p:dataTable>
+								<p:commandButton id="button_editar_service" value="Editar" style="margin-top: 9px;"
+									action="admin_edit_service.xhtml?faces-redirect=true" ajax="true" />
+							</p:panel>
+						</h:panelGrid>
+
+						<p:commandButton value="Regresar" styleClass="button_post"
+							action="admin.xhtml?faces-redirect=true" ajax="false" inline="true" />
+					</h:form>
+				</p:panel>
+			</div>
+		</h:panelGroup>
+	</h:panelGrid>
+
+
+</h:body>
+</html>

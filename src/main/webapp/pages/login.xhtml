@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Hoja de Vida - Login</title>
+	<h:outputStylesheet library="css" name="main.css" />
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css' />
+</h:head>
+<h:body>
+	<h:form id="form_login">
+		<p:growl />
+		<h:panelGrid columns="2" styleClass="div_main_login">
+			<p:panel styleClass="div_login_left">
+				<p:panel styleClass="logo">
+					<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="180" />
+				</p:panel>
+				<p:panel styleClass="div_sublogin">
+					<hr style="height: 80px; visibility: hidden;" />
+					<p:outputLabel value="Hoja de Vida Clientes Especiales" styleClass="titulo_app" />
+				</p:panel>
+				<p:panel styleClass="div_login_footer">
+					<p:commandLink value="¿Necesitas ayuda?" styleClass="footer_ayuda" />
+				</p:panel>
+			</p:panel>
+			<p:panel styleClass="div_login">
+
+				<h:panelGrid cellspacing="5" styleClass="panel_grid_login">
+					<p:inputText id="user_name" label="Nombre de Usuario" styleClass="input_login" value="#{login.user.userName}" required="true" />
+					<p:watermark value="Nombre de usuario" for="user_name" />
+					<p:password id="password" label="Contraseña" styleClass="input_login" value="#{login.user.password}" required="true" />
+					<p:watermark value="Contraseña" for="password" />
+					<hr style="height: 25px; visibility: hidden;" />
+					<f:facet name="footer">
+						<p:commandButton value="Iniciar Sesión" style="width: 350px; height: 40px;"
+							action="#{login.authenticate}" update="form_login" />
+					</f:facet>
+				</h:panelGrid>
+			</p:panel>
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

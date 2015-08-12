@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Hoja de Vida - Maps</title>
+	<h:outputStylesheet library="css" name="style_cv.css" />
+	<h:outputStylesheet library="css" name="creation.css" />
+	<h:outputScript library="js" name="creation.js" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript library="js" name="animation.js" />
+	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
+	<script>
+      google.maps.event.addDomListener(window, 'load', initialize);
+   </script>
+</h:head>
+<h:body>
+
+	<p:panel styleClass="panel_header">
+		<p:panel styleClass="panel_logo">
+			<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
+		</p:panel>
+		<p:panel styleClass="panel_header_info">
+
+			<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
+				action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+			<h:commandButton image="../resources/img/settings.png" styleClass="button_menu_header" />
+			<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
+				action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+
+		</p:panel>
+	</p:panel>
+	<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
+		<p:panel styleClass="panel_menu">
+
+			<p:menu styleClass="main_menu">
+				<p:menuitem value="Consultas" actionListener="#{menuView.save}" icon="iconmaps"
+					containerStyleClass="span_main_menu" outcome="search" />
+				<p:menuitem value="Creación" actionListener="#{menuView.consulta}" icon="iconedit"
+					containerStyleClass="span_main_menu" outcome="create" styleClass="menu_select" />
+				<p:menuitem value="Administración" actionListener="#{menuView.consulta}" icon="iconadmin"
+					containerStyleClass="span_main_menu" outcome="admin" />
+			</p:menu>
+
+		</p:panel>
+		<h:panelGroup>
+			<div id="div_step_one">
+				<h:form id="form_step_one">
+					<p:growl id="growl_step_one" />
+					<p:panel id="panel_creation_step_one" styleClass="panel_content">
+						<h:panelGrid cellspacing="15">
+
+							<span id="total"></span>
+							<h2>Nuevo Cliente - Creación Perfil del Cliente</h2>
+							<p:inputText placeholder="Nombre del Cliente" styleClass="input_create"
+								value="#{create.clientProfile.nameClient}" label="Nombre del Cliente" required="true" />
+							<p:inputText placeholder="ID" styleClass="input_create" value="#{create.clientProfile.idClient}"
+								label="ID" required="true" />
+							<p:inputText placeholder="NIT" styleClass="input_create" value="#{create.clientProfile.nitClient}"
+								label="NIT" required="true" />
+
+							<p:panel styleClass="panel_contactos" id="panelContacts">
+								<h3>Contactos</h3>
+								<h:panelGrid columns="2">
+									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact"
+										value="#{create.clientContact.nameContact}" title="Nombre del Contacto" />
+									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact"
+										value="#{create.clientContact.email}" title="Correo Electronico" />
+									<p:inputText placeholder="Telefono" styleClass="input_create_contact"
+										value="#{create.clientContact.phone}" title="Telefono" />
+									<p:inputText placeholder="Celular" styleClass="input_create_contact"
+										value="#{create.clientContact.mobil}" title="Celular" />
+									<p:selectOneMenu id="type_contact" styleClass="select_post"
+										value="#{create.clientContact.typeContact}" label="Tipo de Contacto">
+										<f:selectItem itemLabel="Tipo de Contacto..." />
+										<f:selectItems value="#{create.listTypeContact}" var="typeContact" itemLabel="#{typeContact.name}"
+											itemValue="#{typeContact.code}" />
+									</p:selectOneMenu>
+								</h:panelGrid>
+								<p:commandButton value="Add" styleClass="button_post_add" style="margin-bottom: 10px;"
+									process="@this panelContacts" actionListener="#{create.addContact}"
+									update="form_step_one:panelContacts form_step_one:growl_step_one" />
+								<p:dataTable styleClass="data_table_contacts" value="#{create.clientProfile.clientContacts}"
+									var="contact">
+									<p:column headerText="Nombre">
+										<h:outputText value="#{contact.nameContact}" />
+									</p:column>
+									<p:column headerText="Correo">
+										<h:outputText value="#{contact.email}" />
+									</p:column>
+									<p:column headerText="Telefono">
+										<h:outputText value="#{contact.phone}" />
+									</p:column>
+									<p:column headerText="Celular">
+										<h:outputText value="#{contact.mobil}" />
+									</p:column>
+									<p:column headerText="Tipo de Contacto">
+										<h:outputText value="#{create.getNameTypeContact(contact.typeContact)}" />
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+							<p:commandButton value="Siguiente" actionListener="#{create.nextStep}" styleClass="button_post"
+								process="@form" update="form_step_one:panelContacts form_step_one:growl_step_one" />
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</div>
+
+			<div id="div_step_two" class="div_hidden">
+				<h:form id="form_step_two">
+					<p:growl id="growl_step_two" />
+					<p:panel id="panel_creation_step_two" styleClass="panel_content">
+
+						<h:panelGrid cellspacing="15">
+							<span id="total2"></span>
+							<h2>Nuevo Cliente - Creación Codigos de Servicio</h2>
+							<input id="pac-input" class="controls pac-input" type="text" placeholder="Buscar..."
+								style="float: left;" />
+							<div id="map-canvas" class="map-canvas" />
+							<h:panelGrid columns="2">
+								<h:inputHidden id="lat" styleClass="input_create_contact" value="#{create.clientService.lat}"
+									requiredMessage="Es necesario selecionar un punto en el map" />
+								<h:inputHidden id="lng" styleClass="input_create_contact" value="#{create.clientService.lng}" />
+
+								<p:selectOneMenu id="select_departament" styleClass="select_post" value="#{create.idDepartament}">
+									<p:ajax listener="#{create.loadCitiesByDepartament}"
+										update="form_step_two:select_city form_step_two:growl_step_two" />
+									<f:selectItem itemLabel="Seleccione Departamento.." />
+									<f:selectItems value="#{create.listDepartamento}" var="departamentItem"
+										itemLabel="#{departamentItem.name}" itemValue="#{departamentItem.idDepartament}" />
+								</p:selectOneMenu>
+
+								<p:selectOneMenu id="select_city" styleClass="select_post" value="#{create.idCity}">
+									<f:selectItem itemLabel="Seleccione Ciudad" />
+									<f:selectItems value="#{create.listCiudad}" var="cityItem" itemLabel="#{cityItem.name}"
+										itemValue="#{cityItem.idCity}" />
+								</p:selectOneMenu>
+
+								<p:inputText placeholder="Dirección" styleClass="input_create_contact"
+									value="#{create.clientService.direction}" label="Dirección" />
+								<p:inputText placeholder="Alias" styleClass="input_create_contact"
+									value="#{create.clientService.alias}" label="Alias" />
+								<p:selectOneMenu id="type_service" styleClass="select_post" value="#{create.clientService.tyeService}">
+									<f:selectItem itemLabel="Selecciona Tipo de Servicio.." />
+									<f:selectItems value="#{create.listTypeService}" var="typeService" itemLabel="#{typeService.name}"
+										itemValue="#{typeService.code}" />
+								</p:selectOneMenu>
+								<p:inputText placeholder="Codigo de Servicio" styleClass="input_create_contact"
+									value="#{create.clientService.codeService}" label="Codigo de Servicio" />
+							</h:panelGrid>
+
+							<h:panelGrid columns="4">
+								<p:outputLabel for="main_point" value="Punto Principal: " style="margin-right: 8px;" />
+								<p:selectBooleanButton id="main_point" value="#{create.puntoPrincipal}" onLabel="Si" offLabel="No" />
+								<p:outputLabel for="main_enlace" value="Enlace BackUp: " style="margin-left: 20px; margin-right: 8px;" />
+								<p:selectBooleanButton id="main_enlace" value="#{create.enlaceBackUp}" onLabel="Si" offLabel="No" />
+							</h:panelGrid>
+
+							<p:outputLabel value="Ultima Configuración" styleClass="label_post" />
+							<p:fileUpload fileUploadListener="#{create.uploadFileE}" mode="advanced"
+								uploadLabel="Cargar" label="Examinar" />
+
+							<h:panelGrid columns="2" styleClass="table_um">
+								<p:selectOneMenu id="type_um" styleClass="select_post" label="Tipo de Contacto"
+									value="#{create.clientService.idProviderLastMile}">
+									<f:selectItem itemLabel="Seleccione Proveedor Ultima Milla..." />
+									<f:selectItems value="#{create.listProviderLastMile}" var="providerLastMile"
+										itemLabel="#{providerLastMile.name}" itemValue="#{providerLastMile.code}" />
+								</p:selectOneMenu>
+								<p:inputText placeholder="Codigo de Servicio UM" styleClass="input_create_contact"
+									value="#{create.clientService.codeServiceLastMile}" />
+							</h:panelGrid>
+							<p:panel styleClass="panel_contactos" id="panelContacts">
+								<h3>Contactos en Sitio</h3>
+								<h:panelGrid columns="2">
+									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact"
+										value="#{create.serviceContact.nameContact}" />
+									<p:inputText placeholder="Telefono" styleClass="input_create_contact"
+										value="#{create.serviceContact.phone}" />
+									<p:inputText placeholder="Celular" styleClass="input_create_contact"
+										value="#{create.serviceContact.mobil}" />
+									<p:selectOneMenu id="horario" styleClass="select_post" label="Horario de Atencion"
+										value="#{create.serviceContact.schedule}">
+										<f:selectItem itemLabel="Selecione Horario de Atencion.." />
+										<f:selectItems value="#{create.listSchedule}" var="schedule" itemLabel="#{schedule.name}"
+											itemValue="#{schedule.code}" />
+									</p:selectOneMenu>
+								</h:panelGrid>
+								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;"
+									process="@this panelContacts" actionListener="#{create.addContactService}"
+									update="form_step_two:panelContacts form_step_two:growl_step_two" />
+								<p:dataTable styleClass="data_table_contacts_inside" value="#{create.clientService.serviceContacts}"
+									var="serviceContact">
+									<p:column headerText="Nombre">
+										<h:outputText value="#{serviceContact.nameContact}" />
+									</p:column>
+									<p:column headerText="Telefono">
+										<h:outputText value="#{serviceContact.phone}" />
+									</p:column>
+									<p:column headerText="Celular">
+										<h:outputText value="#{serviceContact.mobil}" />
+									</p:column>
+									<p:column headerText="Horario de Atencion">
+										<h:outputText value="#{create.getNameSchedule(serviceContact.schedule)}" />
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+
+							<p:commandButton value="Add Service" styleClass="button_post_add" actionListener="#{create.addService}"
+								process="@form" update="form_step_two" />
+							<p:dataTable styleClass="data_table_contacts" value="#{create.listClientService}" var="service">
+								<p:column headerText="Ciudad">
+									<h:outputText value="#{service.city.name}" />
+								</p:column>
+								<p:column headerText="Direccion">
+									<h:outputText value="#{service.direction}" />
+								</p:column>
+								<p:column headerText="Alias">
+									<h:outputText value="#{service.alias}" />
+								</p:column>
+								<p:column headerText="Codigo de Servicio">
+									<h:outputText value="#{service.codeService}" />
+								</p:column>
+							</p:dataTable>
+
+							<h:panelGrid columns="2">
+								<p:commandButton value="Anterior" styleClass="button_post_double" onclick="back();" />
+								<p:commandButton value="Guardar" styleClass="button_post_double" action="#{create.save}"
+									update="form_step_two" />
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</div>
+		</h:panelGroup>
+	</h:panelGrid>
+
+</h:body>
+</html>
