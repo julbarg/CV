@@ -32,4 +32,16 @@ public class Messages {
 
    public static final String LAST_SETTINGS_FILE_ERROR = "Ha ocurrido un error al Guardar la Ultima Configuración";
 
+   public static final String SEARCH_ERROR = "Ha ocurrido un error al Consultar un Cliente";
+
+   public static final String SEARCH_NOT_FOUND = "No se encontro ningun registro con estos parametros";
+
+   public static final String SEARCH_VALIDATE = "Debe proporcionar información, para realizar la consulta";
+
+   public static final String ERROR_LOAD_MAP = "Ha ocurrido un error al cargar datos del mapa";
+
+   public static final String LOAD_DETAIL_ERROR = "Ha ocurrido un error al cargar el detalle";
+
+   public static final String NO_SERVICES_REGION = "El Cliente no tiene servicios en esta region";
+
 }

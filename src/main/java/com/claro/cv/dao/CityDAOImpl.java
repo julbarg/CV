@@ -36,7 +36,7 @@ public class CityDAOImpl extends TemplateDAO<CityEntity> implements CityDAO {
       TypedQuery<CityEntity> query = entityManager.createNamedQuery("CityEntity.findById", CityEntity.class);
       query.setParameter("idCity", idCity);
       ArrayList<CityEntity> results = (ArrayList<CityEntity>) query.getResultList();
-
+      
       return results.get(0);
    }
 

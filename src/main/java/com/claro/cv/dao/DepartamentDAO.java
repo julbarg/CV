@@ -11,4 +11,6 @@ public interface DepartamentDAO {
 
    public DepartamentEntity findById(String id) throws Exception;
 
+   public DepartamentEntity findByGeoCode(String regionSelect) throws Exception;
+
 }

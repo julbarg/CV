@@ -11,8 +11,10 @@ import java.util.List;
 @Entity
 @Table(
    name = "client_service")
-@NamedQuery(
-   name = "ClientServiceEntity.findAll", query = "SELECT c FROM ClientServiceEntity c")
+@NamedQueries({
+   @NamedQuery(name = "ClientServiceEntity.findAll", query = "SELECT c FROM ClientServiceEntity c"),
+   @NamedQuery(name = "ClientServiceEntity.findByDepartament",query = "SELECT c FROM ClientServiceEntity c WHERE c.departament=:departament"),
+})
 public class ClientServiceEntity implements Serializable {
    private static final long serialVersionUID = 1L;
 

@@ -1,8 +1,11 @@
 package com.claro.cv.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,8 +13,9 @@ import java.util.List;
 @Entity
 @Table(
    name = "client_profile")
-@NamedQuery(
-   name = "ClientProfileEntity.findAll", query = "SELECT c FROM ClientProfileEntity c")
+@NamedQueries({
+   @NamedQuery(name = "ClientProfileEntity.findAll", query = "SELECT c FROM ClientProfileEntity c"),
+   @NamedQuery(name = "ClientProfileEntity.findByIdClient",query = "SELECT c FROM ClientProfileEntity c WHERE c.idClient=:idClient") })
 public class ClientProfileEntity implements Serializable {
    private static final long serialVersionUID = 1L;
 
@@ -20,7 +24,7 @@ public class ClientProfileEntity implements Serializable {
       strategy = GenerationType.AUTO)
    @Column(
       name = "id_client_profile")
-   private String idClientProfile;
+   private BigInteger idClientProfile;
 
    @Column(
       name = "id_client")
@@ -36,7 +40,7 @@ public class ClientProfileEntity implements Serializable {
 
    // bi-directional many-to-one association to ClientContactEntity
    @OneToMany(
-      mappedBy = "clientProfile", cascade = CascadeType.ALL)
+      mappedBy = "clientProfile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    private List<ClientContactEntity> clientContacts;
 
    // bi-directional many-to-one association to ClientServiceEntity
@@ -47,11 +51,11 @@ public class ClientProfileEntity implements Serializable {
    public ClientProfileEntity() {
    }
 
-   public String getIdClientProfile() {
+   public BigInteger getIdClientProfile() {
       return this.idClientProfile;
    }
 
-   public void setIdClientProfile(String idClientProfile) {
+   public void setIdClientProfile(BigInteger idClientProfile) {
       this.idClientProfile = idClientProfile;
    }
 
@@ -80,7 +84,7 @@ public class ClientProfileEntity implements Serializable {
    }
 
    public List<ClientContactEntity> getClientContacts() {
-      return this.clientContacts;
+      return this.clientContacts != null ? this.clientContacts : new ArrayList<ClientContactEntity>();
    }
 
    public void setClientContacts(List<ClientContactEntity> clientContacts) {

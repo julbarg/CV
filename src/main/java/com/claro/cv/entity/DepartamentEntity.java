@@ -13,7 +13,8 @@ import java.util.List;
 @Table(name="departament")
 @NamedQueries({
    @NamedQuery(name="DepartamentEntity.findAll", query="SELECT d FROM DepartamentEntity d"),
-   @NamedQuery(name="DepartamentEntity.findById", query="SELECT d FROM DepartamentEntity d WHERE d.idDepartament=:idDepartament")
+   @NamedQuery(name="DepartamentEntity.findById", query="SELECT d FROM DepartamentEntity d WHERE d.idDepartament=:idDepartament"),
+   @NamedQuery(name="DepartamentEntity.findByGeoCode", query="SELECT d FROM DepartamentEntity d WHERE d.geocode=:geocode")
 })
 public class DepartamentEntity implements Serializable {
 	private static final long serialVersionUID = 1L;

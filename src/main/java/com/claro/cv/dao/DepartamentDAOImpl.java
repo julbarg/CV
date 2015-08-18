@@ -30,4 +30,14 @@ public class DepartamentDAOImpl extends TemplateDAO<DepartamentEntity> implement
 
       return results.get(0);
    }
+
+   @Override
+   public DepartamentEntity findByGeoCode(String geocode) throws Exception {
+      TypedQuery<DepartamentEntity> query = entityManager.createNamedQuery("DepartamentEntity.findByGeoCode",
+         DepartamentEntity.class);
+      query.setParameter("geocode", geocode);
+      ArrayList<DepartamentEntity> results = (ArrayList<DepartamentEntity>) query.getResultList();
+
+      return results.get(0);
+   }
 }

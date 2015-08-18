@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>Hoja de Vida - Maps</title>
 	<h:outputStylesheet library="css" name="style_cv.css" />
 	<h:outputStylesheet library="css" name="creation.css" />
 	<h:outputStylesheet library="css" name="search.css" />
 	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript library="js" name="search.js" />
 	<h:outputScript library="js" name="animation.js" />
 	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
+	<script src='https://www.google.com/jsapi' />
+	<script>
+      google.load("visualization", "1", {
+         packages : [ "geochart" ]
+      });
+      google.setOnLoadCallback(drawRegionsMap);
+   </script>
 </h:head>
 <h:body>
 	<p:panel styleClass="panel_header">
@@ -39,27 +49,36 @@
 			</h:form>
 		</p:panel>
 		<h:panelGroup>
-			<div id="div_step_one">
-				<h:form id="form_step_one">
-					<p:growl id="grow_one" />
-					<p:panel id="panel_creation_step_one" styleClass="panel_content">
+			<div id="div_step_two">
+				<p:panel id="panel_creation_step_two" styleClass="panel_content">
+					<h:form id="form_map">
+						<p:growl id="grow_map" />
+						<p:remoteCommand name="selectMap" action="#{search.loadDetail}" update="form_map:grow_map" />
+						<h:inputHidden id="jsonText" value="#{search.json}"></h:inputHidden>
 						<h:panelGrid cellspacing="15">
-							<span id="total"></span>
-							<h2>Consultar Cliente</h2>
-							<p:inputText placeholder="ID" styleClass="input_create" value="#{search.idCliente}"
-								label="ID del Cliente" />
-							<p:inputText placeholder="Codigo de Servicio" styleClass="input_create"
-								value="#{search.codigoServiicio}" label="Codigo de Servicio" />
+							<span id="total2"></span>
+							<h2 style="text-align: center; padding-bottom: 3px;">#{search.clientProfile.nameClient.toUpperCase()}</h2>
+							<div id="regions_div" style="width: 800px; height: 500px; margin-top: 5px;"></div>
 
-							<p:commandButton value="Consultar" styleClass="button_post" action="#{search.search}" 
-								update="form_step_one" />
+							<p:panel id="panel_contacto" styleClass="panel_content panel_contacto">
+								<h3>Contactos</h3>
+								<ui:repeat var="contact" value="#{search.clientProfile.clientContacts}">
+									<h:panelGrid columns="1">
+										<p:outputLabel value="#{contact.nameContact}" />
+										<p:outputLabel value="#{contact.phone}" />
+										<p:outputLabel value="#{contact.mobil}" />
+										<p:outputLabel value="#{contact.email}" />
+										<br />
+									</h:panelGrid>
+								</ui:repeat>
+							</p:panel>
+
+							<p:commandButton value="Regresar" styleClass="button_post" onclick="back();" immediate="true" />
 						</h:panelGrid>
-					</p:panel>
-				</h:form>
+					</h:form>
+				</p:panel>
 			</div>
 		</h:panelGroup>
 	</h:panelGrid>
-
-
 </h:body>
 </html>
