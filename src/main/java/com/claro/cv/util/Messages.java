@@ -44,4 +44,12 @@ public class Messages {
 
    public static final String NO_SERVICES_REGION = "El Cliente no tiene servicios en esta region";
 
+   public static final String LOAD_TYPE_SERVICE_ERROR = "Ha ocurrido un error al obtener el Tipo de Servicio";
+
+   public static final String LOAD_SCHEDULE_ERROR = "Ha ocurrido un error al obtener los Horarios de Atención";
+
+   public static final String LOAD_CONTACT_SERVICE_ERROR = "Ha ocurrido un error al cargar los Contactos del Servcio";
+
+   public static final String   LOAD_LAST_SETTINGS_FILE = "Ha ocurrido un error la obtener el archivo de Ultima Configuración";
+
 }

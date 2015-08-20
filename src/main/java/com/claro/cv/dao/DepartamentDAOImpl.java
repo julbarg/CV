@@ -1,5 +1,6 @@
 package com.claro.cv.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.persistence.TypedQuery;
@@ -10,7 +11,13 @@ import com.claro.cv.entity.DepartamentEntity;
 
 
 @Repository
-public class DepartamentDAOImpl extends TemplateDAO<DepartamentEntity> implements DepartamentDAO {
+public class DepartamentDAOImpl extends TemplateDAO<DepartamentEntity> implements DepartamentDAO,
+   Serializable {
+
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 8204739158167076194L;
 
    @Override
    public ArrayList<DepartamentEntity> findAll() throws Exception {

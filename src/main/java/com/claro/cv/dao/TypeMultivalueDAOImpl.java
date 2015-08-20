@@ -1,5 +1,6 @@
 package com.claro.cv.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.persistence.TypedQuery;
@@ -10,7 +11,13 @@ import com.claro.cv.entity.TypeMultivalueEntity;
 
 
 @Repository
-public class TypeMultivalueDAOImpl extends TemplateDAO<TypeMultivalueEntity> implements TypeMultivalueDAO {
+public class TypeMultivalueDAOImpl extends TemplateDAO<TypeMultivalueEntity> implements TypeMultivalueDAO,
+   Serializable {
+
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4826670023645416687L;
 
    @Override
    public TypeMultivalueEntity findByName(String name) throws Exception {

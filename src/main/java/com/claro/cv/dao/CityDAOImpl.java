@@ -1,5 +1,6 @@
 package com.claro.cv.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.persistence.TypedQuery;
@@ -11,7 +12,12 @@ import com.claro.cv.entity.DepartamentEntity;
 
 
 @Repository
-public class CityDAOImpl extends TemplateDAO<CityEntity> implements CityDAO {
+public class CityDAOImpl extends TemplateDAO<CityEntity> implements CityDAO, Serializable {
+
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 4047835375837563523L;
 
    @Override
    public ArrayList<CityEntity> findAll() throws Exception {
@@ -36,7 +42,7 @@ public class CityDAOImpl extends TemplateDAO<CityEntity> implements CityDAO {
       TypedQuery<CityEntity> query = entityManager.createNamedQuery("CityEntity.findById", CityEntity.class);
       query.setParameter("idCity", idCity);
       ArrayList<CityEntity> results = (ArrayList<CityEntity>) query.getResultList();
-      
+
       return results.get(0);
    }
 

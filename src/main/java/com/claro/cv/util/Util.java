@@ -1,7 +1,11 @@
 package com.claro.cv.util;
 
+import java.util.ArrayList;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+
+import com.claro.cv.entity.MultivalueEntity;
 
 
 public class Util {
@@ -31,6 +35,15 @@ public class Util {
       FacesContext.getCurrentInstance().addMessage(null, message);
    }
 
+   public static String getMeansFlag(String value) {
+      String name;
+      if (value != null) {
+         name = value.equals("S") ? "Si" : "No";
+         return name;
+      }
+      return value;
+   }
+
    public static void addMessageInfoKeep(String infoMsg) {
       FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, infoMsg, null);
       FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -40,6 +53,16 @@ public class Util {
    public static void addMessageError(String errorMsg) {
       FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMsg, null);
       FacesContext.getCurrentInstance().addMessage(null, message);
+   }
+
+   public static String getMeansMultiValue(ArrayList<MultivalueEntity> listMultivalue, String value) {
+      for (MultivalueEntity multiValue : listMultivalue) {
+         if (multiValue.getCode().equals(value)) {
+            return multiValue.getName();
+         }
+      }
+      return value;
+
    }
 
 }

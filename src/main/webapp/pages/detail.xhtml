@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>Hoja de Vida - Maps</title>
 	<h:outputStylesheet library="css" name="style_cv.css" />
 	<h:outputStylesheet library="css" name="creation.css" />
 	<h:outputStylesheet library="css" name="detail.css" />
-	<h:outputScript library="js" name="detail.js" />
 	<h:outputScript library="primefaces" name="jquery/jquery.js" />
 	<h:outputScript library="js" name="animation.js" />
+	<h:outputScript library="js" name="detail.js" />
 	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
-
-	<script>
-		google.maps.event.addDomListener(window, 'load', initialize);
-	</script>
 </h:head>
 <h:body>
-	<h:form>
+	<h:form id="form_detail">
 		<p:panel styleClass="panel_header">
 			<p:panel styleClass="panel_logo">
 				<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
@@ -47,14 +44,47 @@
 			</p:panel>
 			<h:panelGroup>
 				<div id="div_step_two">
+					<h:inputHidden id="jsonURL" value="#{search.jsonURL}" />
 					<p:panel id="panel_creation_step_two" styleClass="panel_content">
-
 						<h:panelGrid cellspacing="15">
 							<span id="total2"></span>
 							<h2>G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
-							<div id="map-canvas" class="map-canvas" />
-							<p:commandButton value="Regresar" styleClass="button_post"
-								action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+							<p:gmap widgetVar="map_detail" center="#{search.centerMap}" zoom="#{search.zoomMap}" type="ROADMAP"
+								model="#{search.mapModel}" style="height: 400px; width: 840px;">
+								<p:ajax event="overlaySelect" listener="#{search.onMarkerSelect}" />
+								<p:gmapInfoWindow id="infoWindow" maxWidth="250">
+									<h3 style="text-align: center;">#{search.markerSelect.title}.</h3>
+									<h:panelGrid columns="2">
+										<h:outputLabel value="Punto Principal Cliente " />
+										<h:outputLabel value="#{search.markerSelect.data.mainPoint}" />
+										<h:outputLabel value="Tipo de Servicio " />
+										<h:outputLabel value="#{search.markerSelect.data.typeService}" />
+										<h:outputLabel value="Canal BackUp " />
+										<h:outputLabel value="#{search.markerSelect.data.backup}" />
+										<h:outputLabel value="Dirección " />
+										<h:outputLabel value="#{search.markerSelect.data.direction}" />
+										<h:outputLabel value="Contactos " />
+										<ui:repeat var="contacto" value="#{search.getContactsMarkerSelect()}">
+											<h:panelGrid columns="1">
+												<h:outputLabel value="#{contacto.nameContact}" />
+												<h:outputLabel value="#{contacto.phone}" />
+												<h:outputLabel value="#{contacto.mobil}" />
+												<h:outputLabel value="#{contacto.email}" />
+												<h:outputLabel value="#{search.getSchedule(contacto.schedule)}" />
+											</h:panelGrid>
+										</ui:repeat>
+										<h:outputLabel value="Ultima Configuración " />
+
+										<p:commandLink value="#{search.markerSelect.data.lastSettingFile.nameFile}" ajax="false">
+											<p:fileDownload value="#{search.downloadLastSettingsFile()}" />
+										</p:commandLink>
+
+
+									</h:panelGrid>
+								</p:gmapInfoWindow>
+							</p:gmap>
+							<p:commandButton value="Regresar" styleClass="button_post" action="#{search.returnSearchDetail}"
+								ajax="false" immediate="true" />
 						</h:panelGrid>
 
 					</p:panel>

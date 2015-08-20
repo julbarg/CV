@@ -140,7 +140,7 @@
 									value="#{create.clientService.direction}" label="Dirección" />
 								<p:inputText placeholder="Alias" styleClass="input_create_contact"
 									value="#{create.clientService.alias}" label="Alias" />
-								<p:selectOneMenu id="type_service" styleClass="select_post" value="#{create.clientService.tyeService}">
+								<p:selectOneMenu id="type_service" styleClass="select_post" value="#{create.clientService.typeService}">
 									<f:selectItem itemLabel="Selecciona Tipo de Servicio.." />
 									<f:selectItems value="#{create.listTypeService}" var="typeService" itemLabel="#{typeService.name}"
 										itemValue="#{typeService.code}" />

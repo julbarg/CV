@@ -1,5 +1,6 @@
 package com.claro.cv.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.persistence.TypedQuery;
@@ -11,7 +12,13 @@ import com.claro.cv.entity.DepartamentEntity;
 
 
 @Repository
-public class ClientServiceDAOImpl extends TemplateDAO<ClientServiceEntity> implements ClientServiceDAO {
+public class ClientServiceDAOImpl extends TemplateDAO<ClientServiceEntity> implements ClientServiceDAO,
+   Serializable {
+
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 7274911152818052741L;
 
    @Override
    public ClientServiceEntity findByCodeService(String codeService) throws Exception {

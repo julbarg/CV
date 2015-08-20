@@ -10,7 +10,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="service_contact")
-@NamedQuery(name="ServiceContactEntity.findAll", query="SELECT s FROM ServiceContactEntity s")
+@NamedQueries({
+   @NamedQuery(name="ServiceContactEntity.findAll", query="SELECT s FROM ServiceContactEntity s"),
+   @NamedQuery(name="ServiceContactEntity.findByClientService", query="SELECT s FROM ServiceContactEntity s WHERE s.clientService =:clientService")
+})
 public class ServiceContactEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

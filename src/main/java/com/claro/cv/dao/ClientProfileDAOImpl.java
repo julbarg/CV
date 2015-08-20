@@ -1,5 +1,6 @@
 package com.claro.cv.dao;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,13 @@ import com.claro.cv.entity.ClientProfileEntity;
 
 
 @Repository
-public class ClientProfileDAOImpl extends TemplateDAO<ClientProfileEntity> implements ClientProfileDAO {
+public class ClientProfileDAOImpl extends TemplateDAO<ClientProfileEntity> implements ClientProfileDAO,
+   Serializable {
+
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 7848732737052322587L;
 
    @Override
    public ArrayList<ClientProfileEntity> findAll() throws Exception {

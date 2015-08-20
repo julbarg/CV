@@ -10,10 +10,17 @@ import org.springframework.stereotype.Service;
 import com.claro.cv.dao.ClientProfileDAO;
 import com.claro.cv.dao.ClientServiceDAO;
 import com.claro.cv.dao.DepartamentDAO;
+import com.claro.cv.dao.MultivalueDAO;
+import com.claro.cv.dao.ServiceContactDAO;
+import com.claro.cv.dao.TypeMultivalueDAO;
 import com.claro.cv.dto.MapDataDTO;
 import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
 import com.claro.cv.entity.DepartamentEntity;
+import com.claro.cv.entity.MultivalueEntity;
+import com.claro.cv.entity.ServiceContactEntity;
+import com.claro.cv.entity.TypeMultivalueEntity;
+import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.SearchService;
 
 
@@ -30,9 +37,18 @@ public class SearchServiceImpl implements SearchService, Serializable {
 
    @Autowired
    private ClientServiceDAO clientServiceDAO;
-   
+
    @Autowired
    private DepartamentDAO departamentDAO;
+
+   @Autowired
+   private MultivalueDAO multivalueDAO;
+
+   @Autowired
+   private TypeMultivalueDAO typeMultivalueDAO;
+   
+   @Autowired
+   private ServiceContactDAO serviceContactDAO;
 
    @Override
    public ClientProfileEntity search(BigInteger idCliente, String codeService) throws Exception {
@@ -50,15 +66,39 @@ public class SearchServiceImpl implements SearchService, Serializable {
    @Override
    public ArrayList<MapDataDTO> loadMap(ClientProfileEntity clientProfile) throws Exception {
       return clientProfileDAO.getMapData(clientProfile.getIdClientProfile());
-      
+
    }
 
    @Override
-   public ArrayList<ClientServiceEntity> loadDetail(String regionSelect) throws Exception {
+   public ArrayList<ClientServiceEntity> loadDetail(DepartamentEntity departamentEntity) throws Exception {
       ArrayList<ClientServiceEntity> listClientService = null;
-      DepartamentEntity departamentEntity = departamentDAO.findByGeoCode(regionSelect);
       listClientService = clientServiceDAO.findByDepartament(departamentEntity);
       return listClientService;
+   }
+
+   @Override
+   public DepartamentEntity loadDepartament(String regionSelect) throws Exception {
+      return departamentDAO.findByGeoCode(regionSelect);
+   }
+
+   @Override
+   public ArrayList<MultivalueEntity> loadTypeServices() throws Exception {
+      TypeMultivalueEntity typeMultivalue = typeMultivalueDAO.findByName(TypeMultivalueEnum.TIPO_SERVICIO
+         .getValue());
+      return multivalueDAO.findByTypeMultivalue(typeMultivalue);
+   }
+
+   @Override
+   public ArrayList<MultivalueEntity> loadSchedules() throws Exception {
+      TypeMultivalueEntity typeMultivalue = typeMultivalueDAO.findByName(TypeMultivalueEnum.HORARIO_ATENCION
+         .getValue());
+      return multivalueDAO.findByTypeMultivalue(typeMultivalue);
+   }
+
+   @Override
+   public ArrayList<ServiceContactEntity> loadContact(ClientServiceEntity service) throws Exception {
+     return serviceContactDAO.findByClientService(service);
+      
    }
 
 }

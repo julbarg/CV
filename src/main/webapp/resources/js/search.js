@@ -21,7 +21,7 @@ function drawRegionsMap(xhr, status, args) {
          colors : [ '#FF0000', '#B40404' ]
       }
    };
-
+   
    var geomap = new google.visualization.GeoChart(document.getElementById('regions_div'));
    geomap.draw(data, options);
    google.visualization.events.addListener(geomap, 'regionClick', function(eventData) {

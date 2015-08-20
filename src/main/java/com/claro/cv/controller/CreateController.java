@@ -351,7 +351,7 @@ public class CreateController implements Serializable {
 
             inf("DIRECCION SERVICE: " + service.getDirection());
             inf("ALIAS SERVICE: " + service.getAlias());
-            inf("TIPO SERVICE: " + service.getTyeService());
+            inf("TIPO SERVICE: " + service.getTypeService());
             inf("PUNTO PRINCIPAL SERVICE: " + service.getMainPoint());
             inf("ENLACE BACKUP SERVICE: " + service.getBackup());
             inf("PROVEEDOR DE ULTIMA MILLA SERVICE: " + service.getIdProviderLastMile());

@@ -12,9 +12,11 @@ import java.util.List;
 @Table(
    name = "client_service")
 @NamedQueries({
-   @NamedQuery(name = "ClientServiceEntity.findAll", query = "SELECT c FROM ClientServiceEntity c"),
-   @NamedQuery(name = "ClientServiceEntity.findByDepartament",query = "SELECT c FROM ClientServiceEntity c WHERE c.departament=:departament"),
-})
+   @NamedQuery(
+      name = "ClientServiceEntity.findAll", query = "SELECT c FROM ClientServiceEntity c"),
+   @NamedQuery(
+      name = "ClientServiceEntity.findByDepartament",
+      query = "SELECT c FROM ClientServiceEntity c WHERE c.departament=:departament"), })
 public class ClientServiceEntity implements Serializable {
    private static final long serialVersionUID = 1L;
 
@@ -52,8 +54,8 @@ public class ClientServiceEntity implements Serializable {
    private String mainPoint;
 
    @Column(
-      name = "tye_service")
-   private String tyeService;
+      name = "type_service")
+   private String typeService;
 
    // bi-directional many-to-one association to CityEntity
    @ManyToOne(
@@ -63,8 +65,7 @@ public class ClientServiceEntity implements Serializable {
    private CityEntity city;
 
    // bi-directional many-to-one association to ClientProfileEntity
-   @ManyToOne(
-      fetch = FetchType.EAGER)
+   @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(
       name = "id_client_profile")
    private ClientProfileEntity clientProfile;
@@ -78,7 +79,7 @@ public class ClientServiceEntity implements Serializable {
 
    // bi-directional many-to-one association to LastSettingFileEntity
    @OneToOne(
-      fetch = FetchType.LAZY)
+      fetch = FetchType.EAGER)
    @JoinColumn(
       name = "id_last_settings_file")
    private LastSettingFileEntity lastSettingFile;
@@ -171,12 +172,12 @@ public class ClientServiceEntity implements Serializable {
       this.mainPoint = mainPoint;
    }
 
-   public String getTyeService() {
-      return this.tyeService;
+   public String getTypeService() {
+      return this.typeService;
    }
 
-   public void setTyeService(String tyeService) {
-      this.tyeService = tyeService;
+   public void setTypeService(String typeService) {
+      this.typeService = typeService;
    }
 
    public CityEntity getCity() {

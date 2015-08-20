@@ -64,16 +64,15 @@
 								<h3>Contactos</h3>
 								<ui:repeat var="contact" value="#{search.clientProfile.clientContacts}">
 									<h:panelGrid columns="1">
-										<p:outputLabel value="#{contact.nameContact}" />
+										<p:outputLabel value="#{contact.nameContact}" style="font-weight: bold;" />
 										<p:outputLabel value="#{contact.phone}" />
 										<p:outputLabel value="#{contact.mobil}" />
 										<p:outputLabel value="#{contact.email}" />
-										<br />
 									</h:panelGrid>
 								</ui:repeat>
 							</p:panel>
 
-							<p:commandButton value="Regresar" styleClass="button_post" onclick="back();" immediate="true" />
+							<p:commandButton value="Regresar" styleClass="button_post" action="#{search.returnSearch}" immediate="true" />
 						</h:panelGrid>
 					</h:form>
 				</p:panel>

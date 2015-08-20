@@ -16,4 +16,14 @@ public class Constant {
 
    public static final String JSON_TEXT = "jsonText";
 
+   public static final String DETAIL_PAGE = "detail";
+
+   public static final String TXT = "txt";
+
+   public static final String TXT_EXTENSION = ".txt";
+
+   public static final String URL_JOSON = "../resources/geoJson/";
+
+   public static final String JSON_EXTENSION = ".json";
+
 }
