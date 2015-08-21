@@ -24,7 +24,6 @@
 
 			<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
 				action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-			<h:commandButton image="../resources/img/settings.png" styleClass="button_menu_header" />
 			<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
 				action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
 
@@ -58,6 +57,17 @@
 								label="ID" required="true" />
 							<p:inputText placeholder="NIT" styleClass="input_create" value="#{create.clientProfile.nitClient}"
 								label="NIT" required="true" />
+							<p:panel styleClass="panel_contactos" id="panelFile">
+								<h3>Ingenieria de Detalle</h3>
+								<p:fileUpload fileUploadListener="#{create.uploadFileIngenieria}" mode="advanced" multiple="true"
+									uploadLabel="Cargar" label="Examinar" update="data_file" />
+								<p:dataTable id="data_file" value="#{create.listDetailEngineeringFile}" var="file"
+									styleClass="data_table_contacts">
+									<p:column headerText="Archivos">
+										<h:outputLabel value="#{file.getFileName()}" />
+									</p:column>
+								</p:dataTable>
+							</p:panel>
 
 							<p:panel styleClass="panel_contactos" id="panelContacts">
 								<h3>Contactos</h3>
@@ -117,12 +127,29 @@
 							<input id="pac-input" class="controls pac-input" type="text" placeholder="Buscar..."
 								style="float: left;" />
 							<div id="map-canvas" class="map-canvas" />
-							<h:panelGrid columns="2">
-								<h:inputHidden id="lat" styleClass="input_create_contact" value="#{create.clientService.lat}"
-									requiredMessage="Es necesario selecionar un punto en el map" />
-								<h:inputHidden id="lng" styleClass="input_create_contact" value="#{create.clientService.lng}" />
+							<h:inputHidden id="lat" styleClass="input_create_contact" value="#{create.clientService.lat}"
+								requiredMessage="Es necesario selecionar un punto en el map" />
+							<h:inputHidden id="lng" styleClass="input_create_contact" value="#{create.clientService.lng}" />
+							<h:panelGrid columns="2" id="panel_grid_service">
 
-								<p:selectOneMenu id="select_departament" styleClass="select_post" value="#{create.idDepartament}">
+
+								<p:selectOneRadio value="#{create.selectTypeLocaltion}">
+									<f:selectItems value="#{create.listTypeLocaltion}" var="typeLocation" itemLabel="#{typeLocation}"
+										itemValue="#{typeLocation}" />
+									<p:ajax listener="#{create.changeTypeLocation}" update="form_step_two:panel_grid_service" />
+								</p:selectOneRadio>
+								<p:outputLabel value="" />
+
+								<p:selectOneMenu id="select_country" value="#{create.idCountry}" styleClass="select_post"
+									rendered="#{create.international}">
+									<f:selectItem itemLabel="Seleccione Pais.." />
+									<f:selectItems value="#{create.listCountry}" var="countryItem" itemLabel="#{countryItem.name}"
+										itemValue="#{countryItem.idCountry}" />
+								</p:selectOneMenu>
+								<p:outputLabel value="" rendered="#{create.international}" />
+
+								<p:selectOneMenu id="select_departament" styleClass="select_post" value="#{create.idDepartament}"
+									rendered="#{!create.international}">
 									<p:ajax listener="#{create.loadCitiesByDepartament}"
 										update="form_step_two:select_city form_step_two:growl_step_two" />
 									<f:selectItem itemLabel="Seleccione Departamento.." />
@@ -130,7 +157,8 @@
 										itemLabel="#{departamentItem.name}" itemValue="#{departamentItem.idDepartament}" />
 								</p:selectOneMenu>
 
-								<p:selectOneMenu id="select_city" styleClass="select_post" value="#{create.idCity}">
+								<p:selectOneMenu id="select_city" styleClass="select_post" value="#{create.idCity}"
+									rendered="#{!create.international}">
 									<f:selectItem itemLabel="Seleccione Ciudad" />
 									<f:selectItems value="#{create.listCiudad}" var="cityItem" itemLabel="#{cityItem.name}"
 										itemValue="#{cityItem.idCity}" />
@@ -140,7 +168,8 @@
 									value="#{create.clientService.direction}" label="Dirección" />
 								<p:inputText placeholder="Alias" styleClass="input_create_contact"
 									value="#{create.clientService.alias}" label="Alias" />
-								<p:selectOneMenu id="type_service" styleClass="select_post" value="#{create.clientService.typeService}">
+								<p:selectOneMenu id="type_service" styleClass="select_post"
+									value="#{create.clientService.typeService}">
 									<f:selectItem itemLabel="Selecciona Tipo de Servicio.." />
 									<f:selectItems value="#{create.listTypeService}" var="typeService" itemLabel="#{typeService.name}"
 										itemValue="#{typeService.code}" />
@@ -156,20 +185,39 @@
 								<p:selectBooleanButton id="main_enlace" value="#{create.enlaceBackUp}" onLabel="Si" offLabel="No" />
 							</h:panelGrid>
 
-							<p:outputLabel value="Ultima Configuración" styleClass="label_post" />
-							<p:fileUpload fileUploadListener="#{create.uploadFileE}" mode="advanced"
-								uploadLabel="Cargar" label="Examinar" />
+							<h3>Ultima Configuracion</h3>
+							<p:outputLabel id="name_upload" value="#{create.nameUploadFile}" />
+							<p:fileUpload fileUploadListener="#{create.uploadFileE}" mode="advanced" uploadLabel="Cargar"
+								label="Examinar" update="name_upload" />
 
-							<h:panelGrid columns="2" styleClass="table_um">
+							<p:panel styleClass="panel_contactos" id="panelFile">
+								<h3>Ingenieria de Detalle</h3>
+								<p:fileUpload fileUploadListener="#{create.uploadFileIngenieriaService}" mode="advanced"
+									multiple="true" uploadLabel="Cargar" label="Examinar" update="data_file" />
+								<p:dataTable id="data_file" value="#{create.listDetailEngineeringFileService}" var="file"
+									styleClass="data_table_contacts">
+									<p:column headerText="Archivos">
+										<h:outputLabel value="#{file.getFileName()}" />
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+
+
+							<h:panelGrid columns="2" styleClass="table_um" id="panel_grid_um">
 								<p:selectOneMenu id="type_um" styleClass="select_post" label="Tipo de Contacto"
 									value="#{create.clientService.idProviderLastMile}">
-									<f:selectItem itemLabel="Seleccione Proveedor Ultima Milla..." />
+									<f:selectItem itemLabel="Seleccione Proveedor Ultima Milla..." itemValue="" />
 									<f:selectItems value="#{create.listProviderLastMile}" var="providerLastMile"
 										itemLabel="#{providerLastMile.name}" itemValue="#{providerLastMile.code}" />
+									<p:ajax listener="#{create.changeProvide}" update="form_step_two:panel_grid_um" />
 								</p:selectOneMenu>
 								<p:inputText placeholder="Codigo de Servicio UM" styleClass="input_create_contact"
-									value="#{create.clientService.codeServiceLastMile}" />
+									rendered="#{create.diferentProvider}" value="#{create.clientService.codeServiceLastMile}" />
 							</h:panelGrid>
+
+							<h3>Descripcion del Servicio</h3>
+							<p:inputTextarea rows="6" cols="120" value="#{create.clientService.description}" />
+
 							<p:panel styleClass="panel_contactos" id="panelContacts">
 								<h3>Contactos en Sitio</h3>
 								<h:panelGrid columns="2">
@@ -179,6 +227,8 @@
 										value="#{create.serviceContact.phone}" />
 									<p:inputText placeholder="Celular" styleClass="input_create_contact"
 										value="#{create.serviceContact.mobil}" />
+									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact"
+										value="#{create.serviceContact.email}" />
 									<p:selectOneMenu id="horario" styleClass="select_post" label="Horario de Atencion"
 										value="#{create.serviceContact.schedule}">
 										<f:selectItem itemLabel="Selecione Horario de Atencion.." />
@@ -200,6 +250,9 @@
 									<p:column headerText="Celular">
 										<h:outputText value="#{serviceContact.mobil}" />
 									</p:column>
+									<p:column headerText="Correo">
+										<h:outputText value="#{serviceContact.email}" />
+									</p:column>
 									<p:column headerText="Horario de Atencion">
 										<h:outputText value="#{create.getNameSchedule(serviceContact.schedule)}" />
 									</p:column>
@@ -209,6 +262,9 @@
 							<p:commandButton value="Add Service" styleClass="button_post_add" actionListener="#{create.addService}"
 								process="@form" update="form_step_two" />
 							<p:dataTable styleClass="data_table_contacts" value="#{create.listClientService}" var="service">
+								<p:column headerText="Pais (Internacional)">
+									<h:outputText value="#{service.country.name}" />
+								</p:column>
 								<p:column headerText="Ciudad">
 									<h:outputText value="#{service.city.name}" />
 								</p:column>

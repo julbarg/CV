@@ -2,37 +2,38 @@ package com.claro.cv.dto;
 
 import java.io.Serializable;
 
-public class MapDataDTO implements Serializable{
-   
+
+public class MapDataDTO implements Serializable {
+
    /**
     * 
     */
    private static final long serialVersionUID = -4448643985633421321L;
 
-   private String codeDepartament;
-   
-   private String nameDepartament;
-   
+   private String code;
+
+   private String name;
+
    private int numberServices;
 
-   public String getCodeDepartament() {
-      return codeDepartament;
+   public String getCode() {
+      return code;
    }
 
-   public String getNameDepartament() {
-      return nameDepartament;
+   public String getName() {
+      return name;
    }
 
    public int getNumberServices() {
       return numberServices;
    }
 
-   public void setCodeDepartament(String codeDepartament) {
-      this.codeDepartament = codeDepartament;
+   public void setCode(String code) {
+      this.code = code;
    }
 
-   public void setNameDepartament(String nameDepartament) {
-      this.nameDepartament = nameDepartament;
+   public void setName(String name) {
+      this.name = name;
    }
 
    public void setNumberServices(int numberServices) {

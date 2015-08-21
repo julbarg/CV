@@ -7,7 +7,9 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
+import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
+import com.claro.cv.entity.CountryEntity;
 import com.claro.cv.entity.DepartamentEntity;
 
 
@@ -34,13 +36,29 @@ public class ClientServiceDAOImpl extends TemplateDAO<ClientServiceEntity> imple
    }
 
    @Override
-   public ArrayList<ClientServiceEntity> findByDepartament(DepartamentEntity departament) {
+   public ArrayList<ClientServiceEntity> findByDepartament(DepartamentEntity departament,
+      ClientProfileEntity clientProfile) {
       TypedQuery<ClientServiceEntity> query = entityManager.createNamedQuery(
          "ClientServiceEntity.findByDepartament", ClientServiceEntity.class);
       query.setParameter("departament", departament);
+      query.setParameter("clientProfile", clientProfile);
+
       ArrayList<ClientServiceEntity> results = (ArrayList<ClientServiceEntity>) query.getResultList();
 
       return results;
 
+   }
+
+   @Override
+   public ArrayList<ClientServiceEntity> findByCountry(CountryEntity country,
+      ClientProfileEntity clientProfile) throws Exception {
+      TypedQuery<ClientServiceEntity> query = entityManager.createNamedQuery(
+         "ClientServiceEntity.findByCountry", ClientServiceEntity.class);
+      query.setParameter("country", country);
+      query.setParameter("clientProfile", clientProfile);
+
+      ArrayList<ClientServiceEntity> results = (ArrayList<ClientServiceEntity>) query.getResultList();
+
+      return results;
    }
 }

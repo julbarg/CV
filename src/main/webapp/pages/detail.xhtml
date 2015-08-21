@@ -20,13 +20,10 @@
 				<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
 			</p:panel>
 			<p:panel styleClass="panel_header_info">
-
 				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
 					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-				<h:commandButton image="../resources/img/settings.png" styleClass="button_menu_header" />
 				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
 					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-
 			</p:panel>
 		</p:panel>
 		<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
@@ -48,24 +45,28 @@
 					<p:panel id="panel_creation_step_two" styleClass="panel_content">
 						<h:panelGrid cellspacing="15">
 							<span id="total2"></span>
-							<h2>G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
+							<h2 style="text-align: center;">#{search.clientProfile.nameClient.toUpperCase()}</h2>
 							<p:gmap widgetVar="map_detail" center="#{search.centerMap}" zoom="#{search.zoomMap}" type="ROADMAP"
 								model="#{search.mapModel}" style="height: 400px; width: 840px;">
 								<p:ajax event="overlaySelect" listener="#{search.onMarkerSelect}" />
 								<p:gmapInfoWindow id="infoWindow" maxWidth="250">
-									<h3 style="text-align: center;">#{search.markerSelect.title}.</h3>
-									<h:panelGrid columns="2">
-										<h:outputLabel value="Punto Principal Cliente " />
+									<h3 style="text-align: center;">#{search.markerSelect.title}</h3>
+									<h:panelGrid columns="2" styleClass="table_info_map">
+										<h:outputLabel styleClass="title_lable" value="Punto Principal Cliente " />
 										<h:outputLabel value="#{search.markerSelect.data.mainPoint}" />
-										<h:outputLabel value="Tipo de Servicio " />
+
+										<h:outputLabel styleClass="title_lable" value="Tipo de Servicio " />
 										<h:outputLabel value="#{search.markerSelect.data.typeService}" />
-										<h:outputLabel value="Canal BackUp " />
+
+										<h:outputLabel styleClass="title_lable" value="Canal BackUp " />
 										<h:outputLabel value="#{search.markerSelect.data.backup}" />
-										<h:outputLabel value="Dirección " />
+
+										<h:outputLabel styleClass="title_lable" value="Dirección " />
 										<h:outputLabel value="#{search.markerSelect.data.direction}" />
-										<h:outputLabel value="Contactos " />
+
+										<h:outputLabel styleClass="title_lable" value="Contactos " />
 										<ui:repeat var="contacto" value="#{search.getContactsMarkerSelect()}">
-											<h:panelGrid columns="1">
+											<h:panelGrid columns="1" styleClass="table_info_map_into">
 												<h:outputLabel value="#{contacto.nameContact}" />
 												<h:outputLabel value="#{contacto.phone}" />
 												<h:outputLabel value="#{contacto.mobil}" />
@@ -73,64 +74,31 @@
 												<h:outputLabel value="#{search.getSchedule(contacto.schedule)}" />
 											</h:panelGrid>
 										</ui:repeat>
-										<h:outputLabel value="Ultima Configuración " />
 
+										<h:outputLabel styleClass="title_lable" value="Ultima Configuración " />
 										<p:commandLink value="#{search.markerSelect.data.lastSettingFile.nameFile}" ajax="false">
 											<p:fileDownload value="#{search.downloadLastSettingsFile()}" />
 										</p:commandLink>
 
+										<h:outputLabel styleClass="title_lable" value="Ingenieria de Detalle " />
+										<ui:repeat var="file" value="#{search.getServiceFiles()}">
+											<h:panelGrid columns="1" styleClass="table_info_map_into">
+												<p:commandLink value="#{file.nameFile}" ajax="false">
+													<p:fileDownload value="#{search.downloadFile(file.url, file.nameFile)}" />
+												</p:commandLink>
+											</h:panelGrid>
+										</ui:repeat>
+
+										<h:outputLabel styleClass="title_lable" value="Descripción " />
+										<h:outputLabel value="#{search.markerSelect.data.description}" />
 
 									</h:panelGrid>
 								</p:gmapInfoWindow>
 							</p:gmap>
 							<p:commandButton value="Regresar" styleClass="button_post" action="#{search.returnSearchDetail}"
-								ajax="false" immediate="true" />
+								ajax="false" immediate="true" style="margin-top: 16px !important;" />
 						</h:panelGrid>
 
-					</p:panel>
-				</div>
-
-				<div style="display: none;">
-					<p:panel id="step_two" styleClass="panel_content">
-						<h3 style="text-align: center;">G4S CASH SOLUTIONS COLOMBIA LTDA.</h3>
-						<div class="contenedor">
-							<div class="contenidos">
-								<div class="columna title">Tipo de Servicio</div>
-								<div class="columna">Tipo 1</div>
-							</div>
-							<div class="contenidos">
-								<div class="columna title">Punto Principal Cliente</div>
-								<div class="columna">Si</div>
-							</div>
-							<div class="contenidos">
-								<div class="columna title">Contacto</div>
-								<div class="columna">
-									Andres Vallen Jaime Gonzales<br />1-7054040 Ext 1913<br />310 888 8777<br />andres.vallen@co.g4s.com
-								</div>
-							</div>
-							<div class="contenidos">
-								<div class="columna title">Direccion</div>
-								<div class="columna">Carrera 78 #2-54C Sur</div>
-							</div>
-							<div class="contenidos">
-								<div class="columna title">Horario</div>
-								<div class="columna">Lun-Vie 8.00 am - 5.00 am</div>
-							</div>
-							<div class="contenidos">
-								<div class="columna title">Ultima Configuracion</div>
-								<div class="columna">
-									<a href="#">Descargar</a>
-								</div>
-							</div>
-							<div class="contenidos">
-								<div class="columna title">Canal Principal</div>
-								<div class="columna">Si</div>
-							</div>
-							<div class="contenidos">
-								<div class="columna title">Canal BackUp</div>
-								<div class="columna">Si</div>
-							</div>
-						</div>
 					</p:panel>
 				</div>
 			</h:panelGroup>

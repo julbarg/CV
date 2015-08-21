@@ -9,16 +9,20 @@ import org.springframework.stereotype.Service;
 
 import com.claro.cv.dao.ClientProfileDAO;
 import com.claro.cv.dao.ClientServiceDAO;
+import com.claro.cv.dao.CountryDAO;
 import com.claro.cv.dao.DepartamentDAO;
 import com.claro.cv.dao.MultivalueDAO;
 import com.claro.cv.dao.ServiceContactDAO;
+import com.claro.cv.dao.ServiceFileDAO;
 import com.claro.cv.dao.TypeMultivalueDAO;
 import com.claro.cv.dto.MapDataDTO;
 import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
+import com.claro.cv.entity.CountryEntity;
 import com.claro.cv.entity.DepartamentEntity;
 import com.claro.cv.entity.MultivalueEntity;
 import com.claro.cv.entity.ServiceContactEntity;
+import com.claro.cv.entity.ServiceFileEntity;
 import com.claro.cv.entity.TypeMultivalueEntity;
 import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.SearchService;
@@ -42,13 +46,19 @@ public class SearchServiceImpl implements SearchService, Serializable {
    private DepartamentDAO departamentDAO;
 
    @Autowired
+   private CountryDAO countryDAO;
+
+   @Autowired
    private MultivalueDAO multivalueDAO;
 
    @Autowired
    private TypeMultivalueDAO typeMultivalueDAO;
-   
+
    @Autowired
    private ServiceContactDAO serviceContactDAO;
+
+   @Autowired
+   private ServiceFileDAO serviceFileDAO;
 
    @Override
    public ClientProfileEntity search(BigInteger idCliente, String codeService) throws Exception {
@@ -66,19 +76,37 @@ public class SearchServiceImpl implements SearchService, Serializable {
    @Override
    public ArrayList<MapDataDTO> loadMap(ClientProfileEntity clientProfile) throws Exception {
       return clientProfileDAO.getMapData(clientProfile.getIdClientProfile());
-
    }
 
    @Override
-   public ArrayList<ClientServiceEntity> loadDetail(DepartamentEntity departamentEntity) throws Exception {
+   public ArrayList<MapDataDTO> loadMapInt(ClientProfileEntity clientProfile) throws Exception {
+      return clientProfileDAO.getMapDataInt(clientProfile.getIdClientProfile());
+   }
+
+   @Override
+   public ArrayList<ClientServiceEntity> loadDetail(DepartamentEntity departamentEntity,
+      ClientProfileEntity clientProfileEntity) throws Exception {
       ArrayList<ClientServiceEntity> listClientService = null;
-      listClientService = clientServiceDAO.findByDepartament(departamentEntity);
+      listClientService = clientServiceDAO.findByDepartament(departamentEntity, clientProfileEntity);
+      return listClientService;
+   }
+
+   @Override
+   public ArrayList<ClientServiceEntity> loadDetailInt(CountryEntity countrySelect,
+      ClientProfileEntity clientProfile) throws Exception {
+      ArrayList<ClientServiceEntity> listClientService = null;
+      listClientService = clientServiceDAO.findByCountry(countrySelect, clientProfile);
       return listClientService;
    }
 
    @Override
    public DepartamentEntity loadDepartament(String regionSelect) throws Exception {
       return departamentDAO.findByGeoCode(regionSelect);
+   }
+
+   @Override
+   public CountryEntity loadCountry(String regionSelect) throws Exception {
+      return countryDAO.findByGeoCode(regionSelect);
    }
 
    @Override
@@ -97,8 +125,13 @@ public class SearchServiceImpl implements SearchService, Serializable {
 
    @Override
    public ArrayList<ServiceContactEntity> loadContact(ClientServiceEntity service) throws Exception {
-     return serviceContactDAO.findByClientService(service);
-      
+      return serviceContactDAO.findByClientService(service);
+
+   }
+
+   @Override
+   public ArrayList<ServiceFileEntity> loadServiceFiles(ClientServiceEntity clientService) throws Exception {
+      return serviceFileDAO.findByClientService(clientService);
    }
 
 }

@@ -1,6 +1,7 @@
 package com.claro.cv.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 

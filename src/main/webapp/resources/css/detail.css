@@ -18,3 +18,15 @@
 .title {
 	font-weight: bold;
 }
+
+.title_lable {
+	font-weight: bold;
+}
+
+.table_info_map td, .table_info_map th {
+	border-bottom: 1px solid #a8a8a8;
+}
+
+.table_info_map_into td, .table_info_map_into th {
+	border-bottom: 0px solid #a8a8a8;
+}

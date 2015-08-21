@@ -18,6 +18,7 @@
          packages : [ "geochart" ]
       });
       google.setOnLoadCallback(drawRegionsMap);
+      google.setOnLoadCallback(drawRegionsMapInt);
    </script>
 </h:head>
 <h:body>
@@ -29,7 +30,6 @@
 			<h:form>
 				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
 					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-				<h:commandButton image="../resources/img/settings.png" styleClass="button_menu_header" />
 				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
 					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
 			</h:form>
@@ -54,11 +54,20 @@
 					<h:form id="form_map">
 						<p:growl id="grow_map" />
 						<p:remoteCommand name="selectMap" action="#{search.loadDetail}" update="form_map:grow_map" />
+						<p:remoteCommand name="selectMapInt" action="#{search.loadDetailInt}" update="form_map:grow_map" />
 						<h:inputHidden id="jsonText" value="#{search.json}"></h:inputHidden>
-						<h:panelGrid cellspacing="15">
+						<h:inputHidden id="jsonTextInt" value="#{search.jsonInt}"></h:inputHidden>
+						<h:panelGrid cellspacing="8">
 							<span id="total2"></span>
 							<h2 style="text-align: center; padding-bottom: 3px;">#{search.clientProfile.nameClient.toUpperCase()}</h2>
-							<div id="regions_div" style="width: 800px; height: 500px; margin-top: 5px;"></div>
+
+							<p:outputLabel value="COLOMBIA" rendered="#{search.international}" styleClass="title_region" />
+							<div id="regions_div" style="width: 850px; height: 550px"></div>
+							<p:panel id="panel_sap" styleClass="panel_sap" rendered="#{search.sap}">
+								<p:commandLink actionListener="#{search.loadDetailSAP}" rendered="true">
+									<p:graphicImage library="img" name="sap.png" width="60" styleClass="img_sap" />
+								</p:commandLink>
+							</p:panel>
 
 							<p:panel id="panel_contacto" styleClass="panel_content panel_contacto">
 								<h3>Contactos</h3>
@@ -72,7 +81,21 @@
 								</ui:repeat>
 							</p:panel>
 
-							<p:commandButton value="Regresar" styleClass="button_post" action="#{search.returnSearch}" immediate="true" />
+							<p:outputLabel value="INTERNACIONAL" rendered="#{search.international}" styleClass="title_region" />
+							<h:panelGroup rendered="#{search.international}">
+								<div id="regions_div_int" style="width: 850px; height: 550px; margin-top: 5px;"></div>
+							</h:panelGroup>
+
+							<p:dataTable var="fileClient" value="#{search.clientProfile.clientFiles}"
+								styleClass="data_table_contacts">
+								<p:column headerText="Archivos">
+									<p:commandLink value="#{fileClient.nameFile}" ajax="false">
+										<p:fileDownload value="#{search.downloadFile(fileClient.url, fileClient.nameFile)}" />
+									</p:commandLink>
+								</p:column>
+							</p:dataTable>
+							<p:commandButton value="Regresar" styleClass="button_post" action="#{search.returnSearch}"
+								immediate="true" />
 						</h:panelGrid>
 					</h:form>
 				</p:panel>

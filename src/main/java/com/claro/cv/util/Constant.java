@@ -10,7 +10,11 @@ public class Constant {
 
    public static final String REDIRECT = "?faces-redirect=true";
 
-   public static final String PATH_UPLOAD_FILE = "C:/CV/";
+   public static final String PATH_UPLOAD_FILE_SETTINGS = "C:/CV/Settings/";
+   
+   public static final String PATH_UPLOAD_FILE_ENGINEERING = "C:/CV/Engineering/";
+   
+   public static final String PATH_UPLOAD_FILE_ENGINEERING_SERVICE = "C:/CV/EngineeringService/";
 
    public static final String SEARCH_DETAIL_PAGE = "search_detail";
 
@@ -25,5 +29,13 @@ public class Constant {
    public static final String URL_JOSON = "../resources/geoJson/";
 
    public static final String JSON_EXTENSION = ".json";
+
+   public static final String IN = "IN-";
+
+   public static final String UM = "UM-";
+
+   public static final String SAN_ANDRES_CODE = "CO-SAP";
+
+      
 
 }

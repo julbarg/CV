@@ -52,8 +52,9 @@ public class ClientProfileDAOImpl extends TemplateDAO<ClientProfileEntity> imple
       StringBuffer sql = new StringBuffer();
       sql.append("SELECT d.geocode, d.name,  COUNT(s.id_client_service) FROM client_service s ");
       sql.append("LEFT JOIN departament d ON s.id_department = d.id_departament ");
-      sql.append("WHERE id_client_profile = :idClientProfile ");
-      sql.append("GROUP BY id_department; ");
+      sql.append("WHERE s.id_client_profile = :idClientProfile ");
+      sql.append("AND s.id_department IS NOT NULL ");
+      sql.append("GROUP BY s.id_department; ");
       Query query = entityManager.createNativeQuery(sql.toString());
       query.setParameter("idClientProfile", idClientProfile);
 
@@ -63,8 +64,8 @@ public class ClientProfileDAOImpl extends TemplateDAO<ClientProfileEntity> imple
          listMapData = new ArrayList<MapDataDTO>();
          for (Object[] obj : result) {
             mapData = new MapDataDTO();
-            mapData.setCodeDepartament((String) obj[0]);
-            mapData.setNameDepartament((String) obj[1]);
+            mapData.setCode((String) obj[0]);
+            mapData.setName((String) obj[1]);
             mapData.setNumberServices(((BigInteger) obj[2]).intValue());
 
             listMapData.add(mapData);
@@ -73,5 +74,36 @@ public class ClientProfileDAOImpl extends TemplateDAO<ClientProfileEntity> imple
 
       return listMapData;
 
+   }
+
+   @SuppressWarnings("unchecked")
+   @Override
+   public ArrayList<MapDataDTO> getMapDataInt(BigInteger idClientProfile) throws Exception {
+      ArrayList<MapDataDTO> listMapData = null;
+      StringBuffer sql = new StringBuffer();
+      sql.append("SELECT c.geocode, c.name, COUNT(s.id_client_service) FROM client_service s ");
+      sql.append("LEFT JOIN country c ON s.id_country = c.id_country ");
+      sql.append("WHERE s.id_client_profile = :idClientProfile ");
+      sql.append("AND s.id_country IS NOT NULL ");
+      sql.append("GROUP BY s.id_country; ");
+
+      Query query = entityManager.createNativeQuery(sql.toString());
+      query.setParameter("idClientProfile", idClientProfile);
+
+      List<Object[]> result = query.getResultList();
+      if (result.size() > 0) {
+         MapDataDTO mapData;
+         listMapData = new ArrayList<MapDataDTO>();
+         for (Object[] obj : result) {
+            mapData = new MapDataDTO();
+            mapData.setCode((String) obj[0]);
+            mapData.setName((String) obj[1]);
+            mapData.setNumberServices(((BigInteger) obj[2]).intValue());
+
+            listMapData.add(mapData);
+         }
+      }
+
+      return listMapData;
    }
 }

@@ -53,6 +53,11 @@ body {
 	margin-top: 5px;
 }
 
+.ui-radiobutton {
+	padding-right: 4px;
+	padding-left: 10px;
+}
+
 .panel_transparent {
 	background-color: transparent;
 	padding: 0;

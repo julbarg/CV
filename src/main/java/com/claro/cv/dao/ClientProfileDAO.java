@@ -17,4 +17,6 @@ public interface ClientProfileDAO {
 
    public ArrayList<MapDataDTO> getMapData(BigInteger idClientProfile) throws Exception;
 
+   public ArrayList<MapDataDTO> getMapDataInt(BigInteger idClientProfile) throws Exception;
+
 }

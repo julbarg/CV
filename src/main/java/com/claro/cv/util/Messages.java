@@ -50,6 +50,16 @@ public class Messages {
 
    public static final String LOAD_CONTACT_SERVICE_ERROR = "Ha ocurrido un error al cargar los Contactos del Servcio";
 
-   public static final String   LOAD_LAST_SETTINGS_FILE = "Ha ocurrido un error la obtener el archivo de Ultima Configuración";
+   public static final String LOAD_LAST_SETTINGS_FILE = "Ha ocurrido un error la obtener el archivo de Ultima Configuración";
+
+   public static final String CREATE_CLIENT_FILE_ERROR = "Ha ocurrido un error al crear el registro del Archivo del Cliente";
+
+   public static final String LOAD_COUNTRY_ERROR = "Ha ocurrido un error al cargar los Paises";
+
+   public static final String LOAD_SERVICE_FILE_ERROR = "Ha ocurrido un error al cargar las Ingenerias de Detalle del Servicio";
+
+   public static final String DOWNLOAD_FILE_ERROR = "Ha ocurrido un error al descargar la Ingenieria de Detalle del Servcio";
+
+   public static final String VALIDATE_SAP_ERROR = "Ha ocurrido un error al consultar Servicios en San Andres";
 
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
@@ -23,12 +24,17 @@ import org.springframework.stereotype.Controller;
 
 import com.claro.cv.entity.CityEntity;
 import com.claro.cv.entity.ClientContactEntity;
+import com.claro.cv.entity.ClientFileEntity;
 import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
+import com.claro.cv.entity.CountryEntity;
 import com.claro.cv.entity.DepartamentEntity;
 import com.claro.cv.entity.LastSettingFileEntity;
 import com.claro.cv.entity.MultivalueEntity;
 import com.claro.cv.entity.ServiceContactEntity;
+import com.claro.cv.entity.ServiceFileEntity;
+import com.claro.cv.enums.TypeFileEnum;
+import com.claro.cv.enums.TypeLocationEnum;
 import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.CreateService;
 import com.claro.cv.util.Constant;
@@ -65,9 +71,13 @@ public class CreateController implements Serializable {
 
    private ArrayList<MultivalueEntity> listSchedule;
 
+   private ArrayList<CountryEntity> listCountry;
+
    private ArrayList<DepartamentEntity> listDepartamento;
 
    private ArrayList<CityEntity> listCiudad;
+
+   private String idCountry;
 
    private String idDepartament;
 
@@ -78,6 +88,20 @@ public class CreateController implements Serializable {
    private boolean enlaceBackUp;
 
    private UploadedFile ultimaConfiguracionFile;
+
+   private ArrayList<UploadedFile> listDetailEngineeringFile;
+
+   private ArrayList<UploadedFile> listDetailEngineeringFileService;
+
+   private ArrayList<String> listTypeLocaltion;
+
+   private String nameUploadFile;
+
+   private String selectTypeLocaltion;
+
+   private boolean international;
+
+   private boolean diferentProvider;
 
    @Autowired
    private CreateService createService;
@@ -95,10 +119,15 @@ public class CreateController implements Serializable {
       clientService.setServiceContacts(new ArrayList<ServiceContactEntity>());
       listClientService = new ArrayList<ClientServiceEntity>();
       serviceContact = new ServiceContactEntity();
+      listDetailEngineeringFile = new ArrayList<UploadedFile>();
+      listDetailEngineeringFileService = new ArrayList<UploadedFile>();
+      nameUploadFile = "";
 
       loadMultiValues();
+      loadCountries();
       loadDepartaments();
       loadCities();
+      loadTypeLocation();
    }
 
    private void loadMultiValues() {
@@ -112,6 +141,16 @@ public class CreateController implements Serializable {
          LOGGER.error("Ha ocurrido un error al cargar los Tipos de Contacto", e);
          Util.addMessageFatal("Ha ocurrido un error al cargar los Tipos de Contacto");
       }
+   }
+
+   private void loadCountries() {
+      try {
+         listCountry = createService.loadCountries();
+      } catch (Exception e) {
+         LOGGER.error(Messages.LOAD_COUNTRY_ERROR, e);
+         Util.addMessageFatal(Messages.LOAD_COUNTRY_ERROR);
+      }
+
    }
 
    private void loadDepartaments() {
@@ -133,6 +172,16 @@ public class CreateController implements Serializable {
       }
    }
 
+   private void loadTypeLocation() {
+      listTypeLocaltion = new ArrayList<String>();
+      listTypeLocaltion.add(TypeLocationEnum.NATIONAL.getValue());
+      listTypeLocaltion.add(TypeLocationEnum.INTERNATIONAL.getValue());
+
+      selectTypeLocaltion = TypeLocationEnum.NATIONAL.getValue();
+      international = false;
+      diferentProvider = false;
+   }
+
    public void loadCitiesByDepartament() {
       try {
          listCiudad = createService.loadCitiesByDepartament(idDepartament);
@@ -140,6 +189,27 @@ public class CreateController implements Serializable {
          LOGGER.error(Messages.LOAD_CITY_ERROR, e);
          Util.addMessageFatal(Messages.LOAD_CITY_ERROR);
       }
+   }
+
+   public void changeTypeLocation() {
+      if (TypeLocationEnum.INTERNATIONAL.getValue().equals(selectTypeLocaltion)) {
+         international = true;
+      } else {
+         international = false;
+      }
+      idDepartament = "";
+      idCity = "";
+      idCountry = "";
+   }
+
+   public void changeProvide() {
+      clientService.setCodeServiceLastMile(null);
+      if (clientService.getIdProviderLastMile() == null
+         || clientService.getIdProviderLastMile().length() == 0) {
+         diferentProvider = false;
+         return;
+      }
+      diferentProvider = true;
    }
 
    public void addContact() {
@@ -186,26 +256,57 @@ public class CreateController implements Serializable {
       if (validateAddService()) {
          if (ultimaConfiguracionFile != null && ultimaConfiguracionFile.getFileName() != null) {
             SecureRandom random = new SecureRandom();
-            String fileName = clientService.getAlias().toUpperCase() + "-"
+            String fileName = Constant.UM + clientService.getAlias().toUpperCase() + "-"
                + (new BigInteger(40, random)).toString(30).toUpperCase();
-            String URL = createFileLastSettings(fileName);
+            String URL = createFile(fileName, TypeFileEnum.SETTINGS.getValue(), ultimaConfiguracionFile);
             clientService.setLastSettingFile(setLastSettingFile(URL, fileName));
+            clientService.setServiceFiles(addServiceFiles());
          }
          addCityAndDepartamentToClientService();
+         addCountryClientService();
          String mainPoint = puntoPrincipal == true ? "S" : "N";
          clientService.setMainPoint(mainPoint);
          String backup = enlaceBackUp == true ? "S" : "N";
          clientService.setBackup(backup);
+         // TODO
+         clientService.setState("A");
          listClientService.add(clientService);
          clientService = new ClientServiceEntity();
          clientService.setServiceContacts(new ArrayList<ServiceContactEntity>());
          idCity = "";
          idDepartament = "";
+         idCountry = "";
          puntoPrincipal = false;
          enlaceBackUp = false;
          ultimaConfiguracionFile = null;
+         nameUploadFile = "";
+
       }
       RequestContext.getCurrentInstance().execute("loadMapOrigin()");
+   }
+
+   private ArrayList<ServiceFileEntity> addServiceFiles() {
+      ArrayList<ServiceFileEntity> listServiceFile = new ArrayList<ServiceFileEntity>();
+      for (UploadedFile uploadFile : listDetailEngineeringFileService) {
+         ServiceFileEntity serviceFile;
+         if (uploadFile != null && uploadFile.getFileName() != null) {
+            serviceFile = new ServiceFileEntity();
+
+            SecureRandom random = new SecureRandom();
+            String fileName = Constant.IN + clientService.getAlias().toUpperCase() + "-"
+               + (new BigInteger(40, random)).toString(30).toUpperCase();
+            String URL = createFile(fileName, TypeFileEnum.ENGINEERING_SERVICE.getValue(), uploadFile);
+            serviceFile.setNameFile(fileName);
+            serviceFile.setUrl(URL);
+            serviceFile.setClientService(clientService);
+
+            listServiceFile.add(serviceFile);
+         }
+      }
+      listDetailEngineeringFileService = new ArrayList<UploadedFile>();
+
+      return listServiceFile;
+
    }
 
    private LastSettingFileEntity setLastSettingFile(String URL, String fileName) {
@@ -248,8 +349,26 @@ public class CreateController implements Serializable {
 
    }
 
+   private void addCountryClientService() {
+      try {
+         if (idCountry == null || idCountry.length() == 0) {
+            clientService.setCountry(null);
+            return;
+         }
+         CountryEntity country = createService.findCountryById(idCountry);
+         clientService.setCountry(country);
+      } catch (Exception e) {
+         LOGGER.error(Messages.LOAD_CITY_ERROR, e);
+      }
+   }
+
    private void addCityAndDepartamentToClientService() {
       try {
+         if (idCity == null || idCity.length() == 0) {
+            clientService.setCity(null);
+            clientService.setDepartament(null);
+            return;
+         }
          CityEntity city = createService.findCityById(idCity);
          clientService.setCity(city);
          clientService.setDepartament(city.getDepartament());
@@ -265,7 +384,30 @@ public class CreateController implements Serializable {
    public void uploadFileE(FileUploadEvent event) {
       try {
          ultimaConfiguracionFile = event.getFile();
+         nameUploadFile = ultimaConfiguracionFile.getFileName();
 
+         Util.addMessageFatal(Messages.FILE_UPLOAD_SUCESS);
+      } catch (Exception e) {
+         Util.addMessageFatal(Messages.USER_FILE_ERROR);
+         LOGGER.error(Messages.USER_FILE_ERROR, e);
+      }
+   }
+
+   public void uploadFileIngenieria(FileUploadEvent event) {
+      try {
+         UploadedFile detailEngineeringFile = event.getFile();
+         listDetailEngineeringFile.add(detailEngineeringFile);
+         Util.addMessageFatal(Messages.FILE_UPLOAD_SUCESS);
+      } catch (Exception e) {
+         Util.addMessageFatal(Messages.USER_FILE_ERROR);
+         LOGGER.error(Messages.USER_FILE_ERROR, e);
+      }
+   }
+
+   public void uploadFileIngenieriaService(FileUploadEvent event) {
+      try {
+         UploadedFile detailEngineeringFile = event.getFile();
+         listDetailEngineeringFileService.add(detailEngineeringFile);
          Util.addMessageFatal(Messages.FILE_UPLOAD_SUCESS);
       } catch (Exception e) {
          Util.addMessageFatal(Messages.USER_FILE_ERROR);
@@ -275,17 +417,11 @@ public class CreateController implements Serializable {
 
    public String save() {
       try {
-         for (ClientServiceEntity service : listClientService) {
-            service.setClientProfile(clientProfile);
-            if (service.getServiceContacts() != null) {
-               for (ServiceContactEntity serviceContact : service.getServiceContacts()) {
-                  serviceContact.setClientService(service);
-               }
-            }
-         }
+         setUpServiceContact();
          clientProfile.setClientServices(listClientService);
-         printClientProfile();
          createService.save(clientProfile);
+         printClientProfile();
+         saveDetailEngineeringFiles();
          Util.addMessageInfoKeep(Messages.SAVE_PROFILE_SUCESSFULL);
          clientProfile = new ClientProfileEntity();
          listClientService = new ArrayList<ClientServiceEntity>();
@@ -297,10 +433,60 @@ public class CreateController implements Serializable {
       }
    }
 
-   private String createFileLastSettings(String fileName) {
+   private void setUpServiceContact() {
+      for (ClientServiceEntity service : listClientService) {
+         service.setClientProfile(clientProfile);
+         if (service.getServiceContacts() != null) {
+            for (ServiceContactEntity serviceContact : service.getServiceContacts()) {
+               serviceContact.setClientService(service);
+            }
+         }
+      }
+
+   }
+
+   private void saveDetailEngineeringFiles() {
+      for (UploadedFile uploadFile : listDetailEngineeringFile) {
+         ClientFileEntity clientFile;
+         if (uploadFile != null && uploadFile.getFileName() != null) {
+            clientFile = new ClientFileEntity();
+            clientFile.setClientProfile(clientProfile);
+
+            SecureRandom random = new SecureRandom();
+            String fileName = Constant.IN + clientProfile.getNameClient().toUpperCase() + "-"
+               + (new BigInteger(40, random)).toString(30).toUpperCase();
+            String URL = createFile(fileName, TypeFileEnum.ENGINEERING.getValue(), uploadFile);
+            clientFile.setNameFile(fileName);
+            clientFile.setUrl(URL);
+            saveClientFile(clientFile);
+         }
+      }
+      listDetailEngineeringFile = new ArrayList<UploadedFile>();
+
+   }
+
+   private void saveClientFile(ClientFileEntity clientFile) {
       try {
-         String fileNameFinal = Constant.PATH_UPLOAD_FILE + fileName + ".txt";
-         InputStream in = ultimaConfiguracionFile.getInputstream();
+         createService.saveClientFile(clientFile);
+      } catch (Exception e) {
+         LOGGER.error(Messages.CREATE_CLIENT_FILE_ERROR, e);
+      }
+
+   }
+
+   private String createFile(String fileName, String type, UploadedFile upload) {
+      try {
+         String path = null;
+         if (TypeFileEnum.SETTINGS.getValue().equals(type)) {
+            path = Constant.PATH_UPLOAD_FILE_SETTINGS;
+         } else if (TypeFileEnum.ENGINEERING.getValue().equals(type)) {
+            path = Constant.PATH_UPLOAD_FILE_ENGINEERING;
+         } else if (TypeFileEnum.ENGINEERING_SERVICE.getValue().equals(type)) {
+            path = Constant.PATH_UPLOAD_FILE_ENGINEERING_SERVICE;
+         }
+         String extension = FilenameUtils.getExtension(upload.getFileName());
+         String fileNameFinal = path + fileName + "." + extension;
+         InputStream in = upload.getInputstream();
 
          File fileTo = new File(fileNameFinal);
          OutputStream out = new FileOutputStream(fileTo);
@@ -316,7 +502,7 @@ public class CreateController implements Serializable {
          return fileNameFinal;
 
       } catch (IOException e) {
-         e.printStackTrace();
+         LOGGER.error(Messages.LOAD_LAST_SETTINGS_FILE, e);
          return null;
       }
 
@@ -363,6 +549,12 @@ public class CreateController implements Serializable {
                   inf("NAME CONTACT SERVICE: " + contact.getPhone());
                   inf("NAME CONTACT SERVICE: " + contact.getMobil());
                   inf("NAME CONTACT SERVICE: " + contact.getSchedule());
+               }
+            }
+            if (service.getServiceFiles() != null && service.getServiceFiles().size() > 0) {
+               for (ServiceFileEntity serviceFile : service.getServiceFiles()) {
+                  inf("NAME FILE SERVICE FILE" + serviceFile.getNameFile());
+                  inf("URL FILE SERVICE FILE" + serviceFile.getUrl());
                }
             }
          }
@@ -519,6 +711,78 @@ public class CreateController implements Serializable {
 
    public void setUltimaConfiguracionFile(UploadedFile ultimaConfiguracionFile) {
       this.ultimaConfiguracionFile = ultimaConfiguracionFile;
+   }
+
+   public ArrayList<UploadedFile> getListDetailEngineeringFile() {
+      return listDetailEngineeringFile;
+   }
+
+   public void setListDetailEngineeringFile(ArrayList<UploadedFile> listDetailEngineeringFile) {
+      this.listDetailEngineeringFile = listDetailEngineeringFile;
+   }
+
+   public String getNameUploadFile() {
+      return nameUploadFile;
+   }
+
+   public void setNameUploadFile(String nameUploadFile) {
+      this.nameUploadFile = nameUploadFile;
+   }
+
+   public ArrayList<UploadedFile> getListDetailEngineeringFileService() {
+      return listDetailEngineeringFileService;
+   }
+
+   public void setListDetailEngineeringFileService(ArrayList<UploadedFile> listDetailEngineeringFileService) {
+      this.listDetailEngineeringFileService = listDetailEngineeringFileService;
+   }
+
+   public ArrayList<String> getListTypeLocaltion() {
+      return listTypeLocaltion;
+   }
+
+   public void setListTypeLocaltion(ArrayList<String> listTypeLocaltion) {
+      this.listTypeLocaltion = listTypeLocaltion;
+   }
+
+   public String getSelectTypeLocaltion() {
+      return selectTypeLocaltion;
+   }
+
+   public void setSelectTypeLocaltion(String selectTypeLocaltion) {
+      this.selectTypeLocaltion = selectTypeLocaltion;
+   }
+
+   public boolean isInternational() {
+      return international;
+   }
+
+   public void setInternational(boolean international) {
+      this.international = international;
+   }
+
+   public String getIdCountry() {
+      return idCountry;
+   }
+
+   public void setIdCountry(String idCountry) {
+      this.idCountry = idCountry;
+   }
+
+   public ArrayList<CountryEntity> getListCountry() {
+      return listCountry;
+   }
+
+   public void setListCountry(ArrayList<CountryEntity> listCountry) {
+      this.listCountry = listCountry;
+   }
+
+   public boolean isDiferentProvider() {
+      return diferentProvider;
+   }
+
+   public void setDiferentProvider(boolean diferentProvider) {
+      this.diferentProvider = diferentProvider;
    }
 
 }

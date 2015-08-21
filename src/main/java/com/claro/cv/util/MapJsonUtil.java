@@ -31,8 +31,8 @@ public class MapJsonUtil {
       for (MapDataDTO mapData : listMapData) {
          c = new JSONObject();
          cs = new JSONArray();
-         cs.add(getRowString(mapData.getCodeDepartament()));
-         cs.add(getRowString(mapData.getNameDepartament()));
+         cs.add(getRowString(mapData.getCode()));
+         cs.add(getRowString(mapData.getName()));
          cs.add(getRowNumber(mapData.getNumberServices()));
          c.put("c", cs);
          rows.add(c);

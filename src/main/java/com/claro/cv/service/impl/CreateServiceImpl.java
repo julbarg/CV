@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.claro.cv.dao.CityDAO;
+import com.claro.cv.dao.ClientFileDAO;
 import com.claro.cv.dao.ClientProfileDAO;
+import com.claro.cv.dao.CountryDAO;
 import com.claro.cv.dao.DepartamentDAO;
 import com.claro.cv.dao.LastSettingFileDAO;
 import com.claro.cv.dao.MultivalueDAO;
 import com.claro.cv.dao.TypeMultivalueDAO;
 import com.claro.cv.entity.CityEntity;
+import com.claro.cv.entity.ClientFileEntity;
 import com.claro.cv.entity.ClientProfileEntity;
+import com.claro.cv.entity.CountryEntity;
 import com.claro.cv.entity.DepartamentEntity;
 import com.claro.cv.entity.LastSettingFileEntity;
 import com.claro.cv.entity.MultivalueEntity;
@@ -47,6 +51,12 @@ public class CreateServiceImpl implements CreateService, Serializable {
 
    @Autowired
    private LastSettingFileDAO lastSettingFileDAO;
+
+   @Autowired
+   private ClientFileDAO clientFileDAO;
+
+   @Autowired
+   private CountryDAO countryDAO;
 
    @Override
    public ArrayList<MultivalueEntity> loadMultiValue(TypeMultivalueEnum typeMultivalueP) throws Exception {
@@ -87,6 +97,21 @@ public class CreateServiceImpl implements CreateService, Serializable {
    public LastSettingFileEntity saveLastSettingFile(LastSettingFileEntity lastSettingFile) throws Exception {
       return lastSettingFileDAO.update(lastSettingFile);
 
+   }
+
+   @Override
+   public ClientFileEntity saveClientFile(ClientFileEntity clientFile) throws Exception {
+      return clientFileDAO.update(clientFile);
+   }
+
+   @Override
+   public ArrayList<CountryEntity> loadCountries() throws Exception {
+      return countryDAO.findAll();
+   }
+
+   @Override
+   public CountryEntity findCountryById(String idCountry) throws Exception {
+      return countryDAO.findCountryById(idCountry);
    }
 
 }
