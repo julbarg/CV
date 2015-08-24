@@ -1,6 +1,7 @@
 package com.claro.cv.service.impl;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.claro.cv.dao.TypeMultivalueDAO;
 import com.claro.cv.entity.CityEntity;
 import com.claro.cv.entity.ClientFileEntity;
 import com.claro.cv.entity.ClientProfileEntity;
+import com.claro.cv.entity.ClientServiceEntity;
 import com.claro.cv.entity.CountryEntity;
 import com.claro.cv.entity.DepartamentEntity;
 import com.claro.cv.entity.LastSettingFileEntity;
@@ -112,6 +114,12 @@ public class CreateServiceImpl implements CreateService, Serializable {
    @Override
    public CountryEntity findCountryById(String idCountry) throws Exception {
       return countryDAO.findCountryById(idCountry);
+   }
+
+   @Override
+   public ClientProfileEntity loadProfile(BigInteger idClient) throws Exception {
+      return clientProfileDAO.findByIDClient(idClient);
+
    }
 
 }

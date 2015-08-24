@@ -1,5 +1,6 @@
 package com.claro.cv.service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
@@ -36,5 +37,7 @@ public interface CreateService {
    public ArrayList<CountryEntity> loadCountries() throws Exception;
 
    public CountryEntity findCountryById(String idCountry) throws Exception;
+
+   public ClientProfileEntity loadProfile(BigInteger idClient) throws Exception;
 
 }

@@ -87,7 +87,7 @@
 											itemValue="#{typeContact.code}" />
 									</p:selectOneMenu>
 								</h:panelGrid>
-								<p:commandButton value="Add" styleClass="button_post_add" style="margin-bottom: 10px;"
+								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;"
 									process="@this panelContacts" actionListener="#{create.addContact}"
 									update="form_step_one:panelContacts form_step_one:growl_step_one" />
 								<p:dataTable styleClass="data_table_contacts" value="#{create.clientProfile.clientContacts}"

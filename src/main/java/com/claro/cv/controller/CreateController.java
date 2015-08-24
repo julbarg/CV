@@ -224,12 +224,15 @@ public class CreateController implements Serializable {
    }
 
    private boolean validateContact() {
+      if (clientContact == null)
+         return false;
       boolean validateName = clientContact.getNameContact() != null
          && clientContact.getNameContact().length() > 0;
       boolean validatePhone = clientContact.getPhone() != null && clientContact.getPhone().length() > 0;
       boolean validateMobil = clientContact.getMobil() != null && clientContact.getMobil().length() > 0;
+      boolean validateTypeContact = clientContact.getTypeContact().length() > 0;
 
-      return validateName && (validatePhone || validateMobil) && clientContact.getTypeContact().length() > 0;
+      return validateName && (validatePhone || validateMobil) && validateTypeContact;
 
    }
 
@@ -271,18 +274,23 @@ public class CreateController implements Serializable {
          // TODO
          clientService.setState("A");
          listClientService.add(clientService);
-         clientService = new ClientServiceEntity();
-         clientService.setServiceContacts(new ArrayList<ServiceContactEntity>());
-         idCity = "";
-         idDepartament = "";
-         idCountry = "";
-         puntoPrincipal = false;
-         enlaceBackUp = false;
-         ultimaConfiguracionFile = null;
-         nameUploadFile = "";
+         initializeService();
 
       }
       RequestContext.getCurrentInstance().execute("loadMapOrigin()");
+   }
+
+   private void initializeService() {
+      clientService = new ClientServiceEntity();
+      clientService.setServiceContacts(new ArrayList<ServiceContactEntity>());
+      idCity = "";
+      idDepartament = "";
+      idCountry = "";
+      puntoPrincipal = false;
+      enlaceBackUp = false;
+      ultimaConfiguracionFile = null;
+      nameUploadFile = "";
+
    }
 
    private ArrayList<ServiceFileEntity> addServiceFiles() {
@@ -326,14 +334,36 @@ public class CreateController implements Serializable {
 
    private boolean validateAddService() {
       boolean validateMap = clientService.getLat() != null && clientService.getLat().length() > 0;
+      boolean validateLocation;
+      if (international) {
+         validateLocation = idCountry != null && idCountry.length() > 0;
+      } else {
+         validateLocation = idDepartament != null && idDepartament.length() > 0 && idCity != null
+            && idCity.length() > 0;
+      }
       boolean validateDirection = clientService.getDirection() != null
          && clientService.getDirection().length() > 0;
       boolean validateAlias = clientService.getAlias() != null && clientService.getAlias().length() > 0;
+      boolean validateTypeService = clientService.getTypeService() != null
+         && clientService.getTypeService().length() > 0;
       boolean validateCodeService = clientService.getCodeService() != null
          && clientService.getCodeService().length() > 0;
+      boolean validateLasSettingsFile = nameUploadFile != null && nameUploadFile.length() > 0;
+      boolean validateCodeServiceUM = true;
+      if (diferentProvider) {
+         validateCodeServiceUM = clientService.getCodeServiceLastMile() != null
+            && clientService.getCodeServiceLastMile().length() > 0;
+      }
+      boolean validateDescription = clientService.getDescription() != null
+         && clientService.getDescription().length() > 0;
+      boolean validateContactsService = clientService.getServiceContacts() != null
+         && clientService.getServiceContacts().size() > 0;
 
       if (!validateMap) {
          Util.addMessageError(Messages.VALIDATE_MAP);
+      }
+      if (!validateLocation) {
+         Util.addMessageError(Messages.VALIDATE_LOCATION);
       }
       if (!validateDirection) {
          Util.addMessageError(Messages.VALIDATE_DIRECTION);
@@ -341,11 +371,28 @@ public class CreateController implements Serializable {
       if (!validateAlias) {
          Util.addMessageError(Messages.VALIDATE_ALIAS);
       }
+      if (!validateTypeService) {
+         Util.addMessageError(Messages.VALIDATE_TYPE_SERVICE);
+      }
       if (!validateCodeService) {
          Util.addMessageError(Messages.VALIDATE_CODE_SERVICE);
       }
+      if (!validateLasSettingsFile) {
+         Util.addMessageError(Messages.VALIDATE_LAST_SETTINGS_FILE);
+      }
+      if (!validateCodeServiceUM) {
+         Util.addMessageError(Messages.VALIDATE_CODE_SERVICE_UM);
+      }
+      if (!validateDescription) {
+         Util.addMessageError(Messages.VALIDATE_DESCRIPTION);
+      }
+      if (!validateContactsService) {
+         Util.addMessageError(Messages.VALIDATE_CONTACTS_SERVICE);
+      }
 
-      return validateMap && validateDirection && validateAlias && validateCodeService;
+      return validateMap && validateLocation && validateDirection && validateAlias && validateTypeService
+         && validateCodeService && validateLasSettingsFile && validateCodeServiceUM && validateDescription
+         && validateContactsService;
 
    }
 
@@ -378,7 +425,28 @@ public class CreateController implements Serializable {
    }
 
    public void nextStep() {
-      RequestContext.getCurrentInstance().execute("next()");
+      if (!validateUniqueProfile()) {
+         Util.addMessageError(Messages.VALIDATE_PROFILE_UNIQUE);
+         return;
+      }
+      if (clientProfile.getClientContacts().size() == 0) {
+         Util.addMessageError(Messages.VALIDATE_PROFILE_CONTACTS);
+      } else {
+         RequestContext.getCurrentInstance().execute("next()");
+      }
+
+   }
+
+   private boolean validateUniqueProfile() {
+      try {
+         ClientProfileEntity repeatedClient = createService.loadProfile(clientProfile.getIdClient());
+         if (repeatedClient != null && repeatedClient.getNameClient().length() > 0) {
+            return false;
+         }
+      } catch (Exception e) {
+      }
+      return true;
+
    }
 
    public void uploadFileE(FileUploadEvent event) {
@@ -417,12 +485,14 @@ public class CreateController implements Serializable {
 
    public String save() {
       try {
+         if (!validateSave())
+            return null;
          setUpServiceContact();
          clientProfile.setClientServices(listClientService);
          createService.save(clientProfile);
          printClientProfile();
          saveDetailEngineeringFiles();
-         Util.addMessageInfoKeep(Messages.SAVE_PROFILE_SUCESSFULL);
+         Util.addMessageInfoKeep(Messages.SAVE_PROFILE_SUCESSFULL + clientProfile.getNameClient());
          clientProfile = new ClientProfileEntity();
          listClientService = new ArrayList<ClientServiceEntity>();
          return Util.getRedirect(Constant.CREATE_PAGE);
@@ -431,6 +501,14 @@ public class CreateController implements Serializable {
          Util.addMessageFatal(Messages.SAVE_PROFILE_CLIENT_ERROR);
          return null;
       }
+   }
+
+   private boolean validateSave() {
+      boolean validateService = listClientService.size() > 0;
+      if (!validateService) {
+         Util.addMessageError(Messages.VALIDATE_SERVICES);
+      }
+      return validateService;
    }
 
    private void setUpServiceContact() {

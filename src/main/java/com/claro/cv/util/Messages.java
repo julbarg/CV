@@ -12,7 +12,7 @@ public class Messages {
 
    public static final String SAVE_PROFILE_CLIENT_ERROR = "Ha ocurrido un error al guardar el Perfil del Cliente.";
 
-   public static final String SAVE_PROFILE_SUCESSFULL = "Se ha guardado el Perfil del Cliente correctamente";
+   public static final String SAVE_PROFILE_SUCESSFULL = "Se ha guardado el Perfil del Cliente correctamente: ";
 
    public static final String LOAD_DEPARTAMENT_ERROR = "Ha ocurrido un error cargando los Departamentos";
 
@@ -61,5 +61,23 @@ public class Messages {
    public static final String DOWNLOAD_FILE_ERROR = "Ha ocurrido un error al descargar la Ingenieria de Detalle del Servcio";
 
    public static final String VALIDATE_SAP_ERROR = "Ha ocurrido un error al consultar Servicios en San Andres";
+
+   public static final String VALIDATE_PROFILE_CONTACTS = "Debe agregar por lo menos un Contacto";
+
+   public static final String VALIDATE_LOCATION = "Debe seleccionar el lugar de locación del Servicio. (Departamento, Ciudad o Pais)";
+
+   public static final String VALIDATE_TYPE_SERVICE = "Debe seleccionar un Tipo de Servicio";
+
+   public static final String VALIDATE_LAST_SETTINGS_FILE = "Debe adicionar el Archivo de Ultima Configuración";
+
+   public static final String VALIDATE_CODE_SERVICE_UM = "Debe adicionar el Codigo de Servicio de Ultima Milla";
+
+   public static final String VALIDATE_DESCRIPTION = "El campo Descripción es requerido";
+
+   public static final String VALIDATE_CONTACTS_SERVICE = "Debe seleccionar por los menos un Contacto de Servicio";
+
+   public static final String VALIDATE_SERVICES = "Debe agregar por lo menos un Servicio";
+
+   public static final String VALIDATE_PROFILE_UNIQUE = "Este ID Cliente ya ha sido registrado";
 
 }
