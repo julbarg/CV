@@ -13,6 +13,7 @@ import com.claro.cv.entity.DepartamentEntity;
 import com.claro.cv.entity.MultivalueEntity;
 import com.claro.cv.entity.ServiceContactEntity;
 import com.claro.cv.entity.ServiceFileEntity;
+import com.claro.cv.enums.TypeMultivalueEnum;
 
 
 @Service
@@ -41,5 +42,7 @@ public interface SearchService {
    public ArrayList<ServiceFileEntity> loadServiceFiles(ClientServiceEntity data) throws Exception;
 
    public ArrayList<MapDataDTO> loadMapInt(ClientProfileEntity clientProfile) throws Exception;
+
+   public String getNameFromMultivalue(TypeMultivalueEnum proveedorUltimaMilla, String idProviderLastMile) throws Exception;
 
 }

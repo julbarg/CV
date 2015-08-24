@@ -92,6 +92,16 @@
 										<h:outputLabel styleClass="title_lable" value="Descripción " />
 										<h:outputLabel value="#{search.markerSelect.data.description}" />
 
+										<h:outputLabel styleClass="title_lable" value="Proveedor de UM "
+											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+										<h:outputLabel value="#{search.markerSelect.data.idProviderLastMile}"
+											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+
+										<h:outputLabel styleClass="title_lable" value="Codigo de Servicio UM "
+											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+										<h:outputLabel value="#{search.markerSelect.data.codeServiceLastMile}"
+											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+
 									</h:panelGrid>
 								</p:gmapInfoWindow>
 							</p:gmap>

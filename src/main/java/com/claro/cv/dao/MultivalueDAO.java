@@ -11,4 +11,7 @@ public interface MultivalueDAO {
    public ArrayList<MultivalueEntity> findByTypeMultivalue(TypeMultivalueEntity typeMultivalue)
       throws Exception;
 
+   public MultivalueEntity findByTypeMultivalueAndValue(TypeMultivalueEntity typeMultivalue, String value)
+      throws Exception;
+
 }

@@ -134,4 +134,13 @@ public class SearchServiceImpl implements SearchService, Serializable {
       return serviceFileDAO.findByClientService(clientService);
    }
 
+   @Override
+   public String getNameFromMultivalue(TypeMultivalueEnum proveedorUltimaMilla, String idProviderLastMile)
+      throws Exception {
+      TypeMultivalueEntity typeMultivalue = typeMultivalueDAO.findByName(proveedorUltimaMilla.getValue());
+      MultivalueEntity multivalue = multivalueDAO.findByTypeMultivalueAndValue(typeMultivalue,
+         idProviderLastMile);
+      return multivalue.getName();
+   }
+
 }

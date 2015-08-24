@@ -31,4 +31,17 @@ public class MultivalueDAOImpl extends TemplateDAO<MultivalueEntity> implements 
       return results;
    }
 
+   @Override
+   public MultivalueEntity findByTypeMultivalueAndValue(TypeMultivalueEntity typeMultivalue, String code)
+      throws Exception {
+      ArrayList<MultivalueEntity> results = new ArrayList<MultivalueEntity>();
+      TypedQuery<MultivalueEntity> query = entityManager.createNamedQuery("MultivalueEntity.findByValue",
+         MultivalueEntity.class);
+      query.setParameter("typeMultivalue", typeMultivalue);
+      query.setParameter("code", code);
+      results = (ArrayList<MultivalueEntity>) query.getResultList();
+
+      return results.get(0);
+   }
+
 }

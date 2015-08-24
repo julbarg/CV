@@ -13,7 +13,8 @@ import javax.persistence.*;
 @Table(name="multivalue")
 @NamedQueries({
    @NamedQuery(name = "MultivalueEntity.findAll", query = "SELECT m FROM MultivalueEntity m"),
-   @NamedQuery(name = "MultivalueEntity.findByTypeMultivalue", query = "SELECT m FROM MultivalueEntity m WHERE m.typeMultivalue=:typeMultivalue ORDER BY m.code")
+   @NamedQuery(name = "MultivalueEntity.findByTypeMultivalue", query = "SELECT m FROM MultivalueEntity m WHERE m.typeMultivalue=:typeMultivalue ORDER BY m.code"),
+   @NamedQuery(name = "MultivalueEntity.findByValue", query = "SELECT m FROM MultivalueEntity m WHERE m.typeMultivalue=:typeMultivalue AND m.code=:code")
 })
 public class MultivalueEntity implements Serializable {
 	private static final long serialVersionUID = 1L;

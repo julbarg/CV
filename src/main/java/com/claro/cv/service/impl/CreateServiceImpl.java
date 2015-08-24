@@ -18,7 +18,6 @@ import com.claro.cv.dao.TypeMultivalueDAO;
 import com.claro.cv.entity.CityEntity;
 import com.claro.cv.entity.ClientFileEntity;
 import com.claro.cv.entity.ClientProfileEntity;
-import com.claro.cv.entity.ClientServiceEntity;
 import com.claro.cv.entity.CountryEntity;
 import com.claro.cv.entity.DepartamentEntity;
 import com.claro.cv.entity.LastSettingFileEntity;

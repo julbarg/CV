@@ -223,12 +223,14 @@
 								<h:panelGrid columns="2">
 									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact"
 										value="#{create.serviceContact.nameContact}" />
+									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact"
+										value="#{create.serviceContact.email}" />
 									<p:inputText placeholder="Telefono" styleClass="input_create_contact"
 										value="#{create.serviceContact.phone}" />
 									<p:inputText placeholder="Celular" styleClass="input_create_contact"
 										value="#{create.serviceContact.mobil}" />
-									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact"
-										value="#{create.serviceContact.email}" />
+								</h:panelGrid>
+								<h:panelGrid>
 									<p:selectOneMenu id="horario" styleClass="select_post" label="Horario de Atencion"
 										value="#{create.serviceContact.schedule}">
 										<f:selectItem itemLabel="Selecione Horario de Atencion.." />
@@ -244,14 +246,14 @@
 									<p:column headerText="Nombre">
 										<h:outputText value="#{serviceContact.nameContact}" />
 									</p:column>
+									<p:column headerText="Correo">
+										<h:outputText value="#{serviceContact.email}" />
+									</p:column>
 									<p:column headerText="Telefono">
 										<h:outputText value="#{serviceContact.phone}" />
 									</p:column>
 									<p:column headerText="Celular">
 										<h:outputText value="#{serviceContact.mobil}" />
-									</p:column>
-									<p:column headerText="Correo">
-										<h:outputText value="#{serviceContact.email}" />
 									</p:column>
 									<p:column headerText="Horario de Atencion">
 										<h:outputText value="#{create.getNameSchedule(serviceContact.schedule)}" />

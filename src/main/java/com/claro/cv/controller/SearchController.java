@@ -34,6 +34,7 @@ import com.claro.cv.entity.LastSettingFileEntity;
 import com.claro.cv.entity.MultivalueEntity;
 import com.claro.cv.entity.ServiceContactEntity;
 import com.claro.cv.entity.ServiceFileEntity;
+import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.SearchService;
 import com.claro.cv.util.Constant;
 import com.claro.cv.util.MapJsonUtil;
@@ -262,10 +263,27 @@ public class SearchController implements Serializable {
          service.setMainPoint(Util.getMeansFlag(service.getMainPoint()));
          service.setBackup(Util.getMeansFlag(service.getBackup()));
          service.setTypeService(getTypeService(service));
+         service.setIdProviderLastMile(getNameProviderLastMile(service));
 
          coord = new LatLng(lat, lng);
          marker = new Marker(coord, service.getAlias(), service);
+         if (service.getIdProviderLastMile() != null && service.getIdProviderLastMile().length() > 0) {
+            marker.setIcon("/CV/resources/img/marker-green.png");
+         }
          mapModel.addOverlay(marker);
+      }
+   }
+
+   private String getNameProviderLastMile(ClientServiceEntity service) {
+      try {
+         if (service.getIdProviderLastMile() != null) {
+            return searchService.getNameFromMultivalue(TypeMultivalueEnum.PROVEEDOR_ULTIMA_MILLA,
+               service.getIdProviderLastMile());
+         }
+         return null;
+
+      } catch (Exception e) {
+         return null;
       }
    }
 
@@ -302,6 +320,10 @@ public class SearchController implements Serializable {
 
       }
       return new ArrayList<ServiceFileEntity>();
+   }
+
+   public boolean validateProvider(String idProviderLastMileP) {
+      return idProviderLastMileP != null && idProviderLastMileP.length() > 0;
    }
 
    public StreamedContent downloadLastSettingsFile() {

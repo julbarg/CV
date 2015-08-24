@@ -290,7 +290,7 @@ public class CreateController implements Serializable {
       enlaceBackUp = false;
       ultimaConfiguracionFile = null;
       nameUploadFile = "";
-
+      diferentProvider = false;
    }
 
    private ArrayList<ServiceFileEntity> addServiceFiles() {
@@ -494,6 +494,7 @@ public class CreateController implements Serializable {
          saveDetailEngineeringFiles();
          Util.addMessageInfoKeep(Messages.SAVE_PROFILE_SUCESSFULL + clientProfile.getNameClient());
          clientProfile = new ClientProfileEntity();
+         clientProfile.setClientContacts(new ArrayList<ClientContactEntity>());
          listClientService = new ArrayList<ClientServiceEntity>();
          return Util.getRedirect(Constant.CREATE_PAGE);
       } catch (Exception e) {

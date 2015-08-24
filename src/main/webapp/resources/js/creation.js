@@ -1,6 +1,7 @@
 var waypts = [];
 var markers = [];
 var map;
+var markerManual;
 function initialize() {
    loadMapOrigin();
 }
@@ -35,7 +36,7 @@ function loadMapOrigin() {
 
    google.maps.event.addListener(map, 'rightclick', function(e) {
       deleteMarkers();
-      var markerManual = new google.maps.Marker({
+      markerManual = new google.maps.Marker({
          map : map,
          draggable : true,
          position : e.latLng,
