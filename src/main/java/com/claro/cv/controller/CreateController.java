@@ -108,6 +108,9 @@ public class CreateController implements Serializable {
 
    @PostConstruct
    public void initializate() {
+      if (!Util.validateLogIn()) {
+         return;
+      }
       clientProfile = new ClientProfileEntity();
       clientProfile.setClientContacts(new ArrayList<ClientContactEntity>());
       clientContact = new ClientContactEntity();
@@ -485,6 +488,8 @@ public class CreateController implements Serializable {
 
    public String save() {
       try {
+         if (!Util.validateLogIn())
+            return null;
          if (!validateSave())
             return null;
          setUpServiceContact();

@@ -36,6 +36,8 @@ public class Constant {
 
    public static final String SAN_ANDRES_CODE = "CO-SAP";
 
+   public static final String USER_NAME = "userName";
+
       
 
 }

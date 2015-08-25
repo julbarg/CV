@@ -42,6 +42,7 @@ public class LoginController implements Serializable {
    public String authenticate() {
       try {
          if (loginService.authenticate(user)) {
+            Util.logIn(user);
             return Util.getRedirect(Constant.SEARCH_PAGE);
          }else{
             Util.addMessageFatal(Messages.AUTHENTICATION_NO_VALIDATE);

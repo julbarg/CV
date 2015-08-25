@@ -11,8 +11,8 @@
 	<h:outputScript library="js" name="animation.js" />
 	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
 	<script>
-		
-	</script>
+      
+   </script>
 </h:head>
 <h:body>
 	<p:panel styleClass="panel_header">
@@ -23,8 +23,8 @@
 			<h:form>
 				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
 					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
-					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header" action="#{util.logOut}"
+					ajax="false" immediate="true" />
 			</h:form>
 		</p:panel>
 	</p:panel>
@@ -41,7 +41,7 @@
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup>
+		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_one">
 				<p:panel id="panel_creation_step_one" styleClass="panel_content">
 					<h:panelGrid cellspacing="15">

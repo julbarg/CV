@@ -20,10 +20,12 @@
 				<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
 			</p:panel>
 			<p:panel styleClass="panel_header_info">
-				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
-					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
-					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:form>
+					<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
+						action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+					<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
+						action="#{util.logOut}" ajax="false" immediate="true" />
+				</h:form>
 			</p:panel>
 		</p:panel>
 		<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
@@ -39,7 +41,7 @@
 				</p:menu>
 
 			</p:panel>
-			<h:panelGroup>
+			<h:panelGroup rendered="#{util.validateAuthentication()}">
 				<div id="div_step_two">
 					<h:inputHidden id="jsonURL" value="#{search.jsonURL}" />
 					<p:panel id="panel_creation_step_two" styleClass="panel_content">
@@ -106,7 +108,7 @@
 								</p:gmapInfoWindow>
 							</p:gmap>
 							<p:commandButton value="Regresar" styleClass="button_post" action="#{search.returnSearchDetail}"
-								ajax="false" immediate="true" style="margin-top: 16px !important;" />
+								immediate="true" />
 						</h:panelGrid>
 
 					</p:panel>

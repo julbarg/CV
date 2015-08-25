@@ -99,6 +99,15 @@ public class SearchController implements Serializable {
       clientProfile = new ClientProfileEntity();
       loadTypeServices();
       loadSchedules();
+
+   }
+
+   public boolean validateAuthentication() {
+      if (Util.validateLogIn()) {
+         return true;
+      }
+      Util.addMessageErrorKeepLogOut(Messages.NOT_SESSION);
+      return false;
    }
 
    private void loadTypeServices() {
@@ -119,6 +128,9 @@ public class SearchController implements Serializable {
 
    public String search() {
       try {
+         if (!Util.validateLogIn()) {
+            return null;
+         }
          if (validateParameters()) {
             clientProfile = searchService.search(idCliente, codigoServiicio);
             if (clientProfile != null) {

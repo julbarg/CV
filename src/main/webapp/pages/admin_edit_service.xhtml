@@ -14,8 +14,8 @@
 	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
 	<script>
-		google.maps.event.addDomListener(window, 'load', initialize)
-	</script>
+      google.maps.event.addDomListener(window, 'load', initialize)
+   </script>
 </h:head>
 <h:body>
 	<p:panel styleClass="panel_header">
@@ -26,8 +26,8 @@
 			<h:form>
 				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
 					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
-					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header" action="#{util.logOut}"
+					ajax="false" immediate="true" />
 			</h:form>
 		</p:panel>
 	</p:panel>
@@ -44,7 +44,7 @@
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup>
+		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_two">
 				<p:panel id="panel_creation_step_two" styleClass="panel_content">
 					<h:form id="form_map">
@@ -78,8 +78,7 @@
 								<p:inputText value="Trans 32. No 58C Apt 201" styleClass="input_create_contact" />
 
 								<p:outputLabel value="Tipo de Servicio" />
-								<p:selectOneMenu id="type_service" styleClass="select_post" label="Tipo de Contacto"
-									value="3">
+								<p:selectOneMenu id="type_service" styleClass="select_post" label="Tipo de Contacto" value="3">
 									<f:selectItem itemLabel="Tipo de Servicio" />
 									<f:selectItem itemLabel="Servicio Tipo 1" itemValue="1" />
 									<f:selectItem itemLabel="Servicio Tipo 2" itemValue="2" />
@@ -98,15 +97,13 @@
 								</p:selectOneMenu>
 
 								<p:outputLabel value="Codigo de Servicio de Ultima Milla" />
-								<p:inputText placeholder="Codigo de Servicio de Ultima Milla"
-									styleClass="input_create_contact" />
+								<p:inputText placeholder="Codigo de Servicio de Ultima Milla" styleClass="input_create_contact" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="4">
 								<p:outputLabel for="main_point" value="Punto Principal: " style="margin-right: 8px;" />
 								<p:selectBooleanButton id="main_point" value="" onLabel="Si" offLabel="No" />
-								<p:outputLabel for="main_enlace" value="Enlace BackUp: "
-									style="margin-left: 20px; margin-right: 8px;" />
+								<p:outputLabel for="main_enlace" value="Enlace BackUp: " style="margin-left: 20px; margin-right: 8px;" />
 								<p:selectBooleanButton id="main_enlace" value="" onLabel="Si" offLabel="No" />
 							</h:panelGrid>
 
@@ -141,8 +138,7 @@
 										<f:selectItem itemLabel="Lun-Vie 8.00 pm - 6.00 am" itemValue="3" />
 									</p:selectOneMenu>
 								</h:panelGrid>
-								<p:commandButton value="Add Contact" styleClass="button_post_add"
-									style="margin-bottom: 10px;" />
+								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;" />
 								<p:dataTable styleClass="data_table_contacts_inside">
 									<p:column headerText="Nombre">
 									</p:column>

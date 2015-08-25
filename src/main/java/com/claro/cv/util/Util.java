@@ -1,14 +1,55 @@
 package com.claro.cv.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
+import com.claro.cv.dto.UserDTO;
 import com.claro.cv.entity.MultivalueEntity;
 
 
 public class Util {
+
+   public static HttpSession getSession() {
+      return (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+   }
+
+   public static void logIn(UserDTO userName) {
+      Util.getSession().setAttribute(Constant.USER_NAME, userName.getUserName());
+   }
+
+   public static String getUserName() {
+      try {
+         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
+            .getSession(false);
+         return session.getAttribute(Constant.USER_NAME).toString();
+      } catch (Exception e) {
+         return null;
+      }
+   }
+
+   public static boolean validateLogIn() {
+      try {
+         if (getUserName() == null) {
+            Util.addMessageErrorKeepLogOut(Messages.NOT_SESSION);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/CV/");
+            return false;
+         }
+      } catch (IOException e) {
+      }
+      return true;
+   }
+
+   public static void logOut() {
+      try {
+         Util.getSession().setAttribute(Constant.USER_NAME, null);
+         FacesContext.getCurrentInstance().getExternalContext().redirect("/CV/");
+      } catch (IOException e) {
+      }
+   }
 
    public static String getRedirect(String page) {
       String redirect = page + Constant.XHTML + Constant.REDIRECT;
@@ -46,6 +87,12 @@ public class Util {
 
    public static void addMessageInfoKeep(String infoMsg) {
       FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, infoMsg, null);
+      FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+      FacesContext.getCurrentInstance().addMessage(null, message);
+   }
+
+   public static void addMessageErrorKeepLogOut(String errorMsg) {
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMsg, null);
       FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
       FacesContext.getCurrentInstance().addMessage(null, message);
    }

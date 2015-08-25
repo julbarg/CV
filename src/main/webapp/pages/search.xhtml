@@ -19,8 +19,8 @@
 			<h:form>
 				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
 					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
-					action="index.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header" action="#{util.logOut}"
+					ajax="false" immediate="true" />
 			</h:form>
 		</p:panel>
 	</p:panel>
@@ -37,7 +37,7 @@
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup>
+		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_one">
 				<h:form id="form_step_one">
 					<p:growl id="grow_one" />
@@ -50,7 +50,7 @@
 							<p:inputText placeholder="Codigo de Servicio" styleClass="input_create"
 								value="#{search.codigoServiicio}" label="Codigo de Servicio" />
 
-							<p:commandButton value="Consultar" styleClass="button_post" action="#{search.search}" 
+							<p:commandButton value="Consultar" styleClass="button_post" action="#{search.search}"
 								update="form_step_one" />
 						</h:panelGrid>
 					</p:panel>

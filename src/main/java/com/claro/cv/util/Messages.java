@@ -80,4 +80,6 @@ public class Messages {
 
    public static final String VALIDATE_PROFILE_UNIQUE = "Este ID Cliente ya ha sido registrado";
 
+   public static final String NOT_SESSION = "No se ha iniciado una Sesion";
+
 }
