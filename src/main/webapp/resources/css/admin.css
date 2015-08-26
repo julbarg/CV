@@ -22,6 +22,11 @@
 	font-size: 18px !important;
 }
 
+.label_no_edit {
+	font-size: 18px !important;
+	width: 320px;
+}
+
 .panel_button {
 	text-align: right !important;
 	background: none !important;
@@ -31,4 +36,26 @@
 .panel_button .ui-panel-content.ui-widget-content {
 	padding: 0px;
 	margin: 0px;
+}
+
+.panel_edit_profile {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.title {
+	font-weight: bold;
+}
+
+.title_lable {
+	font-weight: bold !important;
+	font-size: 13px;
+}
+
+.table_info_map td, .table_info_map th {
+	border-bottom: 1px solid #a8a8a8;
+}
+
+.table_info_map_into td, .table_info_map_into th {
+	border-bottom: 0px solid #a8a8a8;
 }

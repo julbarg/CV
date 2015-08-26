@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
+import com.claro.cv.dto.EditSearchDTO;
 import com.claro.cv.dto.MapDataDTO;
 import com.claro.cv.entity.ClientProfileEntity;
 
@@ -105,5 +106,72 @@ public class ClientProfileDAOImpl extends TemplateDAO<ClientProfileEntity> imple
       }
 
       return listMapData;
+   }
+
+   @SuppressWarnings("unchecked")
+   @Override
+   public ArrayList<ClientProfileEntity> findByEditSearch(EditSearchDTO editSearch) throws Exception {
+      String nameClient = editSearch.getNameClient();
+      BigInteger idClient = editSearch.getIdClient();
+      String nitClient = editSearch.getNitClient();
+      String codeService = editSearch.getCodeService();
+      String state = editSearch.getState();
+
+      Query query = entityManager.createQuery(getSQL(editSearch));
+
+      if (nameClient.length() > 0) {
+         query.setParameter("nameClient", getLike(nameClient));
+      }
+      if (idClient != null && idClient.intValue() > 0) {
+         query.setParameter("idClient", idClient);
+      }
+      if (nitClient.length() > 0) {
+         query.setParameter("nitClient", getLike(nitClient));
+      }
+      if (codeService.length() > 0) {
+         query.setParameter("codeService", getLike(codeService));
+      }
+      if (state.length() > 0) {
+         query.setParameter("state", state);
+      }
+
+      ArrayList<ClientProfileEntity> results = (ArrayList<ClientProfileEntity>) query.getResultList();
+
+      return results;
+   }
+
+   private String getSQL(EditSearchDTO editSearch) {
+      StringBuffer sql = new StringBuffer();
+      String nameClient = editSearch.getNameClient();
+      BigInteger idClient = editSearch.getIdClient();
+      String nitClient = editSearch.getNitClient();
+      String codeService = editSearch.getCodeService();
+      String state = editSearch.getState();
+
+      sql.append("SELECT DISTINCT s.clientProfile FROM ClientServiceEntity s ");
+      sql.append("LEFT OUTER JOIN s.clientProfile c ");
+      sql.append("WHERE 1=1 ");
+      if (nameClient.length() > 0) {
+         sql.append("AND c.nameClient LIKE :nameClient ");
+      }
+
+      if (idClient != null && idClient.intValue() > 0) {
+         sql.append("AND c.idClient =:idClient ");
+      }
+      if (nitClient.length() > 0) {
+         sql.append("AND c.nitClient LIKE :nitClient ");
+      }
+      if (codeService.length() > 0) {
+         sql.append("AND s.codeService LIKE :codeService ");
+      }
+      if (state.length() > 0) {
+         sql.append("AND s.state =:state ");
+      }
+
+      return sql.toString();
+   }
+
+   private String getLike(String value) {
+      return "%" + value + "%";
    }
 }

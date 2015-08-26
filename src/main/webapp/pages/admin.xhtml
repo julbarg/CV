@@ -42,43 +42,52 @@
 			</h:form>
 		</p:panel>
 		<h:panelGroup rendered="#{util.validateAuthentication()}">
-			<div id="div_step_one">
-				<p:panel id="panel_creation_step_one" styleClass="panel_content">
-					<h:panelGrid cellspacing="15">
-						<span id="total"></span>
-						<h2>Consultar Cliente - Administrador</h2>
-						<p:inputText placeholder="Nombre del Cliente" styleClass="input_create" />
-						<p:inputText placeholder="ID" styleClass="input_create" />
-						<p:inputText placeholder="NIT" styleClass="input_create" />
-						<p:inputText placeholder="Codigo de Servicio" styleClass="input_create" />
-						<p:selectOneMenu id="state" styleClass="select_post" label="Estado">
-							<f:selectItem itemLabel="Estado" />
-							<f:selectItem itemLabel="Activo" itemValue="1" />
-							<f:selectItem itemLabel="Inactivo" itemValue="2" />
-							<f:selectItem itemLabel="Suspendido" itemValue="3" />
-						</p:selectOneMenu>
+			<h:form id="form_edit">
+				<p:growl id="growl_edit" />
+				<div id="div_step_one">
+					<p:panel id="panel_creation_step_one" styleClass="panel_content">
+						<h:panelGrid cellspacing="15">
+							<span id="total"></span>
+							<h2>Consultar Cliente - Administrador</h2>
+							<p:inputText placeholder="Nombre del Cliente" styleClass="input_create"
+								value="#{edit.editSearch.nameClient}" />
+							<p:inputText placeholder="ID" styleClass="input_create" value="#{edit.editSearch.idClient}" />
+							<p:inputText placeholder="NIT" styleClass="input_create" value="#{edit.editSearch.nitClient}" />
+							<p:inputText placeholder="Codigo de Servicio" styleClass="input_create"
+								value="#{edit.editSearch.codeService}" />
+							<p:selectOneMenu id="state" styleClass="select_post" label="Estado"
+								value="#{edit.editSearch.state}">
+								<f:selectItem itemLabel="Seleccione Estado..." />
+								<f:selectItems value="#{edit.listState}" var="state" itemLabel="#{state.name}"
+									itemValue="#{state.code}" />
+							</p:selectOneMenu>
 
-						<p:commandButton value="Consultar" styleClass="button_post" immediate="true" />
-					</h:panelGrid>
+							<p:commandButton value="Consultar" styleClass="button_post" action="#{edit.search}" update="form_edit" />
+						</h:panelGrid>
 
-					<p:dataTable styleClass="data_table_contacts">
-						<p:column headerText="Nombre del Cliente">
-						</p:column>
-						<p:column headerText="ID">
-						</p:column>
-						<p:column headerText="NIT">
-						</p:column>
-						<p:column headerText="Estado">
-						</p:column>
-						<p:column headerText="Acciones">
-						</p:column>
-					</p:dataTable>
-					<h:form>
-						<p:commandLink value="Editar" action="admin_edit.xhtml?faces-redirect=true" ajax="false" />
-					</h:form>
+						<p:dataTable styleClass="data_table_contacts" value="#{edit.listClientProfileSearch}" var="client">
+							<p:column headerText="Nombre del Cliente">
+								<h:outputLabel value="#{client.nameClient}" />
+							</p:column>
+							<p:column headerText="ID">
+								<h:outputLabel value="#{client.idClient}" />
+							</p:column>
+							<p:column headerText="NIT">
+								<h:outputLabel value="#{client.nitClient}" />
+							</p:column>
+							<p:column headerText="Estado">
+								<h:outputLabel value="#{edit.getNameState(client.state)}" />
+							</p:column>
+							<p:column headerText="Acciones">
+								<p:commandButton value="Editar" title="Editar" action="#{edit.edit}" update=":form_edit">
+									<f:setPropertyActionListener value="#{client.idClient}" target="#{edit.idClientEdit}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
 
-				</p:panel>
-			</div>
+					</p:panel>
+				</div>
+			</h:form>
 		</h:panelGroup>
 	</h:panelGrid>
 

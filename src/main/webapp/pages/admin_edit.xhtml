@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>Hoja de Vida - Maps</title>
 	<h:outputStylesheet library="css" name="style_cv.css" />
@@ -8,13 +9,8 @@
 	<h:outputStylesheet library="css" name="search.css" />
 	<h:outputStylesheet library="css" name="admin.css" />
 	<h:outputScript library="primefaces" name="jquery/jquery.js" />
-	<h:outputScript library="js" name="admin.js" />
-	<h:outputScript library="js" name="animation.js" />
 	<link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css' />
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
-	<script>
-      google.maps.event.addDomListener(window, 'load', initialize)
-   </script>
 </h:head>
 <h:body>
 	<p:panel styleClass="panel_header">
@@ -46,56 +42,154 @@
 		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_two">
 				<p:panel id="panel_creation_step_two" styleClass="panel_content">
-					<h:form id="form_map">
-						<h:panelGrid cellspacing="15">
+					<h:panelGrid cellspacing="15">
+						<h:form id="form_admin_edit">
+							<p:growl id="growl_admin_edit" />
 							<span id="total2"></span>
-							<h2 style="text-align: center;">G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
+							<h2 style="text-align: center;">#{edit.clientEdit.nameClient}</h2>
 							<h:panelGrid columns="4">
 								<p:outputLabel styleClass="label_edit" value="Nombre del Cliente: " />
-								<p:inputText value="G4S CASH SOLUTIONS COLOMBIA LTDA." styleClass="input_edit" />
+								<p:inputText value="#{edit.clientEdit.nameClient}" styleClass="input_edit" readonly="true" />
 								<p:outputLabel styleClass="label_edit" value="ID: " />
-								<p:inputText value="798545t3" styleClass="input_edit" />
+								<p:inputText value="#{edit.clientEdit.idClient}" styleClass="input_edit" readonly="true" />
 								<p:outputLabel styleClass="label_edit" value="NIT: " />
-								<p:inputText value="880809890342-2" styleClass="input_edit" />
-								<p:outputLabel value="Estado: " styleClass=" label_edit" />
-								<p:selectOneMenu styleClass="select_post" value="1">
-									<f:selectItem itemLabel="Estado" />
-									<f:selectItem itemLabel="Activo" itemValue="1" />
-									<f:selectItem itemLabel="Incativo" itemValue="2" />
-									<f:selectItem itemLabel="Pendiente" itemValue="3" />
+								<p:inputText value="#{edit.clientEdit.nitClient}" styleClass="input_edit" readonly="true" />
+								<p:outputLabel styleClass="label_edit" value="Estado: " />
+								<p:selectOneMenu id="state" styleClass="select_post" label="Tipo de Contacto"
+									value="#{edit.clientEdit.state}">
+									<f:selectItem itemLabel="Seleccione Estado..." />
+									<f:selectItems value="#{edit.listState}" var="state" itemLabel="#{state.name}"
+										itemValue="#{state.code}" />
 								</p:selectOneMenu>
 
 							</h:panelGrid>
-							<p:panel styleClass="panel_contactos">
+							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_contactos">
 								<h3>Contactos</h3>
-								<h:panelGrid columns="2">
-									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact" />
-									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact" />
-									<p:inputText placeholder="Telefono" styleClass="input_create_contact" />
-									<p:selectOneMenu id="type_contact" styleClass="select_post" label="Tipo de Contacto">
+								<h:panelGrid columns="2" id="panel_add_contact">
+									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact"
+										value="#{edit.clientContact.nameContact}" />
+									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact"
+										value="#{edit.clientContact.email}" />
+									<p:inputText placeholder="Telefono" styleClass="input_create_contact"
+										value="#{edit.clientContact.phone}" />
+									<p:inputText placeholder="Celular" styleClass="input_create_contact"
+										value="#{edit.clientContact.mobil}" />
+									<p:selectOneMenu id="type_contact" styleClass="select_post" label="Tipo de Contacto"
+										value="#{edit.clientContact.typeContact}">
 										<f:selectItem itemLabel="Tipo de Contacto" />
-										<f:selectItem itemLabel="Escalamiento 1" itemValue="1" />
-										<f:selectItem itemLabel="Escalamiento 2" itemValue="2" />
-										<f:selectItem itemLabel="Escalamiento 3" itemValue="3" />
+										<f:selectItems value="#{edit.listTypeContact}" var="typeContact" itemLabel="#{typeContact.name}"
+											itemValue="#{typeContact.code}" />
 									</p:selectOneMenu>
 								</h:panelGrid>
-								<p:commandButton value="Add" styleClass="button_post_add" style="margin-bottom: 10px;" />
-								<p:dataTable styleClass="data_table_contacts">
-									<p:column headerText="Nombre">
+								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;"
+									actionListener="#{edit.addContact}" update="form_admin_edit" />
+								<p:dataTable id="data_table_contact_profile" styleClass="data_table_contacts"
+									value="#{edit.listClientContact}" var="contactProfile">
+									<p:column headerText="Nombre" styleClass="column_contact">
+										<h:outputLabel value="#{contactProfile.nameContact}" styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Correo">
+									<p:column headerText="Correo" styleClass="column_contact">
+										<h:outputLabel value="#{contactProfile.email}" styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Tipo de Contacto">
+									<p:column headerText="Tipo de Contacto" styleClass="column_contact">
+										<h:outputLabel value="#{edit.getNameTypeContact(contactProfile.typeContact)}"
+											styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Acciones">
+									<p:column headerText="Acciones" styleClass="column_contact">
+										<p:commandButton value="Eliminar" title="Eliminar" action="#{edit.deleteContact}"
+											update=":form_admin_edit">
+											<f:setPropertyActionListener value="#{contactProfile.idClientContact}"
+												target="#{edit.idClientContactDelete}" />
+										</p:commandButton>
 									</p:column>
 								</p:dataTable>
 							</p:panel>
-							<h2>G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
-							<div id="map-canvas" class="map-canvas" />
+							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_file">
+								<h3>Ingenieria de Detalle</h3>
+								<p:fileUpload fileUploadListener="#{edit.uploadFileIngenieria}" mode="advanced" multiple="true"
+									uploadLabel="Cargar" label="Examinar" update="form_admin_edit" styleClass="data_table_contacts" />
+								<p:dataTable id="data_file" value="#{edit.listDetailEngineeringFile}" var="file"
+									styleClass="data_table_contacts">
+									<p:column headerText="Archivos" styleClass="column_contact">
+										<p:commandLink value="#{file.nameFile}" ajax="false" styleClass="column_contact">
+											<p:fileDownload value="#{util.downloadFile(file.url, file.nameFile)}" />
+										</p:commandLink>
+									</p:column>
+									<p:column headerText="Acciones" styleClass="column_contact">
+										<p:commandButton value="Eliminar" title="Eliminar" action="#{edit.deleteFile(file.url)}"
+											update=":form_admin_edit" styleClass="column_contact">
+											<f:setPropertyActionListener value="#{file.idClientFile}" target="#{edit.idClientFileDelete}" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+							<p:commandButton value="Guardar" styleClass="button_post" actionListener="#{edit.update}"
+								update="form_admin_edit" />
+						</h:form>
+						<h:form id="form_admin_edit_02">
+							<p:gmap widgetVar="map_detail" center="#{edit.centerMap}" zoom="#{edit.zoomMap}" type="ROADMAP"
+								model="#{edit.mapModel}" style="height: 450px; width: 900px;">
+								<p:ajax event="overlaySelect" listener="#{search.onMarkerSelect}" />
+								<p:gmapInfoWindow id="infoWindow" maxWidth="250">
+									<h3 style="text-align: center;">#{search.markerSelect.title}</h3>
+									<h:panelGrid columns="2" styleClass="table_info_map">
+										<h:outputLabel styleClass="title_lable" value="Punto Principal Cliente " />
+										<h:outputLabel value="#{search.markerSelect.data.mainPoint}" />
+
+										<h:outputLabel styleClass="title_lable" value="Tipo de Servicio " />
+										<h:outputLabel value="#{search.markerSelect.data.typeService}" />
+
+										<h:outputLabel styleClass="title_lable" value="Canal BackUp " />
+										<h:outputLabel value="#{search.markerSelect.data.backup}" />
+
+										<h:outputLabel styleClass="title_lable" value="Dirección " />
+										<h:outputLabel value="#{search.markerSelect.data.direction}" />
+
+										<h:outputLabel styleClass="title_lable" value="Contactos " />
+										<ui:repeat var="contacto" value="#{search.getContactsMarkerSelect()}">
+											<h:panelGrid columns="1" styleClass="table_info_map_into">
+												<h:outputLabel value="#{contacto.nameContact}" />
+												<h:outputLabel value="#{contacto.phone}" />
+												<h:outputLabel value="#{contacto.mobil}" />
+												<h:outputLabel value="#{contacto.email}" />
+												<h:outputLabel value="#{search.getSchedule(contacto.schedule)}" />
+											</h:panelGrid>
+										</ui:repeat>
+
+										<h:outputLabel styleClass="title_lable" value="Ultima Configuración " />
+										<p:commandLink value="#{search.markerSelect.data.lastSettingFile.nameFile}" ajax="false">
+											<p:fileDownload value="#{search.downloadLastSettingsFile()}" />
+										</p:commandLink>
+
+										<h:outputLabel styleClass="title_lable" value="Ingenieria de Detalle " />
+										<ui:repeat var="file" value="#{search.getServiceFiles()}">
+											<h:panelGrid columns="1" styleClass="table_info_map_into">
+												<p:commandLink value="#{file.nameFile}" ajax="false">
+													<p:fileDownload value="#{search.downloadFile(file.url, file.nameFile)}" />
+												</p:commandLink>
+											</h:panelGrid>
+										</ui:repeat>
+
+										<h:outputLabel styleClass="title_lable" value="Descripción " />
+										<h:outputLabel value="#{search.markerSelect.data.description}" />
+
+										<h:outputLabel styleClass="title_lable" value="Proveedor de UM "
+											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+										<h:outputLabel value="#{search.markerSelect.data.idProviderLastMile}"
+											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+
+										<h:outputLabel styleClass="title_lable" value="Codigo de Servicio UM "
+											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+										<h:outputLabel value="#{search.markerSelect.data.codeServiceLastMile}"
+											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+
+									</h:panelGrid>
+								</p:gmapInfoWindow>
+							</p:gmap>
 
 
-							<p:panel styleClass="panel_contactos">
+
+							<p:panel styleClass="panel_contactos panel_edit_profile">
 								<h:panelGrid columns="2" style="width: 97%;">
 									<h3>Codigos de Servicios</h3>
 									<p:panel styleClass="panel_button">
@@ -103,30 +197,39 @@
 											action="admin_new_service.xhtml?faces-redirect=true" ajax="false" immediate="true" />
 									</p:panel>
 								</h:panelGrid>
-								<p:dataTable styleClass="data_table_contacts">
-									<p:column headerText="Alias" filterBy="">
+								<p:dataTable styleClass="data_table_contacts" value="#{edit.listClientServiceEdit}" var="service">
+									<p:column headerText="Alias" styleClass="column_service">
+										<h:outputLabel value="#{service.alias}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Codigo del Servicio" filterBy="">
+									<p:column headerText="Codigo del Servicio" styleClass="column_service">
+										<h:outputLabel value="#{service.codeService}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Tipo Servicio" filterBy="">
+									<p:column headerText="Tipo Servicio" styleClass="column_service">
+										<h:outputLabel value="#{service.typeService}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Direccion" filterBy="">
+									<p:column headerText="Direccion" styleClass="column_service">
+										<h:outputLabel value="#{service.direction}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Ciudad" filterBy="">
+									<p:column headerText="Ciudad" styleClass="column_service">
+										<h:outputLabel value="#{service.city.name}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Acciones" filterBy="">
+									<p:column headerText="Pais" styleClass="column_service">
+										<h:outputLabel value="#{service.country.name}" styleClass="column_service" />
+									</p:column>
+									<p:column headerText="Acciones" styleClass="column_service">
+										<p:commandButton value="Editar" title="Editar" styleClass="column_service">
+										</p:commandButton>
 									</p:column>
 								</p:dataTable>
-								<p:commandButton id="button_editar_service" value="Editar" style="margin-top: 9px;"
-									action="admin_edit_service.xhtml?faces-redirect=true" ajax="true" />
 							</p:panel>
-						</h:panelGrid>
+							<p:commandButton value="Regresar" styleClass="button_post" action="admin.xhtml?faces-redirect=true"
+								ajax="false" inline="true" />
+						</h:form>
+					</h:panelGrid>
 
-						<p:commandButton value="Regresar" styleClass="button_post" action="admin.xhtml?faces-redirect=true"
-							ajax="false" inline="true" />
-					</h:form>
 				</p:panel>
 			</div>
+
 		</h:panelGroup>
 	</h:panelGrid>
 

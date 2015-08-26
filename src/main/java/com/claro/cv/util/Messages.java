@@ -82,4 +82,28 @@ public class Messages {
 
    public static final String NOT_SESSION = "No se ha iniciado una Sesion";
 
+   public static final String LOAD_EDIT_SEARCH_ERROR = "Ha ocurrido un error al consultar registros para editar";
+
+   public static final String LOAD_CLIENT_EDIT_ERROR = "Ha ocurrido al cargar el Cliente a Editar";
+
+   public static final String LOAD_TYPE_CONTACT_ERROR = "Ha ocurrido un error al Cargar el Tipo de Conctactof";
+
+   public static final String LOAD_SERVICES_ERROR = "Ha ocurrido un error al cargar los Servicios del Cliente";
+
+   public static final String VALIDATE_EDIT_SEARCH_ERROR = "Debe diligenciar por lo menos un criterio de busqueda";
+
+   public static final String LOAD_EDIT_SEARCH_RESULT_EMPTY = "No se han encontrado registros para esta consulta";
+
+   public static final String UPDATE_CLIENT_PROFILE_ERROR = "Ha ocurrido un error al actualizar el Perfil del Cliente";
+
+   public static final String UPDATE_CLIENT_PROFILE_SUCESS = "Se ha actualizado el Perfil del Cliente exitosamente";
+
+   public static final String UPDATE_CONTACTS_PROFILE_SUCESS = "Se han actualizado los Contactos del Perfil exitosamente";
+
+   public static final String UPDATE_CONTACTS_PROFILE_ERROR = "Ha ocurrido un error al actualizar los Contactos del Perfil";
+
+   public static final String DELETE_CONTACT_PROFILE_ERROR = "Ha ocurrido un error al eliminar el Contacto del Perfil";
+
+   public static final String DELETE_FILE_PROFILE_ERROR = "Ha ocurrido un error al eliminar un Archivo del Perfil";
+
 }

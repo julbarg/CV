@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 /** TemplateDAO - Define los metodos genericos en entidades
- * de la base de datos CPyMES
+ * de la base de datos CV
  * 
  * @author jbarragan
  *
@@ -33,12 +33,12 @@ public class TemplateDAO<T> {
    }
 
    @Transactional(MANAGER)
-   public void create(T entity) throws Exception{
+   public void create(T entity) throws Exception {
       entityManager.persist(entity);
    }
 
    @Transactional(MANAGER)
-   public T update(T entity) {
+   public T update(T entity) throws Exception {
       T t = entityManager.merge(entity);
 
       return t;

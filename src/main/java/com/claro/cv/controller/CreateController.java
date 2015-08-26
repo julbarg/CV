@@ -262,7 +262,7 @@ public class CreateController implements Serializable {
       if (validateAddService()) {
          if (ultimaConfiguracionFile != null && ultimaConfiguracionFile.getFileName() != null) {
             SecureRandom random = new SecureRandom();
-            String fileName = Constant.UM + clientService.getAlias().toUpperCase() + "-"
+            String fileName = Constant.UC + clientService.getAlias().toUpperCase() + "-"
                + (new BigInteger(40, random)).toString(30).toUpperCase();
             String URL = createFile(fileName, TypeFileEnum.SETTINGS.getValue(), ultimaConfiguracionFile);
             clientService.setLastSettingFile(setLastSettingFile(URL, fileName));
@@ -274,8 +274,7 @@ public class CreateController implements Serializable {
          clientService.setMainPoint(mainPoint);
          String backup = enlaceBackUp == true ? "S" : "N";
          clientService.setBackup(backup);
-         // TODO
-         clientService.setState("A");
+         clientService.setState(Constant.STATE_ACTIVE);
          listClientService.add(clientService);
          initializeService();
 
@@ -304,7 +303,7 @@ public class CreateController implements Serializable {
             serviceFile = new ServiceFileEntity();
 
             SecureRandom random = new SecureRandom();
-            String fileName = Constant.IN + clientService.getAlias().toUpperCase() + "-"
+            String fileName = Constant.ING + clientService.getAlias().toUpperCase() + "-"
                + (new BigInteger(40, random)).toString(30).toUpperCase();
             String URL = createFile(fileName, TypeFileEnum.ENGINEERING_SERVICE.getValue(), uploadFile);
             serviceFile.setNameFile(fileName);
@@ -494,6 +493,7 @@ public class CreateController implements Serializable {
             return null;
          setUpServiceContact();
          clientProfile.setClientServices(listClientService);
+         clientProfile.setState(Constant.STATE_ACTIVE);
          createService.save(clientProfile);
          printClientProfile();
          saveDetailEngineeringFiles();
@@ -537,7 +537,7 @@ public class CreateController implements Serializable {
             clientFile.setClientProfile(clientProfile);
 
             SecureRandom random = new SecureRandom();
-            String fileName = Constant.IN + clientProfile.getNameClient().toUpperCase() + "-"
+            String fileName = Constant.ING + clientProfile.getNameClient().toUpperCase() + "-"
                + (new BigInteger(40, random)).toString(30).toUpperCase();
             String URL = createFile(fileName, TypeFileEnum.ENGINEERING.getValue(), uploadFile);
             clientFile.setNameFile(fileName);

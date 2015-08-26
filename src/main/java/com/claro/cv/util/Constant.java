@@ -5,6 +5,8 @@ public class Constant {
    public static final String SEARCH_PAGE = "search";
 
    public static final String CREATE_PAGE = "create";
+   
+   public static final String ADMIN_EDIT = "admin_edit";
 
    public static final String XHTML = ".xhtml";
 
@@ -30,13 +32,17 @@ public class Constant {
 
    public static final String JSON_EXTENSION = ".json";
 
-   public static final String IN = "IN-";
+   public static final String ING = "ING-";
 
-   public static final String UM = "UM-";
+   public static final String UC = "UC-";
 
    public static final String SAN_ANDRES_CODE = "CO-SAP";
 
    public static final String USER_NAME = "userName";
+
+   public static final String STATE_ACTIVE = "A";
+
+   
 
       
 

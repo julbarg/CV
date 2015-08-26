@@ -61,4 +61,16 @@ public class ClientServiceDAOImpl extends TemplateDAO<ClientServiceEntity> imple
 
       return results;
    }
+
+   @Override
+   public ArrayList<ClientServiceEntity> findByClientProfile(ClientProfileEntity clientProfile)
+      throws Exception {
+      TypedQuery<ClientServiceEntity> query = entityManager.createNamedQuery(
+         "ClientServiceEntity.findByClientProfile", ClientServiceEntity.class);
+      query.setParameter("clientProfile", clientProfile);
+
+      ArrayList<ClientServiceEntity> results = (ArrayList<ClientServiceEntity>) query.getResultList();
+
+      return results;
+   }
 }

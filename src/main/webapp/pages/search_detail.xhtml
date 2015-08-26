@@ -90,7 +90,7 @@
 								styleClass="data_table_contacts">
 								<p:column headerText="Archivos">
 									<p:commandLink value="#{fileClient.nameFile}" ajax="false">
-										<p:fileDownload value="#{search.downloadFile(fileClient.url, fileClient.nameFile)}" />
+										<p:fileDownload value="#{util.downloadFile(fileClient.url, fileClient.nameFile)}" />
 									</p:commandLink>
 								</p:column>
 							</p:dataTable>

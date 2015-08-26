@@ -28,7 +28,7 @@ public class LastSettingFileEntity implements Serializable {
 	private String url;
 
 	//bi-directional many-to-one association to ClientServiceEntity
-	@OneToMany(mappedBy = "lastSettingFile", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "lastSettingFile", cascade = CascadeType.PERSIST)
 	private List<ClientServiceEntity> clientServices;
 
 	public LastSettingFileEntity() {

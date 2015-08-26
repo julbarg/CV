@@ -13,14 +13,10 @@ import java.util.List;
 @Table(
    name = "client_service")
 @NamedQueries({
-   @NamedQuery(
-      name = "ClientServiceEntity.findAll", query = "SELECT c FROM ClientServiceEntity c"),
-   @NamedQuery(
-      name = "ClientServiceEntity.findByDepartament",
-      query = "SELECT c FROM ClientServiceEntity c WHERE c.departament=:departament AND c.clientProfile=:clientProfile"),
-   @NamedQuery(
-      name = "ClientServiceEntity.findByCountry",
-      query = "SELECT c FROM ClientServiceEntity c WHERE c.country=:country AND c.clientProfile=:clientProfile") })
+   @NamedQuery(name = "ClientServiceEntity.findAll", query = "SELECT c FROM ClientServiceEntity c"),
+   @NamedQuery(name = "ClientServiceEntity.findByDepartament",query = "SELECT c FROM ClientServiceEntity c WHERE c.departament=:departament AND c.clientProfile=:clientProfile"),
+   @NamedQuery(name = "ClientServiceEntity.findByClientProfile",query = "SELECT c FROM ClientServiceEntity c WHERE c.clientProfile=:clientProfile"),
+   @NamedQuery(name = "ClientServiceEntity.findByCountry",query = "SELECT c FROM ClientServiceEntity c WHERE c.country=:country AND c.clientProfile=:clientProfile") })
 public class ClientServiceEntity implements Serializable {
    private static final long serialVersionUID = 1L;
 
@@ -100,7 +96,7 @@ public class ClientServiceEntity implements Serializable {
 
    // bi-directional many-to-one association to ServiceContactEntity
    @OneToMany(
-      mappedBy = "clientService", cascade = CascadeType.ALL)
+      mappedBy = "clientService", cascade = CascadeType.PERSIST)
    private List<ServiceContactEntity> serviceContacts;
 
    // bi-directional many-to-one association to CountryEntity
@@ -112,7 +108,7 @@ public class ClientServiceEntity implements Serializable {
 
    // bi-directional many-to-one association to ServiceFileEntity
    @OneToMany(
-      mappedBy = "clientService", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+      mappedBy = "clientService", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
    private List<ServiceFileEntity> serviceFiles;
 
    public ClientServiceEntity() {

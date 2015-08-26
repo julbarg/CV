@@ -282,6 +282,9 @@ body {
 
 .button_post {
 	width: 835px;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	display: block !important;
 }
 
 .button_post_double {

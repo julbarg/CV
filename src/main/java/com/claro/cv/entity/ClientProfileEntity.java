@@ -8,144 +8,162 @@ import java.math.BigInteger;
 import java.util.List;
 
 
-/**
- * The persistent class for the client_profile database table.
- * 
- */
+/** The persistent class for the client_profile database table. */
 @Entity
-@Table(name="client_profile")
+@Table(
+   name = "client_profile")
 @NamedQueries({
-   @NamedQuery(name="ClientProfileEntity.findAll", query="SELECT c FROM ClientProfileEntity c"),
-   @NamedQuery(name = "ClientProfileEntity.findByIdClient",query = "SELECT c FROM ClientProfileEntity c WHERE c.idClient=:idClient")
-})
+   @NamedQuery(
+      name = "ClientProfileEntity.findAll", query = "SELECT c FROM ClientProfileEntity c"),
+   @NamedQuery(
+      name = "ClientProfileEntity.findByIdClient",
+      query = "SELECT c FROM ClientProfileEntity c WHERE c.idClient=:idClient") })
 public class ClientProfileEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_client_profile")
-	private BigInteger idClientProfile;
+   @Id
+   @GeneratedValue(
+      strategy = GenerationType.AUTO)
+   @Column(
+      name = "id_client_profile")
+   private BigInteger idClientProfile;
 
-	@Column(name="id_client")
-	private BigInteger idClient;
+   @Column(
+      name = "id_client")
+   private BigInteger idClient;
 
-	@Column(name="name_client")
-	private String nameClient;
+   @Column(
+      name = "name_client")
+   private String nameClient;
 
-	@Column(name="nit_client")
-	private String nitClient;
+   @Column(
+      name = "nit_client")
+   private String nitClient;
 
-	//bi-directional many-to-one association to ClientContactEntity
-	@OneToMany(mappedBy = "clientProfile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<ClientContactEntity> clientContacts;
+   private String state;
 
-	//bi-directional many-to-one association to ClientServiceEntity
-	@OneToMany(mappedBy = "clientProfile", cascade = CascadeType.ALL)
-	private List<ClientServiceEntity> clientServices;
+   // bi-directional many-to-one association to ClientContactEntity
+   @OneToMany(
+      mappedBy = "clientProfile", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+   private List<ClientContactEntity> clientContacts;
 
-	//bi-directional many-to-one association to ClientFileEntity
-	@OneToMany(mappedBy="clientProfile", fetch=FetchType.EAGER)
-	private List<ClientFileEntity> clientFiles;
+   // bi-directional many-to-one association to ClientServiceEntity
+   @OneToMany(
+      mappedBy = "clientProfile", cascade = CascadeType.PERSIST)
+   private List<ClientServiceEntity> clientServices;
 
-	public ClientProfileEntity() {
-	}
+   // bi-directional many-to-one association to ClientFileEntity
+   @OneToMany(
+      mappedBy = "clientProfile", fetch = FetchType.EAGER)
+   private List<ClientFileEntity> clientFiles;
 
-	public BigInteger getIdClientProfile() {
-		return this.idClientProfile;
-	}
+   public ClientProfileEntity() {
+   }
 
-	public void setIdClientProfile(BigInteger idClientProfile) {
-		this.idClientProfile = idClientProfile;
-	}
+   public BigInteger getIdClientProfile() {
+      return this.idClientProfile;
+   }
 
-	public BigInteger getIdClient() {
-		return this.idClient;
-	}
+   public void setIdClientProfile(BigInteger idClientProfile) {
+      this.idClientProfile = idClientProfile;
+   }
 
-	public void setIdClient(BigInteger idClient) {
-		this.idClient = idClient;
-	}
+   public BigInteger getIdClient() {
+      return this.idClient;
+   }
 
-	public String getNameClient() {
-		return this.nameClient;
-	}
+   public void setIdClient(BigInteger idClient) {
+      this.idClient = idClient;
+   }
 
-	public void setNameClient(String nameClient) {
-		this.nameClient = nameClient;
-	}
+   public String getNameClient() {
+      return this.nameClient;
+   }
 
-	public String getNitClient() {
-		return this.nitClient;
-	}
+   public void setNameClient(String nameClient) {
+      this.nameClient = nameClient;
+   }
 
-	public void setNitClient(String nitClient) {
-		this.nitClient = nitClient;
-	}
+   public String getNitClient() {
+      return this.nitClient;
+   }
 
-	public List<ClientContactEntity> getClientContacts() {
-		return this.clientContacts;
-	}
+   public void setNitClient(String nitClient) {
+      this.nitClient = nitClient;
+   }
 
-	public void setClientContacts(List<ClientContactEntity> clientContacts) {
-		this.clientContacts = clientContacts;
-	}
+   public List<ClientContactEntity> getClientContacts() {
+      return this.clientContacts;
+   }
 
-	public ClientContactEntity addClientContact(ClientContactEntity clientContact) {
-		getClientContacts().add(clientContact);
-		clientContact.setClientProfile(this);
+   public void setClientContacts(List<ClientContactEntity> clientContacts) {
+      this.clientContacts = clientContacts;
+   }
 
-		return clientContact;
-	}
+   public ClientContactEntity addClientContact(ClientContactEntity clientContact) {
+      getClientContacts().add(clientContact);
+      clientContact.setClientProfile(this);
 
-	public ClientContactEntity removeClientContact(ClientContactEntity clientContact) {
-		getClientContacts().remove(clientContact);
-		clientContact.setClientProfile(null);
+      return clientContact;
+   }
 
-		return clientContact;
-	}
+   public ClientContactEntity removeClientContact(ClientContactEntity clientContact) {
+      getClientContacts().remove(clientContact);
+      clientContact.setClientProfile(null);
 
-	public List<ClientServiceEntity> getClientServices() {
-		return this.clientServices;
-	}
+      return clientContact;
+   }
 
-	public void setClientServices(List<ClientServiceEntity> clientServices) {
-		this.clientServices = clientServices;
-	}
+   public List<ClientServiceEntity> getClientServices() {
+      return this.clientServices;
+   }
 
-	public ClientServiceEntity addClientService(ClientServiceEntity clientService) {
-		getClientServices().add(clientService);
-		clientService.setClientProfile(this);
+   public void setClientServices(List<ClientServiceEntity> clientServices) {
+      this.clientServices = clientServices;
+   }
 
-		return clientService;
-	}
+   public ClientServiceEntity addClientService(ClientServiceEntity clientService) {
+      getClientServices().add(clientService);
+      clientService.setClientProfile(this);
 
-	public ClientServiceEntity removeClientService(ClientServiceEntity clientService) {
-		getClientServices().remove(clientService);
-		clientService.setClientProfile(null);
+      return clientService;
+   }
 
-		return clientService;
-	}
+   public ClientServiceEntity removeClientService(ClientServiceEntity clientService) {
+      getClientServices().remove(clientService);
+      clientService.setClientProfile(null);
 
-	public List<ClientFileEntity> getClientFiles() {
-		return this.clientFiles;
-	}
+      return clientService;
+   }
 
-	public void setClientFiles(List<ClientFileEntity> clientFiles) {
-		this.clientFiles = clientFiles;
-	}
+   public List<ClientFileEntity> getClientFiles() {
+      return this.clientFiles;
+   }
 
-	public ClientFileEntity addClientFile(ClientFileEntity clientFile) {
-		getClientFiles().add(clientFile);
-		clientFile.setClientProfile(this);
+   public void setClientFiles(List<ClientFileEntity> clientFiles) {
+      this.clientFiles = clientFiles;
+   }
 
-		return clientFile;
-	}
+   public ClientFileEntity addClientFile(ClientFileEntity clientFile) {
+      getClientFiles().add(clientFile);
+      clientFile.setClientProfile(this);
 
-	public ClientFileEntity removeClientFile(ClientFileEntity clientFile) {
-		getClientFiles().remove(clientFile);
-		clientFile.setClientProfile(null);
+      return clientFile;
+   }
 
-		return clientFile;
-	}
+   public ClientFileEntity removeClientFile(ClientFileEntity clientFile) {
+      getClientFiles().remove(clientFile);
+      clientFile.setClientProfile(null);
+
+      return clientFile;
+   }
+
+   public String getState() {
+      return state;
+   }
+
+   public void setState(String state) {
+      this.state = state;
+   }
 
 }

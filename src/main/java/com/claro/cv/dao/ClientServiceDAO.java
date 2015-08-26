@@ -18,4 +18,7 @@ public interface ClientServiceDAO {
    public ArrayList<ClientServiceEntity> findByCountry(CountryEntity country,
       ClientProfileEntity clientProfile) throws Exception;
 
+   public ArrayList<ClientServiceEntity> findByClientProfile(ClientProfileEntity clientProfile)
+      throws Exception;
+
 }
