@@ -33,6 +33,7 @@ import com.claro.cv.entity.ClientServiceEntity;
 import com.claro.cv.entity.MultivalueEntity;
 import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.EditService;
+import com.claro.cv.service.UtilService;
 import com.claro.cv.util.Constant;
 import com.claro.cv.util.Messages;
 import com.claro.cv.util.Util;
@@ -48,6 +49,12 @@ public class EditController implements Serializable {
    private static final long serialVersionUID = -7876964547484376643L;
 
    private static Logger LOGGER = LogManager.getLogger(EditController.class.getName());
+
+   @Autowired
+   private EditService editService;
+
+   @Autowired
+   private UtilService utilService;
 
    private EditSearchDTO editSearch;
 
@@ -75,9 +82,6 @@ public class EditController implements Serializable {
 
    private MapModel mapModel;
 
-   @Autowired
-   private EditService editService;
-
    private String centerMap;
 
    private int zoomMap;
@@ -97,8 +101,8 @@ public class EditController implements Serializable {
    private void loadTypeContact() {
 
       try {
-         listTypeContact = editService.loadMultiValue(TypeMultivalueEnum.TIPO_CONTACTO);
-         listState = editService.loadMultiValue(TypeMultivalueEnum.ESTADO_CLIENTE_SERVICIO);
+         listTypeContact = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_CONTACTO);
+         listState = utilService.loadMultiValue(TypeMultivalueEnum.ESTADO_CLIENTE_SERVICIO);
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_TYPE_CONTACT_ERROR, e);
       }
@@ -366,7 +370,7 @@ public class EditController implements Serializable {
    private String getTypeService(ClientServiceEntity service) {
       ArrayList<MultivalueEntity> listTypeServices;
       try {
-         listTypeServices = editService.loadMultiValue(TypeMultivalueEnum.TIPO_SERVICIO);
+         listTypeServices = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_SERVICIO);
          return Util.getMeansMultiValue(listTypeServices, service.getTypeService());
       } catch (Exception e) {
          return "";

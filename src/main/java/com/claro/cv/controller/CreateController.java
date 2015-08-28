@@ -37,6 +37,7 @@ import com.claro.cv.enums.TypeFileEnum;
 import com.claro.cv.enums.TypeLocationEnum;
 import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.CreateService;
+import com.claro.cv.service.UtilService;
 import com.claro.cv.util.Constant;
 import com.claro.cv.util.Messages;
 import com.claro.cv.util.Util;
@@ -52,6 +53,12 @@ public class CreateController implements Serializable {
    private static final long serialVersionUID = 2605767751437345720L;
 
    private static Logger LOGGER = LogManager.getLogger(CreateController.class.getName());
+
+   @Autowired
+   private CreateService createService;
+
+   @Autowired
+   private UtilService utilService;
 
    private ClientProfileEntity clientProfile;
 
@@ -103,9 +110,6 @@ public class CreateController implements Serializable {
 
    private boolean diferentProvider;
 
-   @Autowired
-   private CreateService createService;
-
    @PostConstruct
    public void initializate() {
       if (!Util.validateLogIn()) {
@@ -135,10 +139,10 @@ public class CreateController implements Serializable {
 
    private void loadMultiValues() {
       try {
-         listTypeContact = createService.loadMultiValue(TypeMultivalueEnum.TIPO_CONTACTO);
-         listTypeService = createService.loadMultiValue(TypeMultivalueEnum.TIPO_SERVICIO);
-         listProviderLastMile = createService.loadMultiValue(TypeMultivalueEnum.PROVEEDOR_ULTIMA_MILLA);
-         listSchedule = createService.loadMultiValue(TypeMultivalueEnum.HORARIO_ATENCION);
+         listTypeContact = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_CONTACTO);
+         listTypeService = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_SERVICIO);
+         listProviderLastMile = utilService.loadMultiValue(TypeMultivalueEnum.PROVEEDOR_ULTIMA_MILLA);
+         listSchedule = utilService.loadMultiValue(TypeMultivalueEnum.HORARIO_ATENCION);
 
       } catch (Exception e) {
          LOGGER.error("Ha ocurrido un error al cargar los Tipos de Contacto", e);
@@ -148,7 +152,7 @@ public class CreateController implements Serializable {
 
    private void loadCountries() {
       try {
-         listCountry = createService.loadCountries();
+         listCountry = utilService.loadCountries();
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_COUNTRY_ERROR, e);
          Util.addMessageFatal(Messages.LOAD_COUNTRY_ERROR);
@@ -158,17 +162,16 @@ public class CreateController implements Serializable {
 
    private void loadDepartaments() {
       try {
-         listDepartamento = createService.loadDepartaments();
+         listDepartamento = utilService.loadDepartaments();
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_DEPARTAMENT_ERROR, e);
          Util.addMessageFatal(Messages.LOAD_DEPARTAMENT_ERROR);
       }
-
    }
 
    private void loadCities() {
       try {
-         listCiudad = createService.loadCities();
+         listCiudad = utilService.loadCities();
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_CITY_ERROR, e);
          Util.addMessageFatal(Messages.LOAD_CITY_ERROR);
@@ -187,7 +190,7 @@ public class CreateController implements Serializable {
 
    public void loadCitiesByDepartament() {
       try {
-         listCiudad = createService.loadCitiesByDepartament(idDepartament);
+         listCiudad = utilService.loadCitiesByDepartament(idDepartament);
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_CITY_ERROR, e);
          Util.addMessageFatal(Messages.LOAD_CITY_ERROR);

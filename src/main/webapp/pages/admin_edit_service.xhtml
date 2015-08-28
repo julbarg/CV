@@ -47,117 +47,208 @@
 		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_two">
 				<p:panel id="panel_creation_step_two" styleClass="panel_content">
-					<h:form id="form_map">
+					<h:form id="form_admin_edit_service">
+						<p:growl id="growl_admin_edit_service" />
 						<h:panelGrid cellspacing="15">
 							<span id="total2"></span>
-							<h2 style="text-align: center;">G4S CASH SOLUTIONS COLOMBIA LTDA.</h2>
+							<h2 style="text-align: center;">#{editService.clientServiceEdit.alias}</h2>
 							<h2>Editar Codigo de Servicio</h2>
 							<input id="pac-input" class="controls pac-input" type="text" placeholder="Buscar..."
 								style="float: left;" />
 							<div id="map-canvas" class="map-canvas" />
-							<h:panelGrid columns="2">
-								<h:inputHidden id="lat" value="4.867680792238617" />
-								<h:inputHidden id="lng" value="-74.03777181578334" />
-								<p:outputLabel value="Departamento" />
-								<p:selectOneMenu styleClass="select_post" value="2">
-									<f:selectItem itemLabel="Departamento" />
-									<f:selectItem itemLabel="Atlantico" itemValue="1" />
-									<f:selectItem itemLabel="Bolivar" itemValue="2" />
-									<f:selectItem itemLabel="Cundinamarca" itemValue="3" />
+							<h:inputHidden id="lat" value="#{editService.clientServiceEdit.lat}" />
+							<h:inputHidden id="lng" value="#{editService.clientServiceEdit.lng}" />
+							<h:panelGrid columns="2" id="panel_grid_service">
+
+								<p:selectOneRadio value="#{editService.typeLocaltion}">
+									<f:selectItems value="#{editService.listTypeLocaltion}" var="typeLocation"
+										itemLabel="#{typeLocation}" itemValue="#{typeLocation}" />
+									<p:ajax listener="#{editService.changeTypeLocation}"
+										update="form_admin_edit_service:panel_grid_service" />
+								</p:selectOneRadio>
+								<h:outputLabel value="" />
+
+								<p:outputLabel value="Pais" rendered="#{editService.international}" />
+								<p:selectOneMenu id="select_country" value="#{editService.idCountry}" styleClass="select_post"
+									rendered="#{editService.international}">
+									<f:selectItem itemLabel="Seleccione Pais.." />
+									<f:selectItems value="#{editService.listCountry}" var="countryItem" itemLabel="#{countryItem.name}"
+										itemValue="#{countryItem.idCountry}" />
 								</p:selectOneMenu>
 
-								<p:outputLabel value="Ciudad" />
-								<p:selectOneMenu styleClass="select_post" value="1">
-									<f:selectItem itemLabel="Ciudad" />
-									<f:selectItem itemLabel="Barranquilla" itemValue="1" />
-									<f:selectItem itemLabel="Bogota" itemValue="2" />
-									<f:selectItem itemLabel="Cartagena" itemValue="3" />
+								<p:outputLabel value="Departamento" rendered="#{!editService.international}" />
+								<p:selectOneMenu id="select_departament" styleClass="select_post" value="#{editService.idDepartament}"
+									rendered="#{!editService.international}">
+									<p:ajax listener="#{editService.loadCitiesByDepartament}"
+										update="form_admin_edit_service:select_city form_admin_edit_service:growl_admin_edit_service" />
+									<f:selectItem itemLabel="Seleccione Departamento.." />
+									<f:selectItems value="#{editService.listDepartamento}" var="departamentItem"
+										itemLabel="#{departamentItem.name}" itemValue="#{departamentItem.idDepartament}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel value="Ciudad" rendered="#{!editService.international}" />
+								<p:selectOneMenu id="select_city" styleClass="select_post" value="#{editService.idCity}"
+									rendered="#{!editService.international}">
+									<f:selectItem itemLabel="Seleccione Ciudad" />
+									<f:selectItems value="#{editService.listCiudad}" var="cityItem" itemLabel="#{cityItem.name}"
+										itemValue="#{cityItem.idCity}" />
 								</p:selectOneMenu>
 
 								<p:outputLabel value="Dirección" />
-								<p:inputText value="Trans 32. No 58C Apt 201" styleClass="input_create_contact" />
+								<p:inputText value="#{editService.clientServiceEdit.direction}" styleClass="input_create_contact" />
 
 								<p:outputLabel value="Tipo de Servicio" />
-								<p:selectOneMenu id="type_service" styleClass="select_post" label="Tipo de Contacto" value="3">
-									<f:selectItem itemLabel="Tipo de Servicio" />
-									<f:selectItem itemLabel="Servicio Tipo 1" itemValue="1" />
-									<f:selectItem itemLabel="Servicio Tipo 2" itemValue="2" />
-									<f:selectItem itemLabel="Servicio Tipo 3" itemValue="3" />
+								<p:selectOneMenu id="type_service" styleClass="select_post"
+									value="#{editService.clientServiceEdit.typeService}">
+									<f:selectItem itemLabel="Selecciona Tipo de Servicio.." />
+									<f:selectItems value="#{editService.listTypeService}" var="typeService"
+										itemLabel="#{typeService.name}" itemValue="#{typeService.code}" />
 								</p:selectOneMenu>
 
 								<p:outputLabel value="Codigo de Servicio" />
-								<p:inputText placeholder="Codigo de Servicio" styleClass="input_create_contact" />
+								<p:inputText placeholder="Codigo de Servicio" styleClass="input_create_contact"
+									value="#{editService.clientServiceEdit.codeService}" />
 
 								<p:outputLabel value="Provedor de Ultima Milla" />
-								<p:selectOneMenu id="type_um" styleClass="select_post" label="Tipo de Contacto">
-									<f:selectItem itemLabel="Proveedor Ultima Milla" />
-									<f:selectItem itemLabel="Claro" itemValue="1" />
-									<f:selectItem itemLabel="ETB" itemValue="2" />
-									<f:selectItem itemLabel="Movistar" itemValue="3" />
+								<p:selectOneMenu id="type_um" styleClass="select_post" label="Tipo de Contacto"
+									value="#{editService.clientServiceEdit.idProviderLastMile}">
+									<f:selectItem itemLabel="Seleccione Proveedor Ultima Milla..." itemValue="" />
+									<f:selectItems value="#{editService.listProviderLastMile}" var="providerLastMile"
+										itemLabel="#{providerLastMile.name}" itemValue="#{providerLastMile.code}" />
+									<p:ajax listener="#{editService.changeProvide}" update="panel_label_um panel_input_um" />
 								</p:selectOneMenu>
 
-								<p:outputLabel value="Codigo de Servicio de Ultima Milla" />
-								<p:inputText placeholder="Codigo de Servicio de Ultima Milla" styleClass="input_create_contact" />
+								<h:panelGrid id="panel_label_um">
+									<p:outputLabel value="Codigo de Servicio de Ultima Milla" rendered="#{editService.diferentProvider}" />
+								</h:panelGrid>
+
+								<h:panelGrid id="panel_input_um">
+									<p:inputText placeholder="Codigo de Servicio de Ultima Milla" styleClass="input_create_contact"
+										rendered="#{editService.diferentProvider}"
+										value="#{editService.clientServiceEdit.codeServiceLastMile}" />
+								</h:panelGrid>
+
 							</h:panelGrid>
+
 
 							<h:panelGrid columns="4">
 								<p:outputLabel for="main_point" value="Punto Principal: " style="margin-right: 8px;" />
-								<p:selectBooleanButton id="main_point" value="" onLabel="Si" offLabel="No" />
-								<p:outputLabel for="main_enlace" value="Enlace BackUp: " style="margin-left: 20px; margin-right: 8px;" />
-								<p:selectBooleanButton id="main_enlace" value="" onLabel="Si" offLabel="No" />
+								<p:selectBooleanButton id="main_point" value="#{editService.mainPoint}" onLabel="Si" offLabel="No" />
+								<p:outputLabel for="enlace_backup" value="Enlace BackUp: "
+									style="margin-left: 20px; margin-right: 8px;" />
+								<p:selectBooleanButton id="enlace_backup" value="#{editService.enlaceBackUp}" onLabel="Si"
+									offLabel="No" />
 							</h:panelGrid>
 
-							<h:panelGrid columns="2">
-								<p:outputLabel value="Ultima Configuración" />
-								<p:commandLink value="Configuracion.txt" />
-
+							<h:panelGrid columns="2" id="name_upload">
+								<p:outputLabel value="Ultima Configuración:  " />
+								<p:outputLabel rendered="#{!editService.noChangesUC}" value="#{editService.nameUpload}" />
+								<p:commandLink rendered="#{editService.noChangesUC}"
+									value="#{editService.lastSettingFileOld.nameFile}" ajax="false" styleClass="column_contact">
+									<p:fileDownload
+										value="#{util.downloadFile(editService.lastSettingFileOld.url, editService.lastSettingFileOld.nameFile)}" />
+								</p:commandLink>
 							</h:panelGrid>
-							<p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced"
-								uploadLabel="Remplazar" label="Examinar" />
 
-							<h:panelGrid columns="2">
+							<p:fileUpload fileUploadListener="#{editService.uploadFileLastSettings}" mode="advanced"
+								uploadLabel="Cargar" label="Examinar" update="form_admin_edit_service:name_upload" />
+
+							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_file">
+								<h3>Ingenieria de Detalle</h3>
+								<p:fileUpload fileUploadListener="#{editService.uploadFileIngenieria}" mode="advanced" multiple="true"
+									uploadLabel="Cargar" label="Examinar" update="form_admin_edit_service:panel_file"
+									styleClass="data_table_contacts" />
+								<p:dataTable id="data_file" value="#{editService.listDetailEngineeringFile}" var="file"
+									styleClass="data_table_contacts">
+									<p:column headerText="Archivos" styleClass="column_contact">
+										<p:commandLink value="#{file.nameFile}" ajax="false" styleClass="column_contact">
+											<p:fileDownload value="#{util.downloadFile(file.url, file.nameFile)}" />
+										</p:commandLink>
+									</p:column>
+									<p:column headerText="Acciones" styleClass="column_contact">
+										<p:commandButton value="Eliminar" title="Eliminar" action="#{editService.deleteFile(file.url)}"
+											update=":form_admin_edit_service:panel_file" styleClass="column_contact">
+											<f:setPropertyActionListener value="#{file.idServiceFile}"
+												target="#{editService.idServiceFileDelete}" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+
+
+							<h:panelGrid columns="2" id="panel_state">
 								<p:outputLabel value="Estado" />
-								<p:selectOneMenu styleClass="select_post" value="1">
-									<f:selectItem itemLabel="Estado" />
-									<f:selectItem itemLabel="Activo" itemValue="1" />
-									<f:selectItem itemLabel="Incativo" itemValue="2" />
-									<f:selectItem itemLabel="Pendiente" itemValue="3" />
+								<p:selectOneMenu id="state" styleClass="select_post" label="Tipo de Contacto"
+									value="#{editService.clientServiceEdit.state}">
+									<p:ajax listener="#{editService.changeState}"
+										update="form_admin_edit_service:panel_state form_admin_edit_service:panel_observation_state" />
+									<f:selectItems value="#{editService.listState}" var="state" itemLabel="#{state.name}"
+										itemValue="#{state.code}" />
+
 								</p:selectOneMenu>
 							</h:panelGrid>
 
-							<p:panel styleClass="panel_contactos">
+							<h:panelGrid id="panel_observation_state" style="margin-top: -10px;">
+								<p:outputLabel value="Observacion de cambio de Estado" rendered="#{editService.showObservationState}" />
+								<p:inputTextarea value="#{editService.clientServiceEdit.observationState}"
+									rendered="#{editService.showObservationState}" cols="115" rows="8" autoResize="false" />
+							</h:panelGrid>
+
+							<p:panel styleClass="panel_contactos" id="panel_contactos">
 								<h3>Contactos en Sitio</h3>
 								<h:panelGrid columns="2">
-									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact" />
-									<p:inputText placeholder="Telefono" styleClass="input_create_contact" />
-									<p:inputText placeholder="Celular" styleClass="input_create_contact" />
-									<p:selectOneMenu id="type_contact" styleClass="select_post" label="Horario de Atencion">
-										<f:selectItem itemLabel="Horario de Atencion" />
-										<f:selectItem itemLabel="Lun-Vie 8.00 am - 6.00 pm" itemValue="1" />
-										<f:selectItem itemLabel="Sab-Dom 8.00 am - 6.00 pm" itemValue="2" />
-										<f:selectItem itemLabel="Lun-Vie 8.00 pm - 6.00 am" itemValue="3" />
+									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact"
+										value="#{editService.serviceContactNew.nameContact}" />
+									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact"
+										value="#{editService.serviceContactNew.email}" />
+									<p:inputText placeholder="Telefono" styleClass="input_create_contact"
+										value="#{editService.serviceContactNew.phone}" />
+									<p:inputText placeholder="Celular" styleClass="input_create_contact"
+										value="#{editService.serviceContactNew.mobil}" />
+								</h:panelGrid>
+								<h:panelGrid>
+									<p:selectOneMenu id="horario" styleClass="select_post" label="Horario de Atencion"
+										value="#{editService.serviceContactNew.schedule}">
+										<f:selectItem itemLabel="Selecione Horario de Atencion.." />
+										<f:selectItems value="#{editService.listSchedule}" var="schedule" itemLabel="#{schedule.name}"
+											itemValue="#{schedule.code}" />
 									</p:selectOneMenu>
 								</h:panelGrid>
-								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;" />
-								<p:dataTable styleClass="data_table_contacts_inside">
-									<p:column headerText="Nombre">
+								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;"
+									actionListener="#{editService.addServiceContact}" update="form_admin_edit_service:panel_contactos" />
+								<p:dataTable styleClass="data_table_contacts_inside" value="#{editService.listServiceContact}"
+									var="serviceContact">
+									<p:column headerText="Nombre" styleClass="column_contact">
+										<h:outputLabel value="#{serviceContact.nameContact}" styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Telefono">
+									<p:column headerText="Email" styleClass="column_contact">
+										<h:outputLabel value="#{serviceContact.email}" styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Celular">
+									<p:column headerText="Telefono" styleClass="column_contact">
+										<h:outputLabel value="#{serviceContact.phone}" styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Horario de Atencion">
+									<p:column headerText="Celular" styleClass="column_contact">
+										<h:outputLabel value="#{serviceContact.mobil}" styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Acciones">
+									<p:column headerText="Horario de Atencion" styleClass="column_contact">
+										<h:outputLabel value="#{editService.getSchedule(serviceContact.schedule)}"
+											styleClass="column_contact" />
 									</p:column>
-
+									<p:column headerText="Acciones" styleClass="column_contact">
+										<p:commandButton value="Eliminar" title="Eliminar" action="#{editService.deleteServiceContact}"
+											update=":form_admin_edit_service:panel_contactos">
+											<f:setPropertyActionListener value="#{serviceContact.idServiceContact}"
+												target="#{editService.idServiceContactDelete}" />
+										</p:commandButton>
+									</p:column>
 								</p:dataTable>
 							</p:panel>
 
 							<h:panelGrid columns="2">
 								<p:commandButton value="Regresar" styleClass="button_post_double"
 									action="admin_edit.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-								<p:commandButton value="Guardar" styleClass="button_post_double" />
+								<p:commandButton value="Guardar" styleClass="button_post_double" action="#{editService.update}"
+									update="form_admin_edit_service" />
 							</h:panelGrid>
 						</h:panelGrid>
 					</h:form>

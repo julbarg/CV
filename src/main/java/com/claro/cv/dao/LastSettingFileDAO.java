@@ -7,4 +7,6 @@ public interface LastSettingFileDAO {
 
    public LastSettingFileEntity update(LastSettingFileEntity lastSettingFile) throws Exception;
 
+   public void delete(LastSettingFileEntity lastSettingFile) throws Exception;
+
 }

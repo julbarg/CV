@@ -106,4 +106,18 @@ public class Messages {
 
    public static final String DELETE_FILE_PROFILE_ERROR = "Ha ocurrido un error al eliminar un Archivo del Perfil";
 
+   public static final String LOAD_CLIENT_SERVICE_ERROR = "Ha ocurrido un error al intertar cargar el Servcio";
+
+   public static final String LOAD_SERVICE_CONTACTS_ERROR = "Ha ocurrido un error al cargar los Contactos del Servicio";
+
+   public static final String DELETE_SERVICE_CONTACT_ERROR = "Ha ocurrido un error al eliminar el Contacto del Servcio";
+
+   public static final String UPDATE_SERVICE_CONTACT_ERROR = "Ha ocurrido un error al actualizar el Contacto del Servicio";
+
+   public static final String UPDATE_SERVICE_ERROR = "Ha ocurrido un error al actualizar el Servcio";
+
+   public static final String DELETE_SERVICE_FILE_ERROR = "Ha ocurrido un error Eliminando el archivo de Ultima Configuracion anterior";
+
+   public static final String UPDATE_SERVICE_SUCCESS = "Se ha acutalizo el Servicio correctamente";
+
 }

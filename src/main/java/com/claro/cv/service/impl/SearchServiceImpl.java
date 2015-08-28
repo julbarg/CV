@@ -109,19 +109,8 @@ public class SearchServiceImpl implements SearchService, Serializable {
       return countryDAO.findByGeoCode(regionSelect);
    }
 
-   @Override
-   public ArrayList<MultivalueEntity> loadTypeServices() throws Exception {
-      TypeMultivalueEntity typeMultivalue = typeMultivalueDAO.findByName(TypeMultivalueEnum.TIPO_SERVICIO
-         .getValue());
-      return multivalueDAO.findByTypeMultivalue(typeMultivalue);
-   }
+   
 
-   @Override
-   public ArrayList<MultivalueEntity> loadSchedules() throws Exception {
-      TypeMultivalueEntity typeMultivalue = typeMultivalueDAO.findByName(TypeMultivalueEnum.HORARIO_ATENCION
-         .getValue());
-      return multivalueDAO.findByTypeMultivalue(typeMultivalue);
-   }
 
    @Override
    public ArrayList<ServiceContactEntity> loadContact(ClientServiceEntity service) throws Exception {

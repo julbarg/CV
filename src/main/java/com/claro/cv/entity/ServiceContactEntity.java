@@ -1,6 +1,7 @@
 package com.claro.cv.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 import javax.persistence.*;
 
@@ -21,7 +22,7 @@ public class ServiceContactEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_service_contact")
-	private String idServiceContact;
+	private BigInteger idServiceContact;
 
 	private String email;
 
@@ -42,11 +43,11 @@ public class ServiceContactEntity implements Serializable {
 	public ServiceContactEntity() {
 	}
 
-	public String getIdServiceContact() {
+	public BigInteger getIdServiceContact() {
 		return this.idServiceContact;
 	}
 
-	public void setIdServiceContact(String idServiceContact) {
+	public void setIdServiceContact(BigInteger idServiceContact) {
 		this.idServiceContact = idServiceContact;
 	}
 

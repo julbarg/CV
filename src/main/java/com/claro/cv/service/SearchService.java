@@ -10,7 +10,6 @@ import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
 import com.claro.cv.entity.CountryEntity;
 import com.claro.cv.entity.DepartamentEntity;
-import com.claro.cv.entity.MultivalueEntity;
 import com.claro.cv.entity.ServiceContactEntity;
 import com.claro.cv.entity.ServiceFileEntity;
 import com.claro.cv.enums.TypeMultivalueEnum;
@@ -33,16 +32,13 @@ public interface SearchService {
 
    public CountryEntity loadCountry(String regionSelect) throws Exception;
 
-   public ArrayList<MultivalueEntity> loadTypeServices() throws Exception;
-
-   public ArrayList<MultivalueEntity> loadSchedules() throws Exception;
-
    public ArrayList<ServiceContactEntity> loadContact(ClientServiceEntity service) throws Exception;
 
    public ArrayList<ServiceFileEntity> loadServiceFiles(ClientServiceEntity data) throws Exception;
 
    public ArrayList<MapDataDTO> loadMapInt(ClientProfileEntity clientProfile) throws Exception;
 
-   public String getNameFromMultivalue(TypeMultivalueEnum proveedorUltimaMilla, String idProviderLastMile) throws Exception;
+   public String getNameFromMultivalue(TypeMultivalueEnum proveedorUltimaMilla, String idProviderLastMile)
+      throws Exception;
 
 }

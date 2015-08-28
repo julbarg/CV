@@ -14,6 +14,7 @@ import java.util.List;
    name = "client_service")
 @NamedQueries({
    @NamedQuery(name = "ClientServiceEntity.findAll", query = "SELECT c FROM ClientServiceEntity c"),
+   @NamedQuery(name = "ClientServiceEntity.findByIdClientService",query = "SELECT c FROM ClientServiceEntity c WHERE c.idClientService=:idClientService"),
    @NamedQuery(name = "ClientServiceEntity.findByDepartament",query = "SELECT c FROM ClientServiceEntity c WHERE c.departament=:departament AND c.clientProfile=:clientProfile"),
    @NamedQuery(name = "ClientServiceEntity.findByClientProfile",query = "SELECT c FROM ClientServiceEntity c WHERE c.clientProfile=:clientProfile"),
    @NamedQuery(name = "ClientServiceEntity.findByCountry",query = "SELECT c FROM ClientServiceEntity c WHERE c.country=:country AND c.clientProfile=:clientProfile") })

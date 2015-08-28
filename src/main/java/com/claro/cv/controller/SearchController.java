@@ -36,6 +36,7 @@ import com.claro.cv.entity.ServiceContactEntity;
 import com.claro.cv.entity.ServiceFileEntity;
 import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.SearchService;
+import com.claro.cv.service.UtilService;
 import com.claro.cv.util.Constant;
 import com.claro.cv.util.MapJsonUtil;
 import com.claro.cv.util.Messages;
@@ -52,6 +53,12 @@ public class SearchController implements Serializable {
    private static final long serialVersionUID = 1L;
 
    private static Logger LOGGER = LogManager.getLogger(SearchController.class.getName());
+
+   @Autowired
+   private SearchService searchService;
+
+   @Autowired
+   private UtilService utilService;
 
    private BigInteger idCliente;
 
@@ -74,9 +81,6 @@ public class SearchController implements Serializable {
    private boolean international;
 
    private boolean sap;
-
-   @Autowired
-   private SearchService searchService;
 
    private ArrayList<MapDataDTO> listMapaData;
 
@@ -112,7 +116,7 @@ public class SearchController implements Serializable {
 
    private void loadTypeServices() {
       try {
-         listTypeServices = searchService.loadTypeServices();
+         listTypeServices = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_SERVICIO);
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_TYPE_SERVICE_ERROR, e);
       }
@@ -120,7 +124,7 @@ public class SearchController implements Serializable {
 
    private void loadSchedules() {
       try {
-         listSchedules = searchService.loadSchedules();
+         listSchedules = utilService.loadMultiValue(TypeMultivalueEnum.HORARIO_ATENCION);
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_SCHEDULE_ERROR, e);
       }

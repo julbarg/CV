@@ -57,7 +57,6 @@
 								<p:outputLabel styleClass="label_edit" value="Estado: " />
 								<p:selectOneMenu id="state" styleClass="select_post" label="Tipo de Contacto"
 									value="#{edit.clientEdit.state}">
-									<f:selectItem itemLabel="Seleccione Estado..." />
 									<f:selectItems value="#{edit.listState}" var="state" itemLabel="#{state.name}"
 										itemValue="#{state.code}" />
 								</p:selectOneMenu>
@@ -217,7 +216,8 @@
 										<h:outputLabel value="#{service.country.name}" styleClass="column_service" />
 									</p:column>
 									<p:column headerText="Acciones" styleClass="column_service">
-										<p:commandButton value="Editar" title="Editar" styleClass="column_service">
+										<p:commandButton value="Editar" title="Editar" styleClass="column_service" action="#{editService.goServiceEdit}">
+											<f:setPropertyActionListener value="#{service.idClientService}" target="#{editService.idClientServiceEdit}" />
 										</p:commandButton>
 									</p:column>
 								</p:dataTable>

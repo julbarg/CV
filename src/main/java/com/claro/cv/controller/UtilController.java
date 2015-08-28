@@ -48,7 +48,7 @@ public class UtilController implements Serializable {
    public StreamedContent downloadFile(String url, String nameFile) {
       try {
          String extension = FilenameUtils.getExtension(url);
-         InputStream stream = new FileInputStream(url);
+         InputStream stream = new FileInputStream(url.trim());
          return new DefaultStreamedContent(stream, extension, nameFile + "." + extension);
       } catch (FileNotFoundException e) {
          LOGGER.error(Messages.DOWNLOAD_FILE_ERROR, e);

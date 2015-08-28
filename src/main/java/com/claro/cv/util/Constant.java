@@ -7,6 +7,8 @@ public class Constant {
    public static final String CREATE_PAGE = "create";
    
    public static final String ADMIN_EDIT = "admin_edit";
+   
+   public static final String ADMIN_EDIT_SERVICE = "admin_edit_service";
 
    public static final String XHTML = ".xhtml";
 
@@ -41,6 +43,8 @@ public class Constant {
    public static final String USER_NAME = "userName";
 
    public static final String STATE_ACTIVE = "A";
+
+   
 
    
 

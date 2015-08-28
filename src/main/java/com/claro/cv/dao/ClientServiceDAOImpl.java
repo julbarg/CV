@@ -1,6 +1,7 @@
 package com.claro.cv.dao;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import javax.persistence.TypedQuery;
@@ -72,5 +73,15 @@ public class ClientServiceDAOImpl extends TemplateDAO<ClientServiceEntity> imple
       ArrayList<ClientServiceEntity> results = (ArrayList<ClientServiceEntity>) query.getResultList();
 
       return results;
+   }
+
+   @Override
+   public ClientServiceEntity findByIdClientService(BigInteger idClientService) throws Exception {
+      TypedQuery<ClientServiceEntity> query = entityManager.createNamedQuery(
+         "ClientServiceEntity.findByIdClientService", ClientServiceEntity.class);
+      query.setParameter("idClientService", idClientService);
+      ArrayList<ClientServiceEntity> results = (ArrayList<ClientServiceEntity>) query.getResultList();
+      return results.get(0);
+
    }
 }

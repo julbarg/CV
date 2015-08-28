@@ -1,5 +1,6 @@
 package com.claro.cv.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import com.claro.cv.entity.ClientProfileEntity;
@@ -20,5 +21,9 @@ public interface ClientServiceDAO {
 
    public ArrayList<ClientServiceEntity> findByClientProfile(ClientProfileEntity clientProfile)
       throws Exception;
+
+   public ClientServiceEntity findByIdClientService(BigInteger idClientServiceEdit) throws Exception;
+
+   public ClientServiceEntity update(ClientServiceEntity clientServiceEntity) throws Exception;
 
 }

@@ -63,15 +63,6 @@ public class EditServiceImpl implements EditService, Serializable {
    }
 
    @Override
-   public ArrayList<MultivalueEntity> loadMultiValue(TypeMultivalueEnum typeMultivalueP) throws Exception {
-      ArrayList<MultivalueEntity> listMultivalue;
-      TypeMultivalueEntity typeMultivalue = typeMultivalueDAO.findByName(typeMultivalueP.getValue());
-      listMultivalue = multivalueDAO.findByTypeMultivalue(typeMultivalue);
-
-      return listMultivalue;
-   }
-
-   @Override
    public ArrayList<ClientServiceEntity> loadServicesByClientProfile(ClientProfileEntity clientProfile)
       throws Exception {
       return clientServiceDAO.findByClientProfile(clientProfile);

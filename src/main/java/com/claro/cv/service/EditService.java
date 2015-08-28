@@ -8,7 +8,6 @@ import com.claro.cv.entity.ClientContactEntity;
 import com.claro.cv.entity.ClientFileEntity;
 import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
-import com.claro.cv.entity.MultivalueEntity;
 import com.claro.cv.enums.TypeMultivalueEnum;
 
 
@@ -17,8 +16,6 @@ public interface EditService {
    ArrayList<ClientProfileEntity> loadClientProfileByEditSearch(EditSearchDTO editSearch) throws Exception;
 
    ClientProfileEntity loadClientProfileById(BigInteger idClientEdit) throws Exception;
-
-   ArrayList<MultivalueEntity> loadMultiValue(TypeMultivalueEnum tipoContacto) throws Exception;
 
    ArrayList<ClientServiceEntity> loadServicesByClientProfile(ClientProfileEntity clientEdit)
       throws Exception;
