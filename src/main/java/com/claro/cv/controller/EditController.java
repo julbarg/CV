@@ -1,6 +1,8 @@
 package com.claro.cv.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +18,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.map.OverlaySelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -30,7 +35,10 @@ import com.claro.cv.entity.ClientContactEntity;
 import com.claro.cv.entity.ClientFileEntity;
 import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
+import com.claro.cv.entity.LastSettingFileEntity;
 import com.claro.cv.entity.MultivalueEntity;
+import com.claro.cv.entity.ServiceContactEntity;
+import com.claro.cv.entity.ServiceFileEntity;
 import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.EditService;
 import com.claro.cv.service.UtilService;
@@ -68,7 +76,11 @@ public class EditController implements Serializable {
 
    private ArrayList<MultivalueEntity> listTypeContact;
 
+   private ArrayList<MultivalueEntity> listTypeService;
+
    private ArrayList<MultivalueEntity> listState;
+
+   private ArrayList<MultivalueEntity> listSchedules;
 
    private ClientContactEntity clientContact;
 
@@ -86,6 +98,10 @@ public class EditController implements Serializable {
 
    private int zoomMap;
 
+   private boolean showObservationState;
+
+   private Marker markerSelect;
+
    @PostConstruct
    public void initialize() {
       editSearch = new EditSearchDTO();
@@ -95,14 +111,15 @@ public class EditController implements Serializable {
       listClientServiceEdit = new ArrayList<ClientServiceEntity>();
       listClientContact = new ArrayList<ClientContactEntity>();
       listDetailEngineeringFile = new ArrayList<ClientFileEntity>();
-      loadTypeContact();
+      loadMultivalue();
    }
 
-   private void loadTypeContact() {
-
+   private void loadMultivalue() {
       try {
          listTypeContact = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_CONTACTO);
          listState = utilService.loadMultiValue(TypeMultivalueEnum.ESTADO_CLIENTE_SERVICIO);
+         listTypeService = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_SERVICIO);
+         listSchedules = utilService.loadMultiValue(TypeMultivalueEnum.HORARIO_ATENCION);
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_TYPE_CONTACT_ERROR, e);
       }
@@ -150,6 +167,7 @@ public class EditController implements Serializable {
    public String edit() {
       try {
          clientEdit = editService.loadClientProfileById(idClientEdit);
+         changeState();
          loadContactsProfile();
          loadDetailEngineeringFile();
          editSearch = new EditSearchDTO();
@@ -162,7 +180,23 @@ public class EditController implements Serializable {
          LOGGER.error(Messages.LOAD_CLIENT_EDIT_ERROR, e);
          return null;
       }
+   }
 
+   public void refresh() {
+      try {
+         System.out.println("refresh");
+         clientEdit = editService.loadClientProfileById(idClientEdit);
+         changeState();
+         loadContactsProfile();
+         loadDetailEngineeringFile();
+         editSearch = new EditSearchDTO();
+         listClientProfileSearch = new ArrayList<ClientProfileEntity>();
+         loadServicesEdit();
+         getMarkers();
+      } catch (Exception e) {
+         Util.addMessageError(Messages.LOAD_CLIENT_EDIT_ERROR);
+         LOGGER.error(Messages.LOAD_CLIENT_EDIT_ERROR, e);
+      }
    }
 
    private void loadContactsProfile() {
@@ -188,9 +222,33 @@ public class EditController implements Serializable {
    }
 
    public void update() {
+      if (!validateUpdate())
+         return;
       if (updateClient() && updateContacts()) {
          Util.addMessageInfoKeep(Messages.UPDATE_CLIENT_PROFILE_SUCESS);
       }
+   }
+
+   private boolean validateUpdate() {
+      boolean validateObservation = clientEdit.getObservationState() != null
+         && clientEdit.getObservationState().length() > 0;
+      boolean validateContacts = listClientContact != null && listClientContact.size() > 0;
+
+      boolean observation = false;
+      if (showObservationState) {
+         observation = validateObservation;
+      } else {
+         observation = true;
+      }
+
+      if (!validateContacts) {
+         Util.addMessageError(Messages.VALIDATE_CONTACTS);
+      }
+      if (!observation) {
+         Util.addMessageError(Messages.VALIDATE_OBSERVATION);
+      }
+
+      return validateContacts && observation;
    }
 
    private boolean updateClient() {
@@ -229,6 +287,15 @@ public class EditController implements Serializable {
    public String getNameState(String state) {
       for (MultivalueEntity multivalue : listState) {
          if (multivalue.getCode().equals(state)) {
+            return multivalue.getName();
+         }
+      }
+      return null;
+   }
+
+   public String getNameTypeService(String typeService) {
+      for (MultivalueEntity multivalue : listTypeService) {
+         if (multivalue.getCode().equals(typeService)) {
             return multivalue.getName();
          }
       }
@@ -333,7 +400,7 @@ public class EditController implements Serializable {
       double lat;
       double lng;
       mapModel = new DefaultMapModel();
-      for (ClientServiceEntity service : listClientServiceEdit) {
+      for (ClientServiceEntity service : getListClientServiceEdit()) {
          lat = Double.parseDouble(service.getLat());
          lng = Double.parseDouble(service.getLng());
 
@@ -354,6 +421,53 @@ public class EditController implements Serializable {
          }
       }
       setUpMap(hasInternationalSerivices);
+   }
+
+   public void onMarkerSelect(OverlaySelectEvent event) {
+      markerSelect = (Marker) event.getOverlay();
+   }
+
+   public ArrayList<ServiceContactEntity> getContactsMarkerSelect() {
+      try {
+         if (markerSelect != null && markerSelect.getData() != null)
+            return editService.loadContact((ClientServiceEntity) markerSelect.getData());
+      } catch (Exception e) {
+         LOGGER.error(Messages.LOAD_CONTACT_SERVICE_ERROR, e);
+
+      }
+      return new ArrayList<ServiceContactEntity>();
+   }
+
+   public StreamedContent downloadLastSettingsFile() {
+      try {
+         LastSettingFileEntity file = ((ClientServiceEntity) markerSelect.getData()).getLastSettingFile();
+         InputStream stream = new FileInputStream(file.getUrl());
+         String extension = FilenameUtils.getExtension(file.getUrl());
+         return new DefaultStreamedContent(stream, extension, file.getNameFile() + "." + extension);
+      } catch (FileNotFoundException e) {
+         LOGGER.error(Messages.LOAD_LAST_SETTINGS_FILE, e);
+      }
+      return null;
+   }
+
+   public String getSchedule(String valueSchedule) {
+      return Util.getMeansMultiValue(listSchedules, valueSchedule);
+   }
+
+   public ArrayList<ServiceFileEntity> getServiceFiles() {
+      try {
+         if (markerSelect != null && markerSelect.getData() != null) {
+            return editService.loadServiceFiles((ClientServiceEntity) markerSelect.getData());
+         }
+      } catch (Exception e) {
+         LOGGER.error(Messages.LOAD_SERVICE_FILE_ERROR, e);
+
+      }
+      return new ArrayList<ServiceFileEntity>();
+   }
+
+   public boolean validateProvider(String idProviderLastMileP) {
+      return idProviderLastMileP != null && idProviderLastMileP.length() > 0;
    }
 
    private void setUpMap(boolean hasInternationalSerivices) {
@@ -389,6 +503,10 @@ public class EditController implements Serializable {
       } catch (Exception e) {
          return null;
       }
+   }
+
+   public void changeState() {
+      showObservationState = !Constant.STATE_ACTIVE.equals(clientEdit.getState());
    }
 
    public EditSearchDTO getEditSearch() {
@@ -432,6 +550,7 @@ public class EditController implements Serializable {
    }
 
    public ArrayList<ClientServiceEntity> getListClientServiceEdit() {
+      loadServicesEdit();
       return listClientServiceEdit;
    }
 
@@ -509,6 +628,22 @@ public class EditController implements Serializable {
 
    public void setZoomMap(int zoomMap) {
       this.zoomMap = zoomMap;
+   }
+
+   public boolean isShowObservationState() {
+      return showObservationState;
+   }
+
+   public void setShowObservationState(boolean showObservationState) {
+      this.showObservationState = showObservationState;
+   }
+
+   public Marker getMarkerSelect() {
+      return markerSelect;
+   }
+
+   public void setMarkerSelect(Marker markerSelect) {
+      this.markerSelect = markerSelect;
    }
 
 }

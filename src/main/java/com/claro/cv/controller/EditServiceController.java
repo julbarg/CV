@@ -174,6 +174,7 @@ public class EditServiceController implements Serializable {
       loadClientServiceEdit();
       loadServiceContacts();
       loadServiceFiles();
+      loadFlags();
       lastSettingFileOld = clientServiceEdit.getLastSettingFile();
       noChangesUC = true;
       nameUpload = lastSettingFileOld.getNameFile();
@@ -184,6 +185,7 @@ public class EditServiceController implements Serializable {
       loadClientServiceEdit();
       loadServiceContacts();
       loadServiceFiles();
+      loadFlags();
       lastSettingFileOld = clientServiceEdit.getLastSettingFile();
       noChangesUC = true;
       nameUpload = lastSettingFileOld.getNameFile();
@@ -192,7 +194,6 @@ public class EditServiceController implements Serializable {
    private void loadClientServiceEdit() {
       try {
          clientServiceEdit = editServiceService.loadClientServiceEdit(idClientServiceEdit);
-         loadFlags();
       } catch (Exception e) {
          Util.addMessageError(Messages.LOAD_CLIENT_SERVICE_ERROR);
          LOGGER.error(Messages.LOAD_CLIENT_SERVICE_ERROR, e);
@@ -222,7 +223,7 @@ public class EditServiceController implements Serializable {
       international = clientServiceEdit.getCountry() != null;
       typeLocaltion = international ? TypeLocationEnum.INTERNATIONAL.getValue() : TypeLocationEnum.NATIONAL
          .getValue();
-      diferentProvider = clientServiceEdit.getCodeServiceLastMile() != null;
+      diferentProvider = validate(clientServiceEdit.getCodeServiceLastMile());
       mainPoint = "S".equals(clientServiceEdit.getMainPoint()) ? true : false;
       enlaceBackUp = "S".equals(clientServiceEdit.getBackup()) ? true : false;
       showObservationState = clientServiceEdit.getObservationState() != null
@@ -254,7 +255,10 @@ public class EditServiceController implements Serializable {
 
    public void loadCitiesByDepartament() {
       try {
-         setListCiudad(utilService.loadCitiesByDepartament(idDepartament));
+         if (idDepartament != null && idDepartament.length() > 0) {
+            listCiudad = utilService.loadCitiesByDepartament(idDepartament);
+         }
+
       } catch (Exception e) {
          LOGGER.error(Messages.LOAD_CITY_ERROR, e);
          Util.addMessageFatal(Messages.LOAD_CITY_ERROR);
@@ -417,8 +421,10 @@ public class EditServiceController implements Serializable {
    }
 
    public void update() {
-      if (!validateUpdate())
+      if (!validateUpdate()) {
+         RequestContext.getCurrentInstance().execute("loadMapOrigin()");
          return;
+      }
       updateLocations();
       updateServiceContacts();
       updateService();
@@ -432,7 +438,72 @@ public class EditServiceController implements Serializable {
 
    private boolean validateUpdate() {
 
-      return false;
+      boolean validateServiceContacts = listServiceContact.size() > 0;
+      boolean validateDirection = validate(clientServiceEdit.getDirection());
+      boolean validateTypeService = validate(clientServiceEdit.getTypeService());
+      boolean validateCodeService = validate(clientServiceEdit.getCodeService());
+      boolean validateDescription = validate(clientServiceEdit.getDescription());
+
+      boolean validateCountry = getCountry() != null;
+      boolean validateDepartamentoAndCity = getDepartament() != null && getCity() != null;
+
+      boolean validateProveedor = validate(clientServiceEdit.getIdProviderLastMile());
+      boolean validateCodeServiceUM = validate(clientServiceEdit.getCodeServiceLastMile());
+      boolean validateObservation = validate(clientServiceEdit.getObservationState());
+
+      boolean general = validateServiceContacts && validateDirection && validateTypeService
+         && validateCodeService && validateDescription;
+      boolean location = false;
+      if (international) {
+         location = validateCountry;
+      } else {
+         location = validateDepartamentoAndCity;
+      }
+      boolean proveedor = false;
+      if (validateProveedor) {
+         proveedor = validateCodeServiceUM;
+      } else {
+         proveedor = true;
+      }
+      boolean observation = false;
+      if (showObservationState) {
+         observation = validateObservation;
+      } else {
+         observation = true;
+      }
+
+      if (!validateDirection) {
+         Util.addMessageError(Messages.VALIDATE_DIRECTION);
+      }
+      if (!validateTypeService) {
+         Util.addMessageError(Messages.VALIDATE_TYPE_SERVICE);
+      }
+      if (!validateCodeService) {
+         Util.addMessageError(Messages.VALIDATE_CODE_SERVICE);
+      }
+
+      if (!validateDescription) {
+         Util.addMessageError(Messages.VALIDATE_DESCRIPTION);
+      }
+      if (!validateServiceContacts) {
+         Util.addMessageError(Messages.VALIDATE_CONTACTS);
+      }
+
+      if (!location) {
+         Util.addMessageError(Messages.VALIDATE_LOCATION);
+      }
+      if (!proveedor) {
+         Util.addMessageError(Messages.VALIDATE_CODE_SERVICE_UM);
+      }
+      if (!observation) {
+         Util.addMessageError(Messages.VALIDATE_OBSERVATION);
+      }
+
+      return general && location && proveedor && observation;
+   }
+
+   private boolean validate(String value) {
+      return value != null && value.length() > 0;
    }
 
    private void updateLocations() {
@@ -495,7 +566,9 @@ public class EditServiceController implements Serializable {
          clientServiceEdit.setMainPoint(mainPointE);
          String backup = enlaceBackUp == true ? "S" : "N";
          clientServiceEdit.setBackup(backup);
-         clientServiceEdit.setLastSettingFile(lastSettingFileNew);
+         if (!noChangesUC) {
+            clientServiceEdit.setLastSettingFile(lastSettingFileNew);
+         }
          clientServiceEdit = editServiceService.update(clientServiceEdit);
       } catch (Exception e) {
          LOGGER.error(Messages.UPDATE_SERVICE_ERROR, e);

@@ -57,11 +57,18 @@
 								<p:outputLabel styleClass="label_edit" value="Estado: " />
 								<p:selectOneMenu id="state" styleClass="select_post" label="Tipo de Contacto"
 									value="#{edit.clientEdit.state}">
+									<p:ajax listener="#{edit.changeState}" update="form_admin_edit:panel_observation_state" />
 									<f:selectItems value="#{edit.listState}" var="state" itemLabel="#{state.name}"
 										itemValue="#{state.code}" />
 								</p:selectOneMenu>
-
 							</h:panelGrid>
+
+							<h:panelGrid id="panel_observation_state">
+								<p:outputLabel value="Observacion de cambio de Estado" rendered="#{edit.showObservationState}" />
+								<p:inputTextarea value="#{edit.clientEdit.observationState}" rendered="#{edit.showObservationState}"
+									cols="115" rows="8" autoResize="false" />
+							</h:panelGrid>
+
 							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_contactos">
 								<h3>Contactos</h3>
 								<h:panelGrid columns="2" id="panel_add_contact">
@@ -81,7 +88,7 @@
 									</p:selectOneMenu>
 								</h:panelGrid>
 								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;"
-									actionListener="#{edit.addContact}" update="form_admin_edit" />
+									actionListener="#{edit.addContact}" update="form_admin_edit:panel_contactos" />
 								<p:dataTable id="data_table_contact_profile" styleClass="data_table_contacts"
 									value="#{edit.listClientContact}" var="contactProfile">
 									<p:column headerText="Nombre" styleClass="column_contact">
@@ -96,7 +103,7 @@
 									</p:column>
 									<p:column headerText="Acciones" styleClass="column_contact">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{edit.deleteContact}"
-											update=":form_admin_edit">
+											update=":form_admin_edit:panel_contactos">
 											<f:setPropertyActionListener value="#{contactProfile.idClientContact}"
 												target="#{edit.idClientContactDelete}" />
 										</p:commandButton>
@@ -116,7 +123,7 @@
 									</p:column>
 									<p:column headerText="Acciones" styleClass="column_contact">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{edit.deleteFile(file.url)}"
-											update=":form_admin_edit" styleClass="column_contact">
+											update=":form_admin_edit:panel_file" styleClass="column_contact">
 											<f:setPropertyActionListener value="#{file.idClientFile}" target="#{edit.idClientFileDelete}" />
 										</p:commandButton>
 									</p:column>
@@ -126,61 +133,62 @@
 								update="form_admin_edit" />
 						</h:form>
 						<h:form id="form_admin_edit_02">
-							<p:gmap widgetVar="map_detail" center="#{edit.centerMap}" zoom="#{edit.zoomMap}" type="ROADMAP"
+							<h2 style="text-align: center;">INFORMACIÓN DE SERVICIOS</h2>
+							<p:gmap id="map" widgetVar="map_detail" center="#{edit.centerMap}" zoom="#{edit.zoomMap}" type="ROADMAP"
 								model="#{edit.mapModel}" style="height: 450px; width: 900px;">
-								<p:ajax event="overlaySelect" listener="#{search.onMarkerSelect}" />
+								<p:ajax event="overlaySelect" listener="#{edit.onMarkerSelect}" />
 								<p:gmapInfoWindow id="infoWindow" maxWidth="250">
-									<h3 style="text-align: center;">#{search.markerSelect.title}</h3>
+									<h3 style="text-align: center;">#{edit.markerSelect.title}</h3>
 									<h:panelGrid columns="2" styleClass="table_info_map">
 										<h:outputLabel styleClass="title_lable" value="Punto Principal Cliente " />
-										<h:outputLabel value="#{search.markerSelect.data.mainPoint}" />
+										<h:outputLabel value="#{edit.markerSelect.data.mainPoint}" />
 
 										<h:outputLabel styleClass="title_lable" value="Tipo de Servicio " />
-										<h:outputLabel value="#{search.markerSelect.data.typeService}" />
+										<h:outputLabel value="#{edit.markerSelect.data.typeService}" />
 
 										<h:outputLabel styleClass="title_lable" value="Canal BackUp " />
-										<h:outputLabel value="#{search.markerSelect.data.backup}" />
+										<h:outputLabel value="#{edit.markerSelect.data.backup}" />
 
 										<h:outputLabel styleClass="title_lable" value="Dirección " />
-										<h:outputLabel value="#{search.markerSelect.data.direction}" />
+										<h:outputLabel value="#{edit.markerSelect.data.direction}" />
 
 										<h:outputLabel styleClass="title_lable" value="Contactos " />
-										<ui:repeat var="contacto" value="#{search.getContactsMarkerSelect()}">
+										<ui:repeat var="contacto" value="#{edit.getContactsMarkerSelect()}">
 											<h:panelGrid columns="1" styleClass="table_info_map_into">
 												<h:outputLabel value="#{contacto.nameContact}" />
 												<h:outputLabel value="#{contacto.phone}" />
 												<h:outputLabel value="#{contacto.mobil}" />
 												<h:outputLabel value="#{contacto.email}" />
-												<h:outputLabel value="#{search.getSchedule(contacto.schedule)}" />
+												<h:outputLabel value="#{edit.getSchedule(contacto.schedule)}" />
 											</h:panelGrid>
 										</ui:repeat>
 
 										<h:outputLabel styleClass="title_lable" value="Ultima Configuración " />
-										<p:commandLink value="#{search.markerSelect.data.lastSettingFile.nameFile}" ajax="false">
-											<p:fileDownload value="#{search.downloadLastSettingsFile()}" />
+										<p:commandLink value="#{edit.markerSelect.data.lastSettingFile.nameFile}" ajax="false">
+											<p:fileDownload value="#{edit.downloadLastSettingsFile()}" />
 										</p:commandLink>
 
 										<h:outputLabel styleClass="title_lable" value="Ingenieria de Detalle " />
-										<ui:repeat var="file" value="#{search.getServiceFiles()}">
+										<ui:repeat var="file" value="#{edit.getServiceFiles()}">
 											<h:panelGrid columns="1" styleClass="table_info_map_into">
 												<p:commandLink value="#{file.nameFile}" ajax="false">
-													<p:fileDownload value="#{search.downloadFile(file.url, file.nameFile)}" />
+													<p:fileDownload value="#{util.downloadFile(file.url, file.nameFile)}" />
 												</p:commandLink>
 											</h:panelGrid>
 										</ui:repeat>
 
 										<h:outputLabel styleClass="title_lable" value="Descripción " />
-										<h:outputLabel value="#{search.markerSelect.data.description}" />
+										<h:outputLabel value="#{edit.markerSelect.data.description}" />
 
 										<h:outputLabel styleClass="title_lable" value="Proveedor de UM "
-											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
-										<h:outputLabel value="#{search.markerSelect.data.idProviderLastMile}"
-											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+											rendered="#{edit.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+										<h:outputLabel value="#{edit.markerSelect.data.idProviderLastMile}"
+											rendered="#{edit.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
 
 										<h:outputLabel styleClass="title_lable" value="Codigo de Servicio UM "
-											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
-										<h:outputLabel value="#{search.markerSelect.data.codeServiceLastMile}"
-											rendered="#{search.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+											rendered="#{edit.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+										<h:outputLabel value="#{edit.markerSelect.data.codeServiceLastMile}"
+											rendered="#{edit.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
 
 									</h:panelGrid>
 								</p:gmapInfoWindow>
@@ -192,8 +200,10 @@
 								<h:panelGrid columns="2" style="width: 97%;">
 									<h3>Codigos de Servicios</h3>
 									<p:panel styleClass="panel_button">
-										<p:commandButton style="text-aling: right;" value="Add" styleClass="button_post_add"
-											action="admin_new_service.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+										<p:commandButton style="text-aling: right;" value="Add Service" styleClass="button_post_add"
+											action="#{addService.goEditAddService}" ajax="false" immediate="true">
+											<f:setPropertyActionListener value="#{edit.idClientEdit}" target="#{addService.idClientEdit}" />
+										</p:commandButton>
 									</p:panel>
 								</h:panelGrid>
 								<p:dataTable styleClass="data_table_contacts" value="#{edit.listClientServiceEdit}" var="service">
@@ -204,7 +214,7 @@
 										<h:outputLabel value="#{service.codeService}" styleClass="column_service" />
 									</p:column>
 									<p:column headerText="Tipo Servicio" styleClass="column_service">
-										<h:outputLabel value="#{service.typeService}" styleClass="column_service" />
+										<h:outputLabel value="#{edit.getNameTypeService(service.typeService)}" styleClass="column_service" />
 									</p:column>
 									<p:column headerText="Direccion" styleClass="column_service">
 										<h:outputLabel value="#{service.direction}" styleClass="column_service" />
@@ -216,8 +226,10 @@
 										<h:outputLabel value="#{service.country.name}" styleClass="column_service" />
 									</p:column>
 									<p:column headerText="Acciones" styleClass="column_service">
-										<p:commandButton value="Editar" title="Editar" styleClass="column_service" action="#{editService.goServiceEdit}">
-											<f:setPropertyActionListener value="#{service.idClientService}" target="#{editService.idClientServiceEdit}" />
+										<p:commandButton value="Editar" title="Editar" styleClass="column_service"
+											action="#{editService.goServiceEdit}">
+											<f:setPropertyActionListener value="#{service.idClientService}"
+												target="#{editService.idClientServiceEdit}" />
 										</p:commandButton>
 									</p:column>
 								</p:dataTable>

@@ -249,7 +249,6 @@ public class CreateController implements Serializable {
       } else {
          Util.addMessageWarn(Messages.VALIDATE_CONTACT_SERVICE);
       }
-
    }
 
    private boolean validateContactService() {
@@ -392,7 +391,7 @@ public class CreateController implements Serializable {
          Util.addMessageError(Messages.VALIDATE_DESCRIPTION);
       }
       if (!validateContactsService) {
-         Util.addMessageError(Messages.VALIDATE_CONTACTS_SERVICE);
+         Util.addMessageError(Messages.VALIDATE_CONTACTS);
       }
 
       return validateMap && validateLocation && validateDirection && validateAlias && validateTypeService

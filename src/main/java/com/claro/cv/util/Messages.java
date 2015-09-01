@@ -74,7 +74,7 @@ public class Messages {
 
    public static final String VALIDATE_DESCRIPTION = "El campo Descripción es requerido";
 
-   public static final String VALIDATE_CONTACTS_SERVICE = "Debe seleccionar por los menos un Contacto de Servicio";
+   public static final String VALIDATE_CONTACTS = "Debe adicionar por los menos un Contacto";
 
    public static final String VALIDATE_SERVICES = "Debe agregar por lo menos un Servicio";
 
@@ -119,5 +119,13 @@ public class Messages {
    public static final String DELETE_SERVICE_FILE_ERROR = "Ha ocurrido un error Eliminando el archivo de Ultima Configuracion anterior";
 
    public static final String UPDATE_SERVICE_SUCCESS = "Se ha acutalizo el Servicio correctamente";
+
+   public static final String VALIDATE_OBSERVATION = "El campo Observación es obligatorio";
+
+   public static final String LOAD_CLIENT_PROFILE_ERROR = "Ha ocurrido un error al cargar el Perfil del Cliente";
+
+   public static final String CREATE_SERVICE_ERROR = "Ha ocurrido un error al crear un Servicio";
+
+   public static final String SAVE_SERVICE_SUCESSFULL = "El Servicio a sido creado exitosamente ";
 
 }

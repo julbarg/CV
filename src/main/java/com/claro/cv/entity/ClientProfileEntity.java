@@ -42,6 +42,10 @@ public class ClientProfileEntity implements Serializable {
 
    private String state;
 
+   @Column(
+      name = "observation_state")
+   private String observationState;
+
    // bi-directional many-to-one association to ClientContactEntity
    @OneToMany(
       mappedBy = "clientProfile", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
@@ -164,6 +168,14 @@ public class ClientProfileEntity implements Serializable {
 
    public void setState(String state) {
       this.state = state;
+   }
+
+   public String getObservationState() {
+      return observationState;
+   }
+
+   public void setObservationState(String observationState) {
+      this.observationState = observationState;
    }
 
 }

@@ -129,6 +129,8 @@
 								</h:panelGrid>
 
 							</h:panelGrid>
+							<p:outputLabel value="Descripcion del Servicio" />
+							<p:inputTextarea rows="6" cols="120" value="#{editService.clientServiceEdit.description}" />
 
 
 							<h:panelGrid columns="4">
@@ -247,7 +249,7 @@
 							<h:panelGrid columns="2">
 								<p:commandButton value="Regresar" styleClass="button_post_double"
 									action="admin_edit.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-								<p:commandButton value="Guardar" styleClass="button_post_double" action="#{editService.update}"
+								<p:commandButton value="Actualizar" styleClass="button_post_double" action="#{editService.update}"
 									update="form_admin_edit_service" />
 							</h:panelGrid>
 						</h:panelGrid>

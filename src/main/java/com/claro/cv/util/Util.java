@@ -112,4 +112,12 @@ public class Util {
 
    }
 
+   public static void redirectFaces(String url) {
+      try {
+         FacesContext.getCurrentInstance().getExternalContext().redirect(url);
+      } catch (IOException e) {
+      }
+
+   }
+
 }

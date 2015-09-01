@@ -8,6 +8,8 @@ import com.claro.cv.entity.ClientContactEntity;
 import com.claro.cv.entity.ClientFileEntity;
 import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
+import com.claro.cv.entity.ServiceContactEntity;
+import com.claro.cv.entity.ServiceFileEntity;
 import com.claro.cv.enums.TypeMultivalueEnum;
 
 
@@ -32,5 +34,9 @@ public interface EditService {
 
    String getNameFromMultivalue(TypeMultivalueEnum proveedorUltimaMilla, String idProviderLastMile)
       throws Exception;
+
+   ArrayList<ServiceContactEntity> loadContact(ClientServiceEntity clientService) throws Exception;
+
+   ArrayList<ServiceFileEntity> loadServiceFiles(ClientServiceEntity clientService) throws Exception;
 
 }

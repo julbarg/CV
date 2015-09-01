@@ -25,5 +25,7 @@ public interface ClientServiceDAO {
    public ClientServiceEntity findByIdClientService(BigInteger idClientServiceEdit) throws Exception;
 
    public ClientServiceEntity update(ClientServiceEntity clientServiceEntity) throws Exception;
+   
+   public void create(ClientServiceEntity clientServiceEntity) throws Exception;
 
 }

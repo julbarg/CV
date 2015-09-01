@@ -12,6 +12,8 @@ import com.claro.cv.dao.ClientFileDAO;
 import com.claro.cv.dao.ClientProfileDAO;
 import com.claro.cv.dao.ClientServiceDAO;
 import com.claro.cv.dao.MultivalueDAO;
+import com.claro.cv.dao.ServiceContactDAO;
+import com.claro.cv.dao.ServiceFileDAO;
 import com.claro.cv.dao.TypeMultivalueDAO;
 import com.claro.cv.dto.EditSearchDTO;
 import com.claro.cv.entity.ClientContactEntity;
@@ -19,6 +21,8 @@ import com.claro.cv.entity.ClientFileEntity;
 import com.claro.cv.entity.ClientProfileEntity;
 import com.claro.cv.entity.ClientServiceEntity;
 import com.claro.cv.entity.MultivalueEntity;
+import com.claro.cv.entity.ServiceContactEntity;
+import com.claro.cv.entity.ServiceFileEntity;
 import com.claro.cv.entity.TypeMultivalueEntity;
 import com.claro.cv.enums.TypeMultivalueEnum;
 import com.claro.cv.service.EditService;
@@ -49,6 +53,12 @@ public class EditServiceImpl implements EditService, Serializable {
 
    @Autowired
    private ClientFileDAO clientFileDAO;
+
+   @Autowired
+   private ServiceContactDAO serviceContactDAO;
+   
+   @Autowired
+   private ServiceFileDAO serviceFileDAO;
 
    @Override
    public ArrayList<ClientProfileEntity> loadClientProfileByEditSearch(EditSearchDTO editSearch)
@@ -106,6 +116,16 @@ public class EditServiceImpl implements EditService, Serializable {
       MultivalueEntity multivalue = multivalueDAO.findByTypeMultivalueAndValue(typeMultivalue,
          idProviderLastMile);
       return multivalue.getName();
+   }
+
+   @Override
+   public ArrayList<ServiceContactEntity> loadContact(ClientServiceEntity clientService) throws Exception {
+      return serviceContactDAO.findByClientService(clientService);
+   }
+
+   @Override
+   public ArrayList<ServiceFileEntity> loadServiceFiles(ClientServiceEntity clientService) throws Exception {
+      return serviceFileDAO.findByClientService(clientService);
    }
 
 }

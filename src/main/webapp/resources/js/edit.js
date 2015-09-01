@@ -2,6 +2,7 @@ var waypts = [];
 var markers = [];
 var map;
 var markerManual;
+var currentMarker;
 function initialize() {
    loadMapOrigin();
 }
@@ -9,7 +10,7 @@ function initialize() {
 function loadMapOrigin() {
    var lag = document.getElementById("form_admin_edit_service:lat").value;
    var lng = document.getElementById("form_admin_edit_service:lng").value;
-   
+
    var mapCanvas = document.getElementById('map-canvas');
    var mapOptions = {
       scrollwheel : false,
@@ -23,18 +24,23 @@ function loadMapOrigin() {
       draggable : true
    };
 
-   
-
    if (lag != "" && lng != "") {
       var currentLatlng = new google.maps.LatLng(lag, lng);
-      var currentMarker = new google.maps.Marker({
+      currentMarker = new google.maps.Marker({
          position : currentLatlng,
          map : map,
+         draggable : true
       });
       markers.push(currentMarker);
       map.setZoom(15);
       map.setCenter(currentMarker.getPosition());
+      google.maps.event.addListener(currentMarker, 'drag', function(event) {
+         document.getElementById("form_admin_edit_service:lat").value = event.latLng.lat();
+         document.getElementById("form_admin_edit_service:lng").value = event.latLng.lng();
+      });
    }
+
+   
 
    google.maps.event.addListener(map, 'rightclick', function(e) {
       deleteMarkers();

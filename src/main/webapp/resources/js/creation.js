@@ -2,6 +2,7 @@ var waypts = [];
 var markers = [];
 var map;
 var markerManual;
+var currentMarker;
 function initialize() {
    loadMapOrigin();
 }
@@ -25,13 +26,17 @@ function loadMapOrigin() {
 
    if (lag != "" && lng != "") {
       var currentLatlng = new google.maps.LatLng(lag, lng);
-      var currentMarker = new google.maps.Marker({
+      currentMarker = new google.maps.Marker({
          position : currentLatlng,
          map : map,
       });
       markers.push(currentMarker);
       map.setZoom(15);
       map.setCenter(currentMarker.getPosition());
+      google.maps.event.addListener(currentMarker, 'drag', function(event) {
+         document.getElementById("form_step_two:lat").value = event.latLng.lat();
+         document.getElementById("form_step_two:lng").value = event.latLng.lng();
+      });
    }
 
    google.maps.event.addListener(map, 'rightclick', function(e) {

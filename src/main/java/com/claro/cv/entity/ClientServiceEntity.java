@@ -17,6 +17,8 @@ import java.util.List;
    @NamedQuery(name = "ClientServiceEntity.findByIdClientService",query = "SELECT c FROM ClientServiceEntity c WHERE c.idClientService=:idClientService"),
    @NamedQuery(name = "ClientServiceEntity.findByDepartament",query = "SELECT c FROM ClientServiceEntity c WHERE c.departament=:departament AND c.clientProfile=:clientProfile"),
    @NamedQuery(name = "ClientServiceEntity.findByClientProfile",query = "SELECT c FROM ClientServiceEntity c WHERE c.clientProfile=:clientProfile"),
+   @NamedQuery(name = "ClientServiceEntity.findByCodeService",query = "SELECT c FROM ClientServiceEntity c WHERE c.codeService=:codeService"),
+   
    @NamedQuery(name = "ClientServiceEntity.findByCountry",query = "SELECT c FROM ClientServiceEntity c WHERE c.country=:country AND c.clientProfile=:clientProfile") })
 public class ClientServiceEntity implements Serializable {
    private static final long serialVersionUID = 1L;
