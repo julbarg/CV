@@ -1,5 +1,7 @@
 package com.claro.cv.dao;
 
+import java.io.Serializable;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -12,7 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @author jbarragan
  *
  * @param <T> */
-public class TemplateDAO<T> {
+public class TemplateDAO<T> implements Serializable{
+
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5881273883150653204L;
 
    public static final String MANAGER = "CVTM";
 

@@ -42,6 +42,7 @@
 		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_two">
 				<p:panel id="panel_creation_step_two" styleClass="panel_content">
+					<h:inputHidden value="#{edit.loadGetMatkers}" />
 					<h:panelGrid cellspacing="15">
 						<h:form id="form_admin_edit">
 							<p:growl id="growl_admin_edit" />
@@ -70,6 +71,7 @@
 							</h:panelGrid>
 
 							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_contactos">
+								<p:growl id="gowl_panel_contact" />
 								<h3>Contactos</h3>
 								<h:panelGrid columns="2" id="panel_add_contact">
 									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact"
@@ -134,8 +136,8 @@
 						</h:form>
 						<h:form id="form_admin_edit_02">
 							<h2 style="text-align: center;">INFORMACIÓN DE SERVICIOS</h2>
-							<p:gmap id="map" widgetVar="map_detail" center="#{edit.centerMap}" zoom="#{edit.zoomMap}" type="ROADMAP"
-								model="#{edit.mapModel}" style="height: 450px; width: 900px;">
+							<p:gmap id="map" widgetVar="map_detail" center="#{edit.centerMap}" zoom="#{edit.zoomMap}"
+								type="ROADMAP" model="#{edit.mapModel}" style="height: 450px; width: 900px;">
 								<p:ajax event="overlaySelect" listener="#{edit.onMarkerSelect}" />
 								<p:gmapInfoWindow id="infoWindow" maxWidth="250">
 									<h3 style="text-align: center;">#{edit.markerSelect.title}</h3>

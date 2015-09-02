@@ -102,6 +102,8 @@ public class EditController implements Serializable {
 
    private Marker markerSelect;
 
+   private String loadGetMatkers;
+
    @PostConstruct
    public void initialize() {
       editSearch = new EditSearchDTO();
@@ -133,6 +135,9 @@ public class EditController implements Serializable {
             return;
          }
          listClientProfileSearch = editService.loadClientProfileByEditSearch(editSearch);
+         if (editSearch.getIdClient() == null || editSearch.getIdClient().intValue() <= 0) {
+            editSearch.setIdClient(null);
+         }
          validateResultEditSearch();
       } catch (Exception e) {
          Util.addMessageError(Messages.LOAD_EDIT_SEARCH_ERROR);
@@ -159,9 +164,26 @@ public class EditController implements Serializable {
    }
 
    public void addContact() {
-      clientContact.setClientProfile(clientEdit);
-      listClientContact.add(clientContact);
-      clientContact = new ClientContactEntity();
+      if (validateContact()) {
+         clientContact.setClientProfile(clientEdit);
+         listClientContact.add(clientContact);
+         clientContact = new ClientContactEntity();
+      } else {
+         Util.addMessageError(Messages.VALIDATE_CONTACT_PROFILE);
+      }
+
+   }
+
+   private boolean validateContact() {
+      if (clientContact == null)
+         return false;
+      boolean validateName = clientContact.getNameContact() != null
+         && clientContact.getNameContact().length() > 0;
+      boolean validatePhone = clientContact.getPhone() != null && clientContact.getPhone().length() > 0;
+      boolean validateMobil = clientContact.getMobil() != null && clientContact.getMobil().length() > 0;
+      boolean validateTypeContact = clientContact.getTypeContact().length() > 0;
+
+      return validateName && (validatePhone || validateMobil) && validateTypeContact;
    }
 
    public String edit() {
@@ -644,6 +666,15 @@ public class EditController implements Serializable {
 
    public void setMarkerSelect(Marker markerSelect) {
       this.markerSelect = markerSelect;
+   }
+
+   public String getLoadGetMatkers() {
+      getMarkers();
+      return loadGetMatkers;
+   }
+
+   public void setLoadGetMatkers(String loadGetMatkers) {
+      this.loadGetMatkers = loadGetMatkers;
    }
 
 }

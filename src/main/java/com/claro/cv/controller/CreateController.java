@@ -224,7 +224,7 @@ public class CreateController implements Serializable {
          clientProfile.getClientContacts().add(clientContact);
          clientContact = new ClientContactEntity();
       } else {
-         Util.addMessageWarn(Messages.VALIDATE_CONTACT_PROFILE);
+         Util.addMessageError(Messages.VALIDATE_CONTACT_PROFILE);
       }
 
    }
@@ -239,7 +239,6 @@ public class CreateController implements Serializable {
       boolean validateTypeContact = clientContact.getTypeContact().length() > 0;
 
       return validateName && (validatePhone || validateMobil) && validateTypeContact;
-
    }
 
    public void addContactService() {
