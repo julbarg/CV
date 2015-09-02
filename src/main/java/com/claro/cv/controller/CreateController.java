@@ -137,6 +137,21 @@ public class CreateController implements Serializable {
       loadTypeLocation();
    }
 
+   public String goCreate() {
+      clientProfile = new ClientProfileEntity();
+      clientProfile.setClientContacts(new ArrayList<ClientContactEntity>());
+      clientContact = new ClientContactEntity();
+      clientService = new ClientServiceEntity();
+      clientService.setServiceContacts(new ArrayList<ServiceContactEntity>());
+      listClientService = new ArrayList<ClientServiceEntity>();
+      serviceContact = new ServiceContactEntity();
+      listDetailEngineeringFile = new ArrayList<UploadedFile>();
+      listDetailEngineeringFileService = new ArrayList<UploadedFile>();
+      nameUploadFile = "";
+
+      return Util.getRedirect(Constant.CREATE_PAGE);
+   }
+
    private void loadMultiValues() {
       try {
          listTypeContact = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_CONTACTO);

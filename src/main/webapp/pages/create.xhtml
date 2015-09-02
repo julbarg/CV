@@ -31,15 +31,16 @@
 	</p:panel>
 	<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
 		<p:panel styleClass="panel_menu">
-
-			<p:menu styleClass="main_menu">
-				<p:menuitem value="Consultas" actionListener="#{menuView.save}" icon="iconmaps"
-					containerStyleClass="span_main_menu" outcome="search" />
-				<p:menuitem value="Creación" actionListener="#{menuView.consulta}" icon="iconedit"
-					containerStyleClass="span_main_menu" outcome="create" styleClass="menu_select" />
-				<p:menuitem value="Administración" actionListener="#{menuView.consulta}" icon="iconadmin"
-					containerStyleClass="span_main_menu" outcome="admin" />
-			</p:menu>
+			<h:form id="form_menu">
+				<p:menu styleClass="main_menu">
+					<p:menuitem value="Consultas" action="#{search.goSearch}" icon="iconmaps"
+						containerStyleClass="span_main_menu" />
+					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
+						containerStyleClass="span_main_menu" styleClass="menu_select" />
+					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
+						containerStyleClass="span_main_menu" />
+				</p:menu>
+			</h:form>
 
 		</p:panel>
 		<h:panelGroup rendered="#{util.validateAuthentication()}">
@@ -63,7 +64,7 @@
 									uploadLabel="Cargar" label="Examinar" update="data_file" />
 								<p:dataTable id="data_file" value="#{create.listDetailEngineeringFile}" var="file"
 									styleClass="data_table_contacts">
-									<p:column headerText="Archivos">
+									<p:column headerText="Archivos" styleClass="column">
 										<h:outputLabel value="#{file.getFileName()}" />
 									</p:column>
 								</p:dataTable>
@@ -92,19 +93,19 @@
 									update="form_step_one:panelContacts form_step_one:growl_step_one" />
 								<p:dataTable styleClass="data_table_contacts" value="#{create.clientProfile.clientContacts}"
 									var="contact">
-									<p:column headerText="Nombre">
+									<p:column headerText="Nombre" styleClass="column">
 										<h:outputText value="#{contact.nameContact}" />
 									</p:column>
-									<p:column headerText="Correo">
+									<p:column headerText="Correo" width="200" styleClass="column">
 										<h:outputText value="#{contact.email}" />
 									</p:column>
-									<p:column headerText="Telefono">
+									<p:column headerText="Telefono" styleClass="column">
 										<h:outputText value="#{contact.phone}" />
 									</p:column>
-									<p:column headerText="Celular">
+									<p:column headerText="Celular" styleClass="column">
 										<h:outputText value="#{contact.mobil}" />
 									</p:column>
-									<p:column headerText="Tipo de Contacto">
+									<p:column headerText="Tipo de Contacto" styleClass="column">
 										<h:outputText value="#{create.getNameTypeContact(contact.typeContact)}" />
 									</p:column>
 								</p:dataTable>
@@ -243,19 +244,19 @@
 									update="form_step_two:panelContacts form_step_two:growl_step_two" />
 								<p:dataTable styleClass="data_table_contacts_inside" value="#{create.clientService.serviceContacts}"
 									var="serviceContact">
-									<p:column headerText="Nombre">
+									<p:column headerText="Nombre" styleClass="column">
 										<h:outputText value="#{serviceContact.nameContact}" />
 									</p:column>
-									<p:column headerText="Correo">
+									<p:column headerText="Correo" width="200" styleClass="column">
 										<h:outputText value="#{serviceContact.email}" />
 									</p:column>
-									<p:column headerText="Telefono">
+									<p:column headerText="Telefono" styleClass="column">
 										<h:outputText value="#{serviceContact.phone}" />
 									</p:column>
-									<p:column headerText="Celular">
+									<p:column headerText="Celular" styleClass="column">
 										<h:outputText value="#{serviceContact.mobil}" />
 									</p:column>
-									<p:column headerText="Horario de Atencion">
+									<p:column headerText="Horario de Atencion" styleClass="column">
 										<h:outputText value="#{create.getNameSchedule(serviceContact.schedule)}" />
 									</p:column>
 								</p:dataTable>
@@ -264,19 +265,19 @@
 							<p:commandButton value="Add Service" styleClass="button_post_add" actionListener="#{create.addService}"
 								process="@form" update="form_step_two" />
 							<p:dataTable styleClass="data_table_contacts" value="#{create.listClientService}" var="service">
-								<p:column headerText="Pais (Internacional)">
+								<p:column headerText="Pais (Internacional)" styleClass="column">
 									<h:outputText value="#{service.country.name}" />
 								</p:column>
-								<p:column headerText="Ciudad">
+								<p:column headerText="Ciudad" styleClass="column">
 									<h:outputText value="#{service.city.name}" />
 								</p:column>
-								<p:column headerText="Direccion">
+								<p:column headerText="Direccion" styleClass="column">
 									<h:outputText value="#{service.direction}" />
 								</p:column>
-								<p:column headerText="Alias">
+								<p:column headerText="Alias" styleClass="column">
 									<h:outputText value="#{service.alias}" />
 								</p:column>
-								<p:column headerText="Codigo de Servicio">
+								<p:column headerText="Codigo de Servicio" styleClass="column">
 									<h:outputText value="#{service.codeService}" />
 								</p:column>
 							</p:dataTable>

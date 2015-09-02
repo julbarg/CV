@@ -6,6 +6,8 @@ public class Constant {
 
    public static final String CREATE_PAGE = "create";
 
+   public static final String ADMIN_PAGE = "admin";
+
    public static final String ADMIN_EDIT = "admin_edit";
 
    public static final String ADMIN_EDIT_SERVICE = "admin_edit_service";

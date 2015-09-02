@@ -32,12 +32,12 @@
 		<p:panel styleClass="panel_menu">
 			<h:form id="form_menu">
 				<p:menu styleClass="main_menu">
-					<p:menuitem value="Consultas" actionListener="#{menuView.save}" icon="iconmaps"
-						containerStyleClass="span_main_menu" outcome="search" />
-					<p:menuitem value="Creación" actionListener="#{menuView.consulta}" icon="iconedit"
-						containerStyleClass="span_main_menu" outcome="create" />
-					<p:menuitem value="Administración" actionListener="#{menuView.consulta}" icon="iconadmin"
-						containerStyleClass="span_main_menu" outcome="admin" styleClass="menu_select" />
+					<p:menuitem value="Consultas" action="#{search.goSearch}" icon="iconmaps"
+						containerStyleClass="span_main_menu" />
+					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
+						containerStyleClass="span_main_menu" />
+					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
+						containerStyleClass="span_main_menu" styleClass="menu_select" />
 				</p:menu>
 			</h:form>
 		</p:panel>
@@ -51,12 +51,11 @@
 							<h2>Consultar Cliente - Administrador</h2>
 							<p:inputText placeholder="Nombre del Cliente" styleClass="input_create"
 								value="#{edit.editSearch.nameClient}" />
-							<p:inputText placeholder="ID" styleClass="input_create" value="#{edit.editSearch.idClient}" />
+							<p:inputText placeholder="ID" label="ID" styleClass="input_create" value="#{edit.editSearch.idClient}" />
 							<p:inputText placeholder="NIT" styleClass="input_create" value="#{edit.editSearch.nitClient}" />
 							<p:inputText placeholder="Codigo de Servicio" styleClass="input_create"
 								value="#{edit.editSearch.codeService}" />
-							<p:selectOneMenu id="state" styleClass="select_post" label="Estado"
-								value="#{edit.editSearch.state}">
+							<p:selectOneMenu id="state" styleClass="select_post" label="Estado" value="#{edit.editSearch.state}">
 								<f:selectItem itemLabel="Seleccione Estado..." />
 								<f:selectItems value="#{edit.listState}" var="state" itemLabel="#{state.name}"
 									itemValue="#{state.code}" />
@@ -66,19 +65,19 @@
 						</h:panelGrid>
 
 						<p:dataTable styleClass="data_table_contacts" value="#{edit.listClientProfileSearch}" var="client">
-							<p:column headerText="Nombre del Cliente">
+							<p:column headerText="Nombre del Cliente" styleClass="column">
 								<h:outputLabel value="#{client.nameClient}" />
 							</p:column>
-							<p:column headerText="ID">
+							<p:column headerText="ID" styleClass="column">
 								<h:outputLabel value="#{client.idClient}" />
 							</p:column>
-							<p:column headerText="NIT">
+							<p:column headerText="NIT" styleClass="column">
 								<h:outputLabel value="#{client.nitClient}" />
 							</p:column>
-							<p:column headerText="Estado">
+							<p:column headerText="Estado" styleClass="column">
 								<h:outputLabel value="#{edit.getNameState(client.state)}" />
 							</p:column>
-							<p:column headerText="Acciones">
+							<p:column headerText="Acciones" styleClass="column">
 								<p:commandButton value="Editar" title="Editar" action="#{edit.edit}" update=":form_edit">
 									<f:setPropertyActionListener value="#{client.idClient}" target="#{edit.idClientEdit}" />
 								</p:commandButton>
@@ -90,7 +89,5 @@
 			</h:form>
 		</h:panelGroup>
 	</h:panelGrid>
-
-
 </h:body>
 </html>

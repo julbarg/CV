@@ -116,6 +116,19 @@ public class EditController implements Serializable {
       loadMultivalue();
    }
 
+   public String goAdmin() {
+      editSearch = new EditSearchDTO();
+      clientEdit = new ClientProfileEntity();
+      clientContact = new ClientContactEntity();
+      listClientProfileSearch = new ArrayList<ClientProfileEntity>();
+      listClientServiceEdit = new ArrayList<ClientServiceEntity>();
+      listClientContact = new ArrayList<ClientContactEntity>();
+      listDetailEngineeringFile = new ArrayList<ClientFileEntity>();
+      loadMultivalue();
+
+      return Util.getRedirect(Constant.ADMIN_PAGE);
+   }
+
    private void loadMultivalue() {
       try {
          listTypeContact = utilService.loadMultiValue(TypeMultivalueEnum.TIPO_CONTACTO);
@@ -206,7 +219,6 @@ public class EditController implements Serializable {
 
    public void refresh() {
       try {
-         System.out.println("refresh");
          clientEdit = editService.loadClientProfileById(idClientEdit);
          changeState();
          loadContactsProfile();

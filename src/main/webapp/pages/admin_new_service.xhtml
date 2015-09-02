@@ -35,12 +35,12 @@
 		<p:panel styleClass="panel_menu">
 			<h:form id="form_menu">
 				<p:menu styleClass="main_menu">
-					<p:menuitem value="Consultas" actionListener="#{menuView.save}" icon="iconmaps"
-						containerStyleClass="span_main_menu" outcome="search" />
-					<p:menuitem value="Creación" actionListener="#{menuView.consulta}" icon="iconedit"
-						containerStyleClass="span_main_menu" outcome="create" />
-					<p:menuitem value="Administración" actionListener="#{menuView.consulta}" icon="iconadmin"
-						containerStyleClass="span_main_menu" outcome="admin" styleClass="menu_select" />
+					<p:menuitem value="Consultas" action="#{search.goSearch}" icon="iconmaps"
+						containerStyleClass="span_main_menu" />
+					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
+						containerStyleClass="span_main_menu" />
+					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
+						containerStyleClass="span_main_menu" styleClass="menu_select" />
 				</p:menu>
 			</h:form>
 		</p:panel>
@@ -124,7 +124,7 @@
 									multiple="true" uploadLabel="Cargar" label="Examinar" update="data_file" />
 								<p:dataTable id="data_file" value="#{addService.listDetailEngineeringFileService}" var="file"
 									styleClass="data_table_contacts">
-									<p:column headerText="Archivos">
+									<p:column headerText="Archivos" styleClass="column">
 										<h:outputLabel value="#{file.getFileName()}" />
 									</p:column>
 								</p:dataTable>
@@ -171,19 +171,19 @@
 									update="form_add_service:panelContacts form_add_service:growl_step_two" />
 								<p:dataTable styleClass="data_table_contacts_inside"
 									value="#{addService.clientService.serviceContacts}" var="serviceContact">
-									<p:column headerText="Nombre">
+									<p:column headerText="Nombre" styleClass="column">
 										<h:outputText value="#{serviceContact.nameContact}" />
 									</p:column>
-									<p:column headerText="Correo">
+									<p:column headerText="Correo" width="200" styleClass="column">
 										<h:outputText value="#{serviceContact.email}" />
 									</p:column>
-									<p:column headerText="Telefono">
+									<p:column headerText="Telefono" styleClass="column">
 										<h:outputText value="#{serviceContact.phone}" />
 									</p:column>
-									<p:column headerText="Celular">
+									<p:column headerText="Celular" styleClass="column">
 										<h:outputText value="#{serviceContact.mobil}" />
 									</p:column>
-									<p:column headerText="Horario de Atencion">
+									<p:column headerText="Horario de Atencion" styleClass="column">
 										<h:outputText value="#{addService.getNameSchedule(serviceContact.schedule)}" />
 									</p:column>
 								</p:dataTable>

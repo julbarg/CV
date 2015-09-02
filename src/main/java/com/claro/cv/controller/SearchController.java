@@ -103,7 +103,14 @@ public class SearchController implements Serializable {
       clientProfile = new ClientProfileEntity();
       loadTypeServices();
       loadSchedules();
+   }
 
+   public String goSearch() {
+      clientProfile = new ClientProfileEntity();
+      loadTypeServices();
+      loadSchedules();
+
+      return Util.getRedirect(Constant.SEARCH_PAGE);
    }
 
    public boolean validateAuthentication() {
