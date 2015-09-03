@@ -105,12 +105,10 @@ public class SearchController implements Serializable {
       loadSchedules();
    }
 
-   public String goSearch() {
-      clientProfile = new ClientProfileEntity();
-      loadTypeServices();
-      loadSchedules();
-
-      return Util.getRedirect(Constant.SEARCH_PAGE);
+   public void goSearch() {
+      idCliente = null;
+      codigoServiicio = "";
+      Util.redirectFaces(Constant.SEARCH_PAGE_URL);
    }
 
    public boolean validateAuthentication() {
@@ -185,7 +183,12 @@ public class SearchController implements Serializable {
    private void loadMap() {
       try {
          listMapaData = searchService.loadMap(clientProfile);
-         json = MapJsonUtil.generateJson(listMapaData);
+         if (listMapaData != null && listMapaData.size() > 0) {
+            json = MapJsonUtil.generateJson(listMapaData);
+         } else {
+            json = MapJsonUtil.generateJson(new ArrayList<MapDataDTO>());
+         }
+
       } catch (Exception e) {
          LOGGER.error(Messages.ERROR_LOAD_MAP, e);
       }

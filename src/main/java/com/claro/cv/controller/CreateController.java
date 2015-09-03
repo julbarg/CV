@@ -137,19 +137,23 @@ public class CreateController implements Serializable {
       loadTypeLocation();
    }
 
-   public String goCreate() {
+   public void goCreate() {
       clientProfile = new ClientProfileEntity();
       clientProfile.setClientContacts(new ArrayList<ClientContactEntity>());
       clientContact = new ClientContactEntity();
       clientService = new ClientServiceEntity();
+      clientProfile.setClientContacts(new ArrayList<ClientContactEntity>());
       clientService.setServiceContacts(new ArrayList<ServiceContactEntity>());
       listClientService = new ArrayList<ClientServiceEntity>();
       serviceContact = new ServiceContactEntity();
       listDetailEngineeringFile = new ArrayList<UploadedFile>();
       listDetailEngineeringFileService = new ArrayList<UploadedFile>();
       nameUploadFile = "";
+      idDepartament = "";
+      idCity = "";
+      idCountry = "";
 
-      return Util.getRedirect(Constant.CREATE_PAGE);
+      Util.redirectFaces(Constant.CREATE_PAGE_URL);
    }
 
    private void loadMultiValues() {
@@ -261,7 +265,7 @@ public class CreateController implements Serializable {
          clientService.getServiceContacts().add(serviceContact);
          serviceContact = new ServiceContactEntity();
       } else {
-         Util.addMessageWarn(Messages.VALIDATE_CONTACT_SERVICE);
+         Util.addMessageError(Messages.VALIDATE_CONTACT_SERVICE);
       }
    }
 
@@ -505,8 +509,11 @@ public class CreateController implements Serializable {
       try {
          if (!Util.validateLogIn())
             return null;
-         if (!validateSave())
+         if (!validateSave()) {
+            RequestContext.getCurrentInstance().execute("loadMapOrigin()");
             return null;
+         }
+
          setUpServiceContact();
          clientProfile.setClientServices(listClientService);
          clientProfile.setState(Constant.STATE_ACTIVE);

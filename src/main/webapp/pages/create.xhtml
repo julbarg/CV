@@ -126,14 +126,12 @@
 							<span id="total2"></span>
 							<h2>Nuevo Cliente - Creación Codigos de Servicio</h2>
 							<input id="pac-input" class="controls pac-input" type="text" placeholder="Buscar..."
-								style="float: left;" />
+								style="float: left;" onkeypress="return event.keyCode != 13" />
 							<div id="map-canvas" class="map-canvas" />
 							<h:inputHidden id="lat" styleClass="input_create_contact" value="#{create.clientService.lat}"
 								requiredMessage="Es necesario selecionar un punto en el map" />
 							<h:inputHidden id="lng" styleClass="input_create_contact" value="#{create.clientService.lng}" />
 							<h:panelGrid columns="2" id="panel_grid_service">
-
-
 								<p:selectOneRadio value="#{create.selectTypeLocaltion}">
 									<f:selectItems value="#{create.listTypeLocaltion}" var="typeLocation" itemLabel="#{typeLocation}"
 										itemValue="#{typeLocation}" />

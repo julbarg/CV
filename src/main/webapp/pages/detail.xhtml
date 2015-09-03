@@ -14,24 +14,24 @@
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
 </h:head>
 <h:body>
-	<h:form id="form_detail">
-		<p:panel styleClass="panel_header">
-			<p:panel styleClass="panel_logo">
-				<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
-			</p:panel>
-			<p:panel styleClass="panel_header_info">
-				<h:form>
-					<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
-						action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
-					<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header"
-						action="#{util.logOut}" ajax="false" immediate="true" />
-				</h:form>
-			</p:panel>
+	<p:panel styleClass="panel_header">
+		<p:panel styleClass="panel_logo">
+			<h:graphicImage library="img" name="logo.gif" alt="logo_claro" width="160" />
 		</p:panel>
-		<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
-			<p:panel styleClass="panel_menu">
-				<h:form id="form_menu">
-					<p:menu styleClass="main_menu">
+		<p:panel styleClass="panel_header_info">
+			<h:form id="form_menu">
+				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
+					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header" action="#{util.logOut}"
+					ajax="false" immediate="true" />
+			</h:form>
+		</p:panel>
+	</p:panel>
+	<h:panelGrid columns="2" styleClass="panel_grid_main" cellspacing="0" cellpadding="0">
+		<p:panel styleClass="panel_menu">
+			<h:form id="form_main_menu">
+
+				<p:menu styleClass="main_menu">
 					<p:menuitem value="Consultas" action="#{search.goSearch}" icon="iconmaps"
 						containerStyleClass="span_main_menu" styleClass="menu_select" />
 					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
@@ -39,9 +39,11 @@
 					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
 						containerStyleClass="span_main_menu" />
 				</p:menu>
-				</h:form>
-			</p:panel>
-			<h:panelGroup rendered="#{util.validateAuthentication()}">
+			</h:form>
+		</p:panel>
+		<h:panelGroup rendered="#{util.validateAuthentication()}">
+			<h:form id="form_detail">
+
 				<div id="div_step_two">
 					<h:inputHidden id="jsonURL" value="#{search.jsonURL}" />
 					<p:panel id="panel_creation_step_two" styleClass="panel_content">
@@ -116,9 +118,8 @@
 
 					</p:panel>
 				</div>
-			</h:panelGroup>
-		</h:panelGrid>
-	</h:form>
-
+			</h:form>
+		</h:panelGroup>
+	</h:panelGrid>
 </h:body>
 </html>

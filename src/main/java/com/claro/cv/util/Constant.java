@@ -48,4 +48,10 @@ public class Constant {
 
    public static final String STATE_ACTIVE = "A";
 
+   public static final String SEARCH_PAGE_URL = "/CV/pages/search.xhtml";
+
+   public static final String ADMIN_PAGE_URL = "/CV/pages/admin.xhtml";
+
+   public static final String CREATE_PAGE_URL = "/CV/pages/create.xhtml";
+
 }

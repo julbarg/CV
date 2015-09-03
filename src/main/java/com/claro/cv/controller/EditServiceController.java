@@ -431,8 +431,8 @@ public class EditServiceController implements Serializable {
       if (!noChangesUC) {
          deleteFileUC(lastSettingFileOld);
       }
+      Util.addMessageInfo(Messages.UPDATE_SERVICE_SUCCESS + clientServiceEdit.getAlias());
       refresh();
-      Util.addMessageInfo(Messages.UPDATE_SERVICE_SUCCESS);
       RequestContext.getCurrentInstance().execute("loadMapOrigin()");
    }
 

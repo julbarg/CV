@@ -112,7 +112,7 @@
 										<h:outputLabel value="#{edit.getNameTypeContact(contactProfile.typeContact)}"
 											styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_contact">
+									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{edit.deleteContact}"
 											update=":form_admin_edit:panel_contactos">
 											<f:setPropertyActionListener value="#{contactProfile.idClientContact}"
@@ -132,7 +132,7 @@
 											<p:fileDownload value="#{util.downloadFile(file.url, file.nameFile)}" />
 										</p:commandLink>
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_contact">
+									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{edit.deleteFile(file.url)}"
 											update=":form_admin_edit:panel_file" styleClass="column_contact">
 											<f:setPropertyActionListener value="#{file.idClientFile}" target="#{edit.idClientFileDelete}" />
@@ -236,7 +236,7 @@
 									<p:column headerText="Pais" styleClass="column_service">
 										<h:outputLabel value="#{service.country.name}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_service">
+									<p:column headerText="Acciones" styleClass="column_service" width="100" style="text-align:center;">
 										<p:commandButton value="Editar" title="Editar" styleClass="column_service"
 											action="#{editService.goServiceEdit}">
 											<f:setPropertyActionListener value="#{service.idClientService}"

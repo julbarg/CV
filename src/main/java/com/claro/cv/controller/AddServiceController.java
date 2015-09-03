@@ -256,7 +256,7 @@ public class AddServiceController implements Serializable {
          clientService.getServiceContacts().add(serviceContact);
          serviceContact = new ServiceContactEntity();
       } else {
-         Util.addMessageWarn(Messages.VALIDATE_CONTACT_SERVICE);
+         Util.addMessageError(Messages.VALIDATE_CONTACT_SERVICE);
       }
 
    }
@@ -282,9 +282,9 @@ public class AddServiceController implements Serializable {
       addMoreInformation();
       saveService();
 
-      Util.addMessageInfoKeep(Messages.SAVE_SERVICE_SUCESSFULL + clientProfile.getNameClient());
+      Util.addMessageInfoKeep(Messages.SAVE_SERVICE_SUCESSFULL + clientService.getAlias());
       RequestContext.getCurrentInstance().execute("loadMapOrigin()");
-      
+
       Util.redirectFaces("/CV/pages/admin_edit.xhtml");
    }
 

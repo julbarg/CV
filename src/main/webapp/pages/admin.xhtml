@@ -77,7 +77,7 @@
 							<p:column headerText="Estado" styleClass="column">
 								<h:outputLabel value="#{edit.getNameState(client.state)}" />
 							</p:column>
-							<p:column headerText="Acciones" styleClass="column">
+							<p:column headerText="Acciones" styleClass="column" width="100" style="text-align:center;">
 								<p:commandButton value="Editar" title="Editar" action="#{edit.edit}" update=":form_edit">
 									<f:setPropertyActionListener value="#{client.idClient}" target="#{edit.idClientEdit}" />
 								</p:commandButton>

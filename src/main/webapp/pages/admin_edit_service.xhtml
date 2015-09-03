@@ -54,7 +54,7 @@
 							<h2 style="text-align: center;">#{editService.clientServiceEdit.alias}</h2>
 							<h2>Editar Codigo de Servicio</h2>
 							<input id="pac-input" class="controls pac-input" type="text" placeholder="Buscar..."
-								style="float: left;" />
+								style="float: left;" onkeypress="return event.keyCode != 13" />
 							<div id="map-canvas" class="map-canvas" />
 							<h:inputHidden id="lat" value="#{editService.clientServiceEdit.lat}" />
 							<h:inputHidden id="lng" value="#{editService.clientServiceEdit.lng}" />
@@ -109,7 +109,7 @@
 								<p:inputText placeholder="Codigo de Servicio" styleClass="input_create_contact"
 									value="#{editService.clientServiceEdit.codeService}" />
 
-								<p:outputLabel value="Provedor de Ultima Milla" />
+								<p:outputLabel value="Proveedor de Ultima Milla" />
 								<p:selectOneMenu id="type_um" styleClass="select_post" label="Tipo de Contacto"
 									value="#{editService.clientServiceEdit.idProviderLastMile}">
 									<f:selectItem itemLabel="Seleccione Proveedor Ultima Milla..." itemValue="" />
@@ -167,7 +167,7 @@
 											<p:fileDownload value="#{util.downloadFile(file.url, file.nameFile)}" />
 										</p:commandLink>
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_contact">
+									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{editService.deleteFile(file.url)}"
 											update=":form_admin_edit_service:panel_file" styleClass="column_contact">
 											<f:setPropertyActionListener value="#{file.idServiceFile}"
@@ -236,7 +236,7 @@
 										<h:outputLabel value="#{editService.getSchedule(serviceContact.schedule)}"
 											styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_contact">
+									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{editService.deleteServiceContact}"
 											update=":form_admin_edit_service:panel_contactos">
 											<f:setPropertyActionListener value="#{serviceContact.idServiceContact}"

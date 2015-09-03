@@ -116,7 +116,7 @@ public class EditController implements Serializable {
       loadMultivalue();
    }
 
-   public String goAdmin() {
+   public void goAdmin() {
       editSearch = new EditSearchDTO();
       clientEdit = new ClientProfileEntity();
       clientContact = new ClientContactEntity();
@@ -125,8 +125,8 @@ public class EditController implements Serializable {
       listClientContact = new ArrayList<ClientContactEntity>();
       listDetailEngineeringFile = new ArrayList<ClientFileEntity>();
       loadMultivalue();
-
-      return Util.getRedirect(Constant.ADMIN_PAGE);
+      
+      Util.redirectFaces(Constant.ADMIN_PAGE_URL);
    }
 
    private void loadMultivalue() {

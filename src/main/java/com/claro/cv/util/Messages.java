@@ -118,7 +118,7 @@ public class Messages {
 
    public static final String DELETE_SERVICE_FILE_ERROR = "Ha ocurrido un error Eliminando el archivo de Ultima Configuracion anterior";
 
-   public static final String UPDATE_SERVICE_SUCCESS = "Se ha acutalizo el Servicio correctamente";
+   public static final String UPDATE_SERVICE_SUCCESS = "Se ha acutalizo el Servicio correctamente ";
 
    public static final String VALIDATE_OBSERVATION = "El campo Observación es obligatorio";
 
