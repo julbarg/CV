@@ -43,8 +43,10 @@ public class LoginController implements Serializable {
       try {
          if (loginService.authenticate(user)) {
             Util.logIn(user);
+            boolean admin = validateAdminByUser(user);
+            Util.admin(admin);
             return Util.getRedirect(Constant.SEARCH_PAGE);
-         }else{
+         } else {
             Util.addMessageFatal(Messages.AUTHENTICATION_NO_VALIDATE);
          }
       } catch (Exception e) {
@@ -53,6 +55,15 @@ public class LoginController implements Serializable {
       }
       return null;
 
+   }
+
+   private boolean validateAdminByUser(UserDTO user2) {
+      try {
+         return loginService.validateAdminByUser(user);
+      } catch (Exception e) {
+         LOGGER.error(Messages.VALIDATE_ADMIN_ERROR, e);
+         return false;
+      }
    }
 
    public UserDTO getUser() {

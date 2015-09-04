@@ -7,3 +7,5 @@ encoding//src/main/resources/co/com/claro/sisges/ldap/service/LDAPAuthentication
 encoding//src/main/resources/co/com/claro/sisges/ldap/service/LDAPAuthenticationServicesService.java=UTF-8
 encoding//src/main/resources/co/com/claro/sisges/ldap/service/LDAPAuthenticationServicesServiceLocator.java=UTF-8
 encoding//src/main/resources/co/com/claro/sisges/ldap/service/LDAPAuthenticationServicesSoapBindingStub.java=UTF-8
+encoding//src/main/resources/sql/CV_01.sql=UTF-8
+encoding//src/main/resources/sql/CV_02.sql=UTF-8

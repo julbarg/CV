@@ -9,6 +9,11 @@
 </h:head>
 <h:body>
 	<ui:include src="manual.xhtml" />
+	<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false"
+		showHeader="false">
+		<p:graphicImage library="img" name="loading.gif" />
+	</p:dialog>
 	<h:form id="form_login">
 		<p:growl id="growl_login" />
 		<h:panelGrid columns="2" styleClass="div_main_login">

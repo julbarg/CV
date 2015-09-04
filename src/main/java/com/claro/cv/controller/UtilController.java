@@ -41,6 +41,10 @@ public class UtilController implements Serializable {
       return false;
    }
 
+   public boolean validateAdmin() {
+      return Util.getAdmin();
+   }
+
    public void logOut() {
       Util.logOut();
    }

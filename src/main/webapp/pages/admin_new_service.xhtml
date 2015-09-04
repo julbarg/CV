@@ -40,11 +40,11 @@
 					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
 						containerStyleClass="span_main_menu" />
 					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
-						containerStyleClass="span_main_menu" styleClass="menu_select" />
+						containerStyleClass="span_main_menu" styleClass="menu_select" rendered="#{util.validateAdmin()}" />
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup rendered="#{util.validateAuthentication()}">
+		<h:panelGroup rendered="#{util.validateAuthentication() and util.validateAdmin()}">
 			<div id="div_step_two">
 				<h:form id="form_add_service">
 					<p:growl id="growl_step_two" />
@@ -55,7 +55,7 @@
 							<h2 style="text-align: center">#{addService.clientProfile.nameClient}</h2>
 							<h3>Adicionar Servicio</h3>
 							<input id="pac-input" class="controls pac-input" type="text" placeholder="Buscar..."
-								style="float: left;" onkeypress="return event.keyCode != 13"/>
+								style="float: left;" onkeypress="return event.keyCode != 13" />
 							<div id="map-canvas" class="map-canvas" />
 							<h:inputHidden id="lat" styleClass="input_create_contact" value="#{addService.clientService.lat}"
 								requiredMessage="Es necesario selecionar un punto en el map" />

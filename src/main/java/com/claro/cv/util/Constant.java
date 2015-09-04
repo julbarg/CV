@@ -54,4 +54,6 @@ public class Constant {
 
    public static final String CREATE_PAGE_URL = "/CV/pages/create.xhtml";
 
+   public static final String ADMIN = "admin";
+
 }

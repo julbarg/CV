@@ -36,11 +36,11 @@
 					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
 						containerStyleClass="span_main_menu" />
 					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
-						containerStyleClass="span_main_menu" styleClass="menu_select" />
+						containerStyleClass="span_main_menu" styleClass="menu_select" rendered="#{util.validateAdmin()}" />
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup rendered="#{util.validateAuthentication()}">
+		<h:panelGroup rendered="#{util.validateAuthentication() and util.validateAdmin()}">
 			<div id="div_step_two">
 				<p:panel id="panel_creation_step_two" styleClass="panel_content">
 					<h:inputHidden value="#{edit.loadGetMatkers}" />

@@ -38,7 +38,7 @@
 					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
 						containerStyleClass="span_main_menu" styleClass="menu_select" />
 					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
-						containerStyleClass="span_main_menu" />
+						containerStyleClass="span_main_menu" rendered="#{util.validateAdmin()}" />
 				</p:menu>
 			</h:form>
 

@@ -31,6 +31,20 @@ public class Util {
       }
    }
 
+   public static void admin(boolean admin) {
+      Util.getSession().setAttribute(Constant.ADMIN, admin);
+   }
+
+   public static boolean getAdmin() {
+      try {
+         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
+            .getSession(false);
+         return (boolean) session.getAttribute(Constant.ADMIN);
+      } catch (Exception e) {
+         return false;
+      }
+   }
+
    public static boolean validateLogIn() {
       try {
          if (getUserName() == null) {

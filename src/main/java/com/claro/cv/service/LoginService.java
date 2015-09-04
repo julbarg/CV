@@ -10,4 +10,6 @@ public interface LoginService {
 
    public boolean authenticate(UserDTO user) throws Exception;
 
+   public boolean validateAdminByUser(UserDTO user) throws Exception;
+
 }

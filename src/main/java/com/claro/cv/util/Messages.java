@@ -128,4 +128,6 @@ public class Messages {
 
    public static final String SAVE_SERVICE_SUCESSFULL = "El Servicio a sido creado exitosamente ";
 
+   public static final String VALIDATE_ADMIN_ERROR = "Ha ocurrido un error validando Usuario Administrador";
+
 }
