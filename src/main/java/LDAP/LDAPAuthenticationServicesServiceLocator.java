@@ -7,6 +7,7 @@
 
 package LDAP;
 
+@SuppressWarnings("serial")
 public class LDAPAuthenticationServicesServiceLocator extends org.apache.axis.client.Service implements LDAP.LDAPAuthenticationServicesService {
 
     public LDAPAuthenticationServicesServiceLocator() {
@@ -70,7 +71,8 @@ public class LDAPAuthenticationServicesServiceLocator extends org.apache.axis.cl
      * If this service has no port for the given interface,
      * then ServiceException is thrown.
      */
-    public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+    @SuppressWarnings("rawtypes")
+   public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
             if (LDAP.LDAPAuthenticationServices.class.isAssignableFrom(serviceEndpointInterface)) {
                 LDAP.LDAPAuthenticationServicesSoapBindingStub _stub = new LDAP.LDAPAuthenticationServicesSoapBindingStub(new java.net.URL(LDAPAuthenticationServices_address), this);
@@ -89,7 +91,8 @@ public class LDAPAuthenticationServicesServiceLocator extends org.apache.axis.cl
      * If this service has no port for the given interface,
      * then ServiceException is thrown.
      */
-    public java.rmi.Remote getPort(javax.xml.namespace.QName portName, Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+    @SuppressWarnings("rawtypes")
+   public java.rmi.Remote getPort(javax.xml.namespace.QName portName, Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         if (portName == null) {
             return getPort(serviceEndpointInterface);
         }
@@ -108,9 +111,11 @@ public class LDAPAuthenticationServicesServiceLocator extends org.apache.axis.cl
         return new javax.xml.namespace.QName("http://service.ldap.sisges.claro.com.co", "LDAPAuthenticationServicesService");
     }
 
-    private java.util.HashSet ports = null;
+    @SuppressWarnings("rawtypes")
+   private java.util.HashSet ports = null;
 
-    public java.util.Iterator getPorts() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
             ports.add(new javax.xml.namespace.QName("http://service.ldap.sisges.claro.com.co", "LDAPAuthenticationServices"));
