@@ -29,7 +29,6 @@ public class LoginServiceImpl implements LoginService, Serializable {
 
    @Override
    public boolean authenticate(UserDTO user) throws Exception {
-
       LDAPAuthenticationServicesServiceLocator ldapL = new LDAPAuthenticationServicesServiceLocator();
       LDAPAuthenticationServices query;
       query = ldapL.getLDAPAuthenticationServices();

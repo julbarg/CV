@@ -150,3 +150,6 @@ CREATE TABLE `service_file` (
   CONSTRAINT `fk_service_file_01` FOREIGN KEY (`id_client_service`) REFERENCES `client_service` (`id_client_service`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
+
+ALTER TABLE `client_profile` 
+ADD COLUMN `description` LONGTEXT NULL;

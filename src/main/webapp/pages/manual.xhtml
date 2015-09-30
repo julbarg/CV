@@ -4,11 +4,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<p:dialog header="Manual de Usuario" widgetVar="manual" modal="true" draggable="false" width="1024"
 		height="600" position="center" closeOnEscape="true">
-		<object type="application/pdf" data="/CV/resources/doc/manual.pdf?pfdrid_c=true"
-			height="595px" width="100%" >
-			Your browser can't display pdf, <a
-				href="/CV/resources/doc/manual.pdf?pfdrid_c=true">click</a> to download pdf
-			instead.
+		<object type="application/pdf" data="#{login.urlManual}" height="595px" width="100%">
+			Your browser can't display pdf, <a href="#{login.urlManual}">click</a> to download pdf instead.
 		</object>
 	</p:dialog>
 </ui:composition>

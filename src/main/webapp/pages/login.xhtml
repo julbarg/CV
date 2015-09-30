@@ -6,7 +6,7 @@
 	<title>Hoja de Vida - Login</title>
 	<h:outputStylesheet library="css" name="main.css" />
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css' />
-	<link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon.ico']}" />
 </h:head>
 <h:body>
 	<ui:include src="manual.xhtml" />
@@ -41,8 +41,9 @@
 					<p:watermark value="Contraseña" for="password" />
 					<hr style="height: 25px; visibility: hidden;" />
 					<f:facet name="footer">
-						<p:commandButton value="Iniciar Sesión" style="width: 350px; height: 40px;"
+						<p:commandButton id="btn_login" value="Iniciar Sesión" style="width: 350px; height: 40px;"
 							action="#{login.authenticate}" update="form_login" />
+						<p:defaultCommand target="btn_login"></p:defaultCommand>
 					</f:facet>
 				</h:panelGrid>
 			</p:panel>

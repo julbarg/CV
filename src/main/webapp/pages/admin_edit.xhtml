@@ -65,7 +65,8 @@
 										itemValue="#{state.code}" />
 								</p:selectOneMenu>
 							</h:panelGrid>
-
+							<h4>Descripción del Cliente</h4>
+							<p:inputTextarea rows="6" cols="120" value="#{edit.clientEdit.description}" />
 							<h:panelGrid id="panel_observation_state">
 								<p:outputLabel value="Observacion de cambio de Estado" rendered="#{edit.showObservationState}" />
 								<p:inputTextarea value="#{edit.clientEdit.observationState}" rendered="#{edit.showObservationState}"
@@ -193,14 +194,14 @@
 										<h:outputLabel value="#{edit.markerSelect.data.description}" />
 
 										<h:outputLabel styleClass="title_lable" value="Proveedor de UM "
-											rendered="#{edit.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+											rendered="#{edit.validateProvider(edit.markerSelect.data.idProviderLastMile)}" />
 										<h:outputLabel value="#{edit.markerSelect.data.idProviderLastMile}"
-											rendered="#{edit.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+											rendered="#{edit.validateProvider(edit.markerSelect.data.idProviderLastMile)}" />
 
 										<h:outputLabel styleClass="title_lable" value="Codigo de Servicio UM "
-											rendered="#{edit.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+											rendered="#{edit.validateProvider(edit.markerSelect.data.idProviderLastMile)}" />
 										<h:outputLabel value="#{edit.markerSelect.data.codeServiceLastMile}"
-											rendered="#{edit.validateProvider(search.markerSelect.data.idProviderLastMile)}" />
+											rendered="#{edit.validateProvider(edit.markerSelect.data.idProviderLastMile)}" />
 
 									</h:panelGrid>
 								</p:gmapInfoWindow>

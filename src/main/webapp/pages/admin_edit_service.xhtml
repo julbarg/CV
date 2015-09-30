@@ -159,7 +159,7 @@
 							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_file">
 								<h3>Ingenieria de Detalle</h3>
 								<p:fileUpload fileUploadListener="#{editService.uploadFileIngenieria}" mode="advanced" multiple="true"
-									uploadLabel="Cargar" label="Examinar" update="form_admin_edit_service:panel_file"
+									uploadLabel="Cargar" label="Examinar" update="form_admin_edit_service:panel_file form_admin_edit_service:growl_admin_edit_service"
 									styleClass="data_table_contacts" />
 								<p:dataTable id="data_file" value="#{editService.listDetailEngineeringFile}" var="file"
 									styleClass="data_table_contacts">

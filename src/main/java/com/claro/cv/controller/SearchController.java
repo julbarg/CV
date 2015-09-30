@@ -143,7 +143,6 @@ public class SearchController implements Serializable {
          if (validateParameters()) {
             clientProfile = searchService.search(idCliente, codigoServiicio);
             if (clientProfile != null) {
-
                Util.addMessageInfo(clientProfile.getNameClient());
                idCliente = null;
                codigoServiicio = null;
@@ -294,7 +293,7 @@ public class SearchController implements Serializable {
          coord = new LatLng(lat, lng);
          marker = new Marker(coord, service.getAlias(), service);
          if (service.getIdProviderLastMile() != null && service.getIdProviderLastMile().length() > 0) {
-            marker.setIcon("/CV/resources/img/marker-green.png");
+            marker.setIcon("/" + Constant.NAME_APLICATION + "/resources/img/marker-green.png");
          }
          mapModel.addOverlay(marker);
       }

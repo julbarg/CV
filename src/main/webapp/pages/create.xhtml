@@ -59,6 +59,11 @@
 								label="ID" required="true" />
 							<p:inputText placeholder="NIT" styleClass="input_create" value="#{create.clientProfile.nitClient}"
 								label="NIT" required="true" />
+							<h4>Descripción del Cliente</h4>
+							<p:inputTextarea rows="6" cols="120" value="#{create.clientProfile.description}"
+								style="margin-top: -10px;" />
+
+
 							<p:panel styleClass="panel_contactos" id="panelFile">
 								<h3>Ingenieria de Detalle</h3>
 								<p:fileUpload fileUploadListener="#{create.uploadFileIngenieria}" mode="advanced" multiple="true"

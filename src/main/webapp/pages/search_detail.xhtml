@@ -61,7 +61,7 @@
 						<h:panelGrid cellspacing="8">
 							<span id="total2"></span>
 							<h2 style="text-align: center; padding-bottom: 3px;">#{search.clientProfile.nameClient.toUpperCase()}</h2>
-
+							<div style="text-align: justify;">#{search.clientProfile.description}</div>
 							<p:outputLabel value="COLOMBIA" rendered="#{search.international}" styleClass="title_region" />
 							<div id="regions_div" style="width: 850px; height: 550px"></div>
 							<p:panel id="panel_sap" styleClass="panel_sap" rendered="#{search.sap}">

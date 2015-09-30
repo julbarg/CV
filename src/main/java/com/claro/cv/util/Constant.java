@@ -18,11 +18,21 @@ public class Constant {
 
    public static final String REDIRECT = "?faces-redirect=true";
 
-   public static final String PATH_UPLOAD_FILE_SETTINGS = "C:/CV/Settings/";
+   //public static final String NAME_APLICATION = "CV";
+   public static final String NAME_APLICATION = "HojaVidaClientes";
 
-   public static final String PATH_UPLOAD_FILE_ENGINEERING = "C:/CV/Engineering/";
+   public static final String TAG_ID_CLIENT = "<TAG_ID_CLIENT>";
 
-   public static final String PATH_UPLOAD_FILE_ENGINEERING_SERVICE = "C:/CV/EngineeringService/";
+   public static final String TAG_CODE_SERVICE = "<TAG_CODE_SERVICE>";
+   
+   //public static final String PATH_UPLOAD_FILE_ENGINEERING = "C:/CV/<TAG_ID_CLIENT>/";
+   public static final String PATH_UPLOAD_FILE_ENGINEERING = "/var/preserve/hojavidaclientes/<TAG_ID_CLIENT>/";
+
+   //public static final String PATH_UPLOAD_FILE_SETTINGS = "C:/CV/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/Settings/";
+   public static final String PATH_UPLOAD_FILE_SETTINGS = "/var/preserve/hojavidaclientes/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/Settings/";
+
+   //public static final String PATH_UPLOAD_FILE_ENGINEERING_SERVICE = "C:/CV/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/EngineeringService/";
+   public static final String PATH_UPLOAD_FILE_ENGINEERING_SERVICE = "/var/preserve/hojavidaclientes/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/EngineeringService/";
 
    public static final String SEARCH_DETAIL_PAGE = "search_detail";
 
@@ -48,12 +58,14 @@ public class Constant {
 
    public static final String STATE_ACTIVE = "A";
 
-   public static final String SEARCH_PAGE_URL = "/CV/pages/search.xhtml";
+   public static final String SEARCH_PAGE_URL = "/" + NAME_APLICATION + "/pages/search.xhtml";
 
-   public static final String ADMIN_PAGE_URL = "/CV/pages/admin.xhtml";
+   public static final String ADMIN_PAGE_URL = "/" + NAME_APLICATION + "/pages/admin.xhtml";
 
-   public static final String CREATE_PAGE_URL = "/CV/pages/create.xhtml";
+   public static final String CREATE_PAGE_URL = "/" + NAME_APLICATION + "/pages/create.xhtml";
 
    public static final String ADMIN = "admin";
+
+   public static final String URL_LOGIN = "/" + Constant.NAME_APLICATION + "/faces/pages/login.xhtml";
 
 }

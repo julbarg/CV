@@ -130,4 +130,6 @@ public class Messages {
 
    public static final String VALIDATE_ADMIN_ERROR = "Ha ocurrido un error validando Usuario Administrador";
 
+   public static final String VALIDATE_IF_EXISTS_ERROR = "Este archivo ya ha sido subido.";
+
 }

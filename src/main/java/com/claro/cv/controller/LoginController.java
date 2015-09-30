@@ -21,7 +21,7 @@ import com.claro.cv.util.Util;
 @Scope("session")
 public class LoginController implements Serializable {
 
-   /**
+   /** 
     * 
     */
    private static final long serialVersionUID = 7546439283549336959L;
@@ -30,12 +30,15 @@ public class LoginController implements Serializable {
 
    private UserDTO user;
 
+   private String urlManual;
+
    @Autowired
    private LoginService loginService;
 
    @PostConstruct
    public void initialize() {
       user = new UserDTO();
+      urlManual = "/" + Constant.NAME_APLICATION + "/resources/doc/manual.pdf?pfdrid_c=true";
 
    }
 
@@ -72,6 +75,14 @@ public class LoginController implements Serializable {
 
    public void setUser(UserDTO user) {
       this.user = user;
+   }
+
+   public String getUrlManual() {
+      return urlManual;
+   }
+
+   public void setUrlManual(String urlManual) {
+      this.urlManual = urlManual;
    }
 
 }

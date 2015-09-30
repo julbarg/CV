@@ -7,12 +7,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
@@ -282,10 +280,13 @@ public class EditServiceController implements Serializable {
          noChangesUC = false;
 
          if (ultimaConfiguracionFile != null && ultimaConfiguracionFile.getFileName() != null) {
-            SecureRandom random = new SecureRandom();
-            String fileName = Constant.UC + clientServiceEdit.getAlias().toUpperCase() + "-"
-               + (new BigInteger(40, random)).toString(30).toUpperCase();
-            String URL = createFile(fileName, TypeFileEnum.SETTINGS.getValue(), ultimaConfiguracionFile);
+            String fileName = ultimaConfiguracionFile.getFileName();
+
+            String idClient = clientServiceEdit.getClientProfile().getIdClient().toString();
+            String idCodeService = clientServiceEdit.getCodeService();
+
+            String URL = createFile(fileName, TypeFileEnum.SETTINGS.getValue(), ultimaConfiguracionFile,
+               idClient, idCodeService);
             lastSettingFileNew = new LastSettingFileEntity();
             lastSettingFileNew.setUrl(URL);
             lastSettingFileNew.setNameFile(fileName);
@@ -297,6 +298,24 @@ public class EditServiceController implements Serializable {
          Util.addMessageFatal(Messages.USER_FILE_ERROR);
          LOGGER.error(Messages.USER_FILE_ERROR, e);
       }
+   }
+
+   private boolean validateIfExitsFile(UploadedFile uploadedFileP) {
+      String fileName = uploadedFileP.getFileName();
+      String idClient = clientServiceEdit.getClientProfile().getIdClient().toString();
+      String idCodeService = clientServiceEdit.getCodeService();
+
+      String path = Constant.PATH_UPLOAD_FILE_ENGINEERING_SERVICE;
+      path = path.replaceAll(Constant.TAG_ID_CLIENT, idClient);
+      path = path.replaceAll(Constant.TAG_CODE_SERVICE, idCodeService);
+
+      String fileNameFinal = path + fileName;
+      File fileToValidate = new File(fileNameFinal);
+      if (fileToValidate.exists() && !fileToValidate.isDirectory()) {
+         return true;
+      }
+      return false;
+
    }
 
    public void deleteFile(String url) {
@@ -323,18 +342,24 @@ public class EditServiceController implements Serializable {
       }
    }
 
-   private String createFile(String fileName, String type, UploadedFile upload) {
+   private String createFile(String fileName, String type, UploadedFile upload, String idClient,
+      String idCodeService) {
       try {
          String path = null;
          if (TypeFileEnum.SETTINGS.getValue().equals(type)) {
             path = Constant.PATH_UPLOAD_FILE_SETTINGS;
-         } else if (TypeFileEnum.ENGINEERING.getValue().equals(type)) {
-            path = Constant.PATH_UPLOAD_FILE_ENGINEERING;
+            path = path.replaceAll(Constant.TAG_ID_CLIENT, idClient);
+            path = path.replaceAll(Constant.TAG_CODE_SERVICE, idCodeService);
          } else if (TypeFileEnum.ENGINEERING_SERVICE.getValue().equals(type)) {
             path = Constant.PATH_UPLOAD_FILE_ENGINEERING_SERVICE;
+            path = path.replaceAll(Constant.TAG_ID_CLIENT, idClient);
+            path = path.replaceAll(Constant.TAG_CODE_SERVICE, idCodeService);
          }
-         String extension = FilenameUtils.getExtension(upload.getFileName());
-         String fileNameFinal = path + fileName + "." + extension;
+
+         File folder = new File(path);
+         folder.mkdirs();
+
+         String fileNameFinal = path + fileName;
          InputStream in = upload.getInputstream();
 
          File fileTo = new File(fileNameFinal);
@@ -380,6 +405,12 @@ public class EditServiceController implements Serializable {
    public void uploadFileIngenieria(FileUploadEvent event) {
       try {
          UploadedFile serviceFile = event.getFile();
+
+         if (validateIfExitsFile(serviceFile)) {
+            Util.addMessageError(Messages.VALIDATE_IF_EXISTS_ERROR);
+            return;
+         }
+
          saveDetailEngineeringFiles(serviceFile);
          Util.addMessageInfo(Messages.FILE_UPLOAD_SUCESS);
          clientServiceEdit = editServiceService.loadClientServiceEdit(idClientServiceEdit);
@@ -393,13 +424,17 @@ public class EditServiceController implements Serializable {
    private void saveDetailEngineeringFiles(UploadedFile uploadFile) {
       ServiceFileEntity serviceFileEntity;
       if (uploadFile != null && uploadFile.getFileName() != null) {
+
          serviceFileEntity = new ServiceFileEntity();
          serviceFileEntity.setClientService(clientServiceEdit);
 
-         SecureRandom random = new SecureRandom();
-         String fileName = Constant.ING + clientServiceEdit.getAlias().toUpperCase() + "-"
-            + (new BigInteger(40, random)).toString(30).toUpperCase();
-         String URL = createFile(fileName, TypeFileEnum.ENGINEERING_SERVICE.getValue(), uploadFile);
+         String fileName = uploadFile.getFileName();
+
+         String idClient = clientServiceEdit.getClientProfile().getIdClient().toString();
+         String idCodeService = clientServiceEdit.getCodeService();
+
+         String URL = createFile(fileName, TypeFileEnum.ENGINEERING_SERVICE.getValue(), uploadFile, idClient,
+            idCodeService);
          serviceFileEntity.setNameFile(fileName);
          serviceFileEntity.setUrl(URL);
          saveServiceFile(serviceFileEntity);

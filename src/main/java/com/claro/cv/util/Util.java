@@ -13,6 +13,10 @@ import com.claro.cv.entity.MultivalueEntity;
 
 public class Util {
 
+   private static final String SI = "S";
+
+   private static final String NO = "N";
+
    public static HttpSession getSession() {
       return (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
    }
@@ -32,14 +36,24 @@ public class Util {
    }
 
    public static void admin(boolean admin) {
-      Util.getSession().setAttribute(Constant.ADMIN, admin);
+      if (admin) {
+         Util.getSession().setAttribute(Constant.ADMIN, SI);
+      } else {
+         Util.getSession().setAttribute(Constant.ADMIN, NO);
+      }
+
    }
 
    public static boolean getAdmin() {
       try {
          HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
             .getSession(false);
-         return (boolean) session.getAttribute(Constant.ADMIN);
+         String admin = (String) session.getAttribute(Constant.ADMIN);
+         if (SI.equals(admin)) {
+            return true;
+         }
+         return false;
+
       } catch (Exception e) {
          return false;
       }
@@ -49,7 +63,8 @@ public class Util {
       try {
          if (getUserName() == null) {
             Util.addMessageErrorKeepLogOut(Messages.NOT_SESSION);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/CV/");
+            FacesContext.getCurrentInstance().getExternalContext()
+               .redirect("/" + Constant.NAME_APLICATION + "/");
             return false;
          }
       } catch (IOException e) {
@@ -60,7 +75,8 @@ public class Util {
    public static void logOut() {
       try {
          Util.getSession().setAttribute(Constant.USER_NAME, null);
-         FacesContext.getCurrentInstance().getExternalContext().redirect("/CV/");
+         FacesContext.getCurrentInstance().getExternalContext()
+            .redirect("/" + Constant.NAME_APLICATION + "/");
       } catch (IOException e) {
       }
    }

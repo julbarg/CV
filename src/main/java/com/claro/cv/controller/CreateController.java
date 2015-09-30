@@ -6,13 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
@@ -47,7 +44,7 @@ import com.claro.cv.util.Util;
 @Scope("session")
 public class CreateController implements Serializable {
 
-   /**
+   /** 
     * 
     */
    private static final long serialVersionUID = 2605767751437345720L;
@@ -281,10 +278,12 @@ public class CreateController implements Serializable {
    public void addService() {
       if (validateAddService()) {
          if (ultimaConfiguracionFile != null && ultimaConfiguracionFile.getFileName() != null) {
-            SecureRandom random = new SecureRandom();
-            String fileName = Constant.UC + clientService.getAlias().toUpperCase() + "-"
-               + (new BigInteger(40, random)).toString(30).toUpperCase();
-            String URL = createFile(fileName, TypeFileEnum.SETTINGS.getValue(), ultimaConfiguracionFile);
+            String fileName = ultimaConfiguracionFile.getFileName();
+            String idClient = clientProfile.getIdClient().toString();
+            String idCodeService = clientService.getCodeService();
+
+            String URL = createFile(fileName, TypeFileEnum.SETTINGS.getValue(), ultimaConfiguracionFile,
+               idClient, idCodeService);
             clientService.setLastSettingFile(setLastSettingFile(URL, fileName));
             clientService.setServiceFiles(addServiceFiles());
          }
@@ -322,10 +321,12 @@ public class CreateController implements Serializable {
          if (uploadFile != null && uploadFile.getFileName() != null) {
             serviceFile = new ServiceFileEntity();
 
-            SecureRandom random = new SecureRandom();
-            String fileName = Constant.ING + clientService.getAlias().toUpperCase() + "-"
-               + (new BigInteger(40, random)).toString(30).toUpperCase();
-            String URL = createFile(fileName, TypeFileEnum.ENGINEERING_SERVICE.getValue(), uploadFile);
+            String fileName = uploadFile.getFileName();
+            String idClient = clientProfile.getIdClient().toString();
+            String idCodeService = clientService.getCodeService();
+
+            String URL = createFile(fileName, TypeFileEnum.ENGINEERING_SERVICE.getValue(), uploadFile,
+               idClient, idCodeService);
             serviceFile.setNameFile(fileName);
             serviceFile.setUrl(URL);
             serviceFile.setClientService(clientService);
@@ -559,10 +560,10 @@ public class CreateController implements Serializable {
             clientFile = new ClientFileEntity();
             clientFile.setClientProfile(clientProfile);
 
-            SecureRandom random = new SecureRandom();
-            String fileName = Constant.ING + clientProfile.getNameClient().toUpperCase() + "-"
-               + (new BigInteger(40, random)).toString(30).toUpperCase();
-            String URL = createFile(fileName, TypeFileEnum.ENGINEERING.getValue(), uploadFile);
+            String fileName = uploadFile.getFileName();
+            String idClient = clientProfile.getIdClient().toString();
+
+            String URL = createFile(fileName, TypeFileEnum.ENGINEERING.getValue(), uploadFile, idClient, null);
             clientFile.setNameFile(fileName);
             clientFile.setUrl(URL);
             saveClientFile(clientFile);
@@ -581,18 +582,30 @@ public class CreateController implements Serializable {
 
    }
 
-   private String createFile(String fileName, String type, UploadedFile upload) {
+   private String createFile(String fileName, String type, UploadedFile upload, String idClient,
+      String idCodeService) {
       try {
          String path = null;
-         if (TypeFileEnum.SETTINGS.getValue().equals(type)) {
-            path = Constant.PATH_UPLOAD_FILE_SETTINGS;
-         } else if (TypeFileEnum.ENGINEERING.getValue().equals(type)) {
+         if (TypeFileEnum.ENGINEERING.getValue().equals(type)) {
+
             path = Constant.PATH_UPLOAD_FILE_ENGINEERING;
+            path = path.replaceAll(Constant.TAG_ID_CLIENT, idClient);
+         } else if (TypeFileEnum.SETTINGS.getValue().equals(type)) {
+
+            path = Constant.PATH_UPLOAD_FILE_SETTINGS;
+            path = path.replaceAll(Constant.TAG_ID_CLIENT, idClient);
+            path = path.replaceAll(Constant.TAG_CODE_SERVICE, idCodeService);
          } else if (TypeFileEnum.ENGINEERING_SERVICE.getValue().equals(type)) {
+
             path = Constant.PATH_UPLOAD_FILE_ENGINEERING_SERVICE;
+            path = path.replaceAll(Constant.TAG_ID_CLIENT, idClient);
+            path = path.replaceAll(Constant.TAG_CODE_SERVICE, idCodeService);
          }
-         String extension = FilenameUtils.getExtension(upload.getFileName());
-         String fileNameFinal = path + fileName + "." + extension;
+
+         File folder = new File(path);
+         folder.mkdirs();
+
+         String fileNameFinal = path + fileName;
          InputStream in = upload.getInputstream();
 
          File fileTo = new File(fileNameFinal);

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
@@ -285,7 +284,7 @@ public class AddServiceController implements Serializable {
       Util.addMessageInfoKeep(Messages.SAVE_SERVICE_SUCESSFULL + clientService.getAlias());
       RequestContext.getCurrentInstance().execute("loadMapOrigin()");
 
-      Util.redirectFaces("/CV/pages/admin_edit.xhtml");
+      Util.redirectFaces("/" + Constant.NAME_APLICATION + "/pages/admin_edit.xhtml");
    }
 
    private boolean validateAddService() {
@@ -370,9 +369,8 @@ public class AddServiceController implements Serializable {
          if (uploadFile != null && uploadFile.getFileName() != null) {
             serviceFile = new ServiceFileEntity();
 
-            SecureRandom random = new SecureRandom();
-            String fileName = Constant.ING + clientService.getAlias().toUpperCase() + "-"
-               + (new BigInteger(40, random)).toString(30).toUpperCase();
+            String fileName = uploadFile.getFileName();
+
             String URL = createFile(fileName, TypeFileEnum.ENGINEERING_SERVICE.getValue(), uploadFile);
             serviceFile.setNameFile(fileName);
             serviceFile.setUrl(URL);
@@ -431,8 +429,8 @@ public class AddServiceController implements Serializable {
          } else if (TypeFileEnum.ENGINEERING_SERVICE.getValue().equals(type)) {
             path = Constant.PATH_UPLOAD_FILE_ENGINEERING_SERVICE;
          }
-         String extension = FilenameUtils.getExtension(upload.getFileName());
-         String fileNameFinal = path + fileName + "." + extension;
+         
+         String fileNameFinal = path + fileName;
          InputStream in = upload.getInputstream();
 
          File fileTo = new File(fileNameFinal);

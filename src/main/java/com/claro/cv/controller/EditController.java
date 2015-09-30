@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
@@ -52,7 +51,7 @@ import com.claro.cv.util.Util;
 public class EditController implements Serializable {
 
    /**
-    * 
+    *  
     */
    private static final long serialVersionUID = -7876964547484376643L;
 
@@ -125,7 +124,7 @@ public class EditController implements Serializable {
       listClientContact = new ArrayList<ClientContactEntity>();
       listDetailEngineeringFile = new ArrayList<ClientFileEntity>();
       loadMultivalue();
-      
+
       Util.redirectFaces(Constant.ADMIN_PAGE_URL);
    }
 
@@ -364,6 +363,12 @@ public class EditController implements Serializable {
    public void uploadFileIngenieria(FileUploadEvent event) {
       try {
          UploadedFile detailEngineeringFile = event.getFile();
+
+         if (validateIfExitsFile(detailEngineeringFile)) {
+            Util.addMessageError(Messages.VALIDATE_IF_EXISTS_ERROR);
+            return;
+         }
+
          saveDetailEngineeringFiles(detailEngineeringFile);
          Util.addMessageInfo(Messages.FILE_UPLOAD_SUCESS);
          clientEdit = editService.loadClientProfileById(idClientEdit);
@@ -374,16 +379,31 @@ public class EditController implements Serializable {
       }
    }
 
+   private boolean validateIfExitsFile(UploadedFile uploadedFileP) {
+      String fileName = uploadedFileP.getFileName();
+      String idClient = clientEdit.getIdClient().toString();
+      String path = Constant.PATH_UPLOAD_FILE_ENGINEERING;
+      path = path.replaceAll(Constant.TAG_ID_CLIENT, idClient);
+
+      String fileNameFinal = path + fileName;
+      File fileToValidate = new File(fileNameFinal);
+      if (fileToValidate.exists() && !fileToValidate.isDirectory()) {
+         return true;
+      }
+      return false;
+
+   }
+
    private void saveDetailEngineeringFiles(UploadedFile uploadFile) {
       ClientFileEntity clientFile;
       if (uploadFile != null && uploadFile.getFileName() != null) {
          clientFile = new ClientFileEntity();
          clientFile.setClientProfile(clientEdit);
 
-         SecureRandom random = new SecureRandom();
-         String fileName = Constant.ING + clientEdit.getNameClient().toUpperCase() + "-"
-            + (new BigInteger(40, random)).toString(30).toUpperCase();
-         String URL = createFile(fileName, uploadFile);
+         String fileName = uploadFile.getFileName();
+         String idClient = clientEdit.getIdClient().toString();
+
+         String URL = createFile(fileName, uploadFile, idClient);
          clientFile.setNameFile(fileName);
          clientFile.setUrl(URL);
          saveClientFile(clientFile);
@@ -391,11 +411,15 @@ public class EditController implements Serializable {
 
    }
 
-   private String createFile(String fileName, UploadedFile upload) {
+   private String createFile(String fileName, UploadedFile upload, String idClient) {
       try {
          String path = Constant.PATH_UPLOAD_FILE_ENGINEERING;
-         String extension = FilenameUtils.getExtension(upload.getFileName());
-         String fileNameFinal = path + fileName + "." + extension;
+         path = path.replaceAll(Constant.TAG_ID_CLIENT, idClient);
+
+         File folder = new File(path);
+         folder.mkdirs();
+
+         String fileNameFinal = path + fileName;
          InputStream in = upload.getInputstream();
 
          File fileTo = new File(fileNameFinal);
@@ -446,7 +470,7 @@ public class EditController implements Serializable {
          coord = new LatLng(lat, lng);
          marker = new Marker(coord, service.getAlias(), service);
          if (service.getIdProviderLastMile() != null && service.getIdProviderLastMile().length() > 0) {
-            marker.setIcon("/CV/resources/img/marker-green.png");
+            marker.setIcon("/" + Constant.NAME_APLICATION + "/resources/img/marker-green.png");
          }
          mapModel.addOverlay(marker);
 
