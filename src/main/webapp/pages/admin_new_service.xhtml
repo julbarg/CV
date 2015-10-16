@@ -41,11 +41,11 @@
 					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
 						containerStyleClass="span_main_menu" />
 					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
-						containerStyleClass="span_main_menu" styleClass="menu_select" rendered="#{util.validateAdmin()}" />
+						containerStyleClass="span_main_menu" styleClass="menu_select" />
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup rendered="#{util.validateAuthentication() and util.validateAdmin()}">
+		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_two">
 				<h:form id="form_add_service">
 					<p:growl id="growl_step_two" />

@@ -3,7 +3,7 @@ label {
 }
 
 .column_service {
-	font-size: 15px !important;
+	font-size: 14px !important;
 }
 
 .column_contact {
@@ -12,4 +12,10 @@ label {
 
 .table_info_map {
 	font-size: 13px;
+}
+
+.filter_input_servies {
+	width: 80px !important;
+	height: 15px !important;
+	font-size: 13px !important;
 }

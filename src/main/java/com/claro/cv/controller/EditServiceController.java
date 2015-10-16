@@ -111,8 +111,15 @@ public class EditServiceController implements Serializable {
 
    private boolean showObservationState;
 
+   private String operation;
+
+   private static final String VIEW = "VIEW";
+
+   private static final String EDIT = "EDIT";
+
    @PostConstruct
    public void initialize() {
+      operation = VIEW;
       clientServiceEdit = new ClientServiceEntity();
       serviceContactNew = new ServiceContactEntity();
       loadTypeLocation();
@@ -169,6 +176,7 @@ public class EditServiceController implements Serializable {
    }
 
    public String goServiceEdit() {
+      operation = EDIT;
       loadClientServiceEdit();
       loadServiceContacts();
       loadServiceFiles();
@@ -177,6 +185,22 @@ public class EditServiceController implements Serializable {
       noChangesUC = true;
       nameUpload = lastSettingFileOld.getNameFile();
       return Util.getRedirect(Constant.ADMIN_EDIT_SERVICE);
+   }
+
+   public String goServiceEditView() {
+      operation = VIEW;
+      loadClientServiceEdit();
+      loadServiceContacts();
+      loadServiceFiles();
+      loadFlags();
+      lastSettingFileOld = clientServiceEdit.getLastSettingFile();
+      noChangesUC = true;
+      nameUpload = lastSettingFileOld.getNameFile();
+      return Util.getRedirect(Constant.ADMIN_EDIT_SERVICE);
+   }
+
+   public boolean isEdit() {
+      return EDIT.equals(operation);
    }
 
    private void refresh() {
@@ -231,11 +255,15 @@ public class EditServiceController implements Serializable {
    }
 
    private void loadLocations() {
-      if (international) {
-         idCountry = clientServiceEdit.getCountry().getIdCountry();
-      } else {
-         idDepartament = clientServiceEdit.getDepartament().getIdDepartament();
-         idCity = clientServiceEdit.getCity().getIdCity();
+      try {
+         if (international) {
+            idCountry = clientServiceEdit.getCountry().getIdCountry();
+         } else {
+            idDepartament = clientServiceEdit.getDepartament().getIdDepartament();
+            idCity = clientServiceEdit.getCity().getIdCity();
+         }
+      } catch (Exception e) {
+         LOGGER.error("Ha ocurrido un error al cargar locacion", e);
       }
 
    }
@@ -829,6 +857,14 @@ public class EditServiceController implements Serializable {
 
    public void setShowObservationState(boolean showObservationState) {
       this.showObservationState = showObservationState;
+   }
+
+   public String getOperation() {
+      return operation;
+   }
+
+   public void setOperation(String operation) {
+      this.operation = operation;
    }
 
 }

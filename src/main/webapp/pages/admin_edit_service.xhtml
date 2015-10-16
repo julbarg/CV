@@ -41,11 +41,11 @@
 					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
 						containerStyleClass="span_main_menu" />
 					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
-						containerStyleClass="span_main_menu" styleClass="menu_select" rendered="#{util.validateAdmin()}" />
+						containerStyleClass="span_main_menu" styleClass="menu_select" />
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup rendered="#{util.validateAuthentication() and util.validateAdmin()}">
+		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_two">
 				<p:panel id="panel_creation_step_two" styleClass="panel_content">
 					<h:form id="form_admin_edit_service">
@@ -154,13 +154,15 @@
 							</h:panelGrid>
 
 							<p:fileUpload fileUploadListener="#{editService.uploadFileLastSettings}" mode="advanced"
-								uploadLabel="Cargar" label="Examinar" update="form_admin_edit_service:name_upload" />
+								rendered="#{editService.isEdit()}" uploadLabel="Cargar" label="Examinar"
+								update="form_admin_edit_service:name_upload" />
 
 							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_file">
 								<h3>Ingenieria de Detalle</h3>
 								<p:fileUpload fileUploadListener="#{editService.uploadFileIngenieria}" mode="advanced" multiple="true"
-									uploadLabel="Cargar" label="Examinar" update="form_admin_edit_service:panel_file form_admin_edit_service:growl_admin_edit_service"
-									styleClass="data_table_contacts" />
+									uploadLabel="Cargar" label="Examinar"
+									update="form_admin_edit_service:panel_file form_admin_edit_service:growl_admin_edit_service"
+									styleClass="data_table_contacts" rendered="#{editService.isEdit()}" />
 								<p:dataTable id="data_file" value="#{editService.listDetailEngineeringFile}" var="file"
 									styleClass="data_table_contacts">
 									<p:column headerText="Archivos" styleClass="column_contact">
@@ -168,7 +170,8 @@
 											<p:fileDownload value="#{util.downloadFile(file.url, file.nameFile)}" />
 										</p:commandLink>
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;">
+									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;"
+										rendered="#{editService.isEdit()}">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{editService.deleteFile(file.url)}"
 											update=":form_admin_edit_service:panel_file" styleClass="column_contact">
 											<f:setPropertyActionListener value="#{file.idServiceFile}"
@@ -199,7 +202,7 @@
 
 							<p:panel styleClass="panel_contactos" id="panel_contactos">
 								<h3>Contactos en Sitio</h3>
-								<h:panelGrid columns="2">
+								<h:panelGrid columns="2" rendered="#{editService.isEdit()}">
 									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact"
 										value="#{editService.serviceContactNew.nameContact}" />
 									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact"
@@ -209,7 +212,7 @@
 									<p:inputText placeholder="Celular" styleClass="input_create_contact"
 										value="#{editService.serviceContactNew.mobil}" />
 								</h:panelGrid>
-								<h:panelGrid>
+								<h:panelGrid rendered="#{editService.isEdit()}">
 									<p:selectOneMenu id="horario" styleClass="select_post" label="Horario de Atencion"
 										value="#{editService.serviceContactNew.schedule}">
 										<f:selectItem itemLabel="Selecione Horario de Atencion.." />
@@ -218,7 +221,8 @@
 									</p:selectOneMenu>
 								</h:panelGrid>
 								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;"
-									actionListener="#{editService.addServiceContact}" update="form_admin_edit_service:panel_contactos" />
+									rendered="#{editService.isEdit()}" actionListener="#{editService.addServiceContact}"
+									update="form_admin_edit_service:panel_contactos" />
 								<p:dataTable styleClass="data_table_contacts_inside" value="#{editService.listServiceContact}"
 									var="serviceContact">
 									<p:column headerText="Nombre" styleClass="column_contact">
@@ -237,7 +241,8 @@
 										<h:outputLabel value="#{editService.getSchedule(serviceContact.schedule)}"
 											styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;">
+									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;"
+										rendered="#{editService.isEdit()}">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{editService.deleteServiceContact}"
 											update=":form_admin_edit_service:panel_contactos">
 											<f:setPropertyActionListener value="#{serviceContact.idServiceContact}"
@@ -246,12 +251,15 @@
 									</p:column>
 								</p:dataTable>
 							</p:panel>
-
-							<h:panelGrid columns="2">
+							<h:panelGrid columns="2" rendered="#{editService.isEdit()}">
 								<p:commandButton value="Regresar" styleClass="button_post_double"
 									action="admin_edit.xhtml?faces-redirect=true" ajax="false" immediate="true" />
 								<p:commandButton value="Actualizar" styleClass="button_post_double" action="#{editService.update}"
 									update="form_admin_edit_service" />
+							</h:panelGrid>
+							<h:panelGrid columns="2">
+								<p:commandButton value="Regresar" styleClass="button_post"
+									action="admin_edit.xhtml?faces-redirect=true" ajax="false" immediate="true" />
 							</h:panelGrid>
 						</h:panelGrid>
 					</h:form>

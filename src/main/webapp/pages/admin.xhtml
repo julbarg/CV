@@ -25,7 +25,7 @@
 				<h:commandButton image="../resources/img/home.png" styleClass="button_menu_header"
 					action="search.xhtml?faces-redirect=true" ajax="false" immediate="true" />
 				<h:commandButton image="../resources/img/quit.png" styleClass="button_menu_header" action="#{util.logOut}"
-					ajax="false" immediate="true"  />
+					ajax="false" immediate="true" />
 			</h:form>
 		</p:panel>
 	</p:panel>
@@ -38,11 +38,11 @@
 					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
 						containerStyleClass="span_main_menu" />
 					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
-						containerStyleClass="span_main_menu" styleClass="menu_select" rendered="#{util.validateAdmin()}" />
+						containerStyleClass="span_main_menu" styleClass="menu_select" />
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup rendered="#{util.validateAuthentication() and util.validateAdmin()}">
+		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<h:form id="form_edit">
 				<p:growl id="growl_edit" />
 				<div id="div_step_one">

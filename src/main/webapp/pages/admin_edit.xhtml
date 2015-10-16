@@ -37,11 +37,11 @@
 					<p:menuitem value="Creación" action="#{create.goCreate}" icon="iconedit"
 						containerStyleClass="span_main_menu" />
 					<p:menuitem value="Administración" action="#{edit.goAdmin}" icon="iconadmin"
-						containerStyleClass="span_main_menu" styleClass="menu_select" rendered="#{util.validateAdmin()}" />
+						containerStyleClass="span_main_menu" styleClass="menu_select" />
 				</p:menu>
 			</h:form>
 		</p:panel>
-		<h:panelGroup rendered="#{util.validateAuthentication() and util.validateAdmin()}">
+		<h:panelGroup rendered="#{util.validateAuthentication()}">
 			<div id="div_step_two">
 				<p:panel id="panel_creation_step_two" styleClass="panel_content">
 					<h:inputHidden value="#{edit.loadGetMatkers}" />
@@ -76,7 +76,7 @@
 							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_contactos">
 								<p:growl id="gowl_panel_contact" />
 								<h3>Contactos</h3>
-								<h:panelGrid columns="2" id="panel_add_contact">
+								<h:panelGrid columns="2" id="panel_add_contact" rendered="#{util.validateAdmin()}">
 									<p:inputText placeholder="Nombre del Contacto" styleClass="input_create_contact"
 										value="#{edit.clientContact.nameContact}" />
 									<p:inputText placeholder="Correo Electronico" styleClass="input_create_contact"
@@ -93,7 +93,8 @@
 									</p:selectOneMenu>
 								</h:panelGrid>
 								<p:commandButton value="Add Contact" styleClass="button_post_add" style="margin-bottom: 10px;"
-									actionListener="#{edit.addContact}" update="form_admin_edit:panel_contactos" />
+									actionListener="#{edit.addContact}" update="form_admin_edit:panel_contactos"
+									rendered="#{util.validateAdmin()}" />
 								<p:dataTable id="data_table_contact_profile" styleClass="data_table_contacts"
 									value="#{edit.listClientContact}" var="contactProfile">
 									<p:column headerText="Nombre" styleClass="column_contact">
@@ -114,7 +115,8 @@
 										<h:outputLabel value="#{edit.getNameTypeContact(contactProfile.typeContact)}"
 											styleClass="column_contact" />
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;">
+									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;"
+										rendered="#{util.validateAdmin()}">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{edit.deleteContact}"
 											update=":form_admin_edit:panel_contactos">
 											<f:setPropertyActionListener value="#{contactProfile.idClientContact}"
@@ -126,7 +128,8 @@
 							<p:panel styleClass="panel_contactos panel_edit_profile" id="panel_file">
 								<h3>Ingenieria de Detalle</h3>
 								<p:fileUpload fileUploadListener="#{edit.uploadFileIngenieria}" mode="advanced" multiple="true"
-									uploadLabel="Cargar" label="Examinar" update="form_admin_edit" styleClass="data_table_contacts" />
+									uploadLabel="Cargar" label="Examinar" update="form_admin_edit" styleClass="data_table_contacts"
+									rendered="#{util.validateAdmin()}" />
 								<p:dataTable id="data_file" value="#{edit.listDetailEngineeringFile}" var="file"
 									styleClass="data_table_contacts">
 									<p:column headerText="Archivos" styleClass="column_contact">
@@ -134,7 +137,8 @@
 											<p:fileDownload value="#{util.downloadFile(file.url, file.nameFile)}" />
 										</p:commandLink>
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;">
+									<p:column headerText="Acciones" styleClass="column_contact" width="100" style="text-align:center;"
+										rendered="#{util.validateAdmin()}">
 										<p:commandButton value="Eliminar" title="Eliminar" action="#{edit.deleteFile(file.url)}"
 											update=":form_admin_edit:panel_file" styleClass="column_contact">
 											<f:setPropertyActionListener value="#{file.idClientFile}" target="#{edit.idClientFileDelete}" />
@@ -143,7 +147,7 @@
 								</p:dataTable>
 							</p:panel>
 							<p:commandButton value="Guardar" styleClass="button_post" actionListener="#{edit.update}"
-								update="form_admin_edit" />
+								update="form_admin_edit" rendered="#{util.validateAdmin()}" />
 						</h:form>
 						<h:form id="form_admin_edit_02">
 							<h2 style="text-align: center;">INFORMACIÓN DE SERVICIOS</h2>
@@ -212,7 +216,7 @@
 							<p:panel styleClass="panel_contactos panel_edit_profile">
 								<h:panelGrid columns="2" style="width: 97%;">
 									<h3>Codigos de Servicios</h3>
-									<p:panel styleClass="panel_button">
+									<p:panel styleClass="panel_button" rendered="#{util.validateAdmin()}">
 										<p:commandButton style="text-aling: right;" value="Add Service" styleClass="button_post_add"
 											action="#{addService.goEditAddService}" ajax="false" immediate="true">
 											<f:setPropertyActionListener value="#{edit.idClientEdit}" target="#{addService.idClientEdit}" />
@@ -220,30 +224,44 @@
 									</p:panel>
 								</h:panelGrid>
 								<p:dataTable styleClass="data_table_contacts" value="#{edit.listClientServiceEdit}" var="service">
-									<p:column headerText="Alias" styleClass="column_service">
+									<p:column headerText="Alias" styleClass="column_service" filterBy="#{service.alias}"
+										filterMatchMode="contains" filterStyleClass="filter_input_servies">
 										<h:outputLabel value="#{service.alias}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Codigo del Servicio" styleClass="column_service">
+									<p:column headerText="Codigo del Servicio" styleClass="column_service" width="100"
+										filterBy="#{service.codeService}" filterMatchMode="contains" filterStyleClass="filter_input_servies">
 										<h:outputLabel value="#{service.codeService}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Tipo Servicio" styleClass="column_service">
+									<p:column headerText="Tipo Servicio" styleClass="column_service"
+										filterBy="#{edit.getNameTypeService(service.typeService)}" filterMatchMode="contains"
+										filterStyleClass="filter_input_servies">
 										<h:outputLabel value="#{edit.getNameTypeService(service.typeService)}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Direccion" styleClass="column_service">
+									<p:column headerText="Direccion" styleClass="column_service" filterBy="#{service.direction}"
+										filterMatchMode="contains" filterStyleClass="filter_input_servies">
 										<h:outputLabel value="#{service.direction}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Ciudad" styleClass="column_service">
+									<p:column headerText="Ciudad" styleClass="column_service" filterBy="#{service.city.name}"
+										filterMatchMode="contains" filterStyleClass="filter_input_servies">
 										<h:outputLabel value="#{service.city.name}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Pais" styleClass="column_service">
+									<p:column headerText="Pais" styleClass="column_service" filterBy="#{service.country.name}"
+										filterMatchMode="contains" filterStyleClass="filter_input_servies">
 										<h:outputLabel value="#{service.country.name}" styleClass="column_service" />
 									</p:column>
-									<p:column headerText="Acciones" styleClass="column_service" width="100" style="text-align:center;">
-										<p:commandButton value="Editar" title="Editar" styleClass="column_service"
-											action="#{editService.goServiceEdit}">
+									<p:column headerText="Acciones" styleClass="column_service" width="120" style="text-align:center;">
+
+										<p:commandButton value="Ver" title="Editar" styleClass="column_service"
+											action="#{editService.goServiceEditView}" style="margin-right: 4px;">
 											<f:setPropertyActionListener value="#{service.idClientService}"
 												target="#{editService.idClientServiceEdit}" />
 										</p:commandButton>
+										<p:commandButton value="Editar" title="Editar" styleClass="column_service"
+											action="#{editService.goServiceEdit}" rendered="#{util.validateAdmin()}">
+											<f:setPropertyActionListener value="#{service.idClientService}"
+												target="#{editService.idClientServiceEdit}" />
+										</p:commandButton>
+
 									</p:column>
 								</p:dataTable>
 							</p:panel>
