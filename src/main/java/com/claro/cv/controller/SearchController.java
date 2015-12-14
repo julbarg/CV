@@ -138,6 +138,7 @@ public class SearchController implements Serializable {
    public String search() {
       try {
          if (!Util.validateLogIn()) {
+            Util.addMessageError(Messages.NOT_SESSION);
             return null;
          }
          if (validateParameters()) {
@@ -375,6 +376,7 @@ public class SearchController implements Serializable {
    }
 
    private boolean validateParameters() {
+      LOGGER.info("VALIDATE PARAMETERS");
       if ((idCliente.intValue() == 0 || idCliente == null)
          && (codigoServiicio == null || codigoServiicio.length() == 0)) {
          Util.addMessageError(Messages.SEARCH_VALIDATE);

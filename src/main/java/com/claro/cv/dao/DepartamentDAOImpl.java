@@ -35,7 +35,12 @@ public class DepartamentDAOImpl extends TemplateDAO<DepartamentEntity> implement
       query.setParameter("idDepartament", id);
       ArrayList<DepartamentEntity> results = (ArrayList<DepartamentEntity>) query.getResultList();
 
-      return results.get(0);
+      if (results.size() > 0) {
+         return results.get(0);
+      }
+
+      return null;
+
    }
 
    @Override

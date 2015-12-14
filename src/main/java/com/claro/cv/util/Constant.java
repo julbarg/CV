@@ -18,20 +18,26 @@ public class Constant {
 
    public static final String REDIRECT = "?faces-redirect=true";
 
-   //public static final String NAME_APLICATION = "CV";
+   // public static final String NAME_APLICATION = "CV";
+
    public static final String NAME_APLICATION = "HojaVidaClientes";
 
    public static final String TAG_ID_CLIENT = "<TAG_ID_CLIENT>";
 
    public static final String TAG_CODE_SERVICE = "<TAG_CODE_SERVICE>";
-   
-   //public static final String PATH_UPLOAD_FILE_ENGINEERING = "C:/CV/<TAG_ID_CLIENT>/";
+
+   // public static final String PATH_UPLOAD_FILE_ENGINEERING = "C:/CV/<TAG_ID_CLIENT>/";
+
    public static final String PATH_UPLOAD_FILE_ENGINEERING = "/var/preserve/hojavidaclientes/<TAG_ID_CLIENT>/";
 
-   //public static final String PATH_UPLOAD_FILE_SETTINGS = "C:/CV/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/Settings/";
+   // public static final String PATH_UPLOAD_FILE_SETTINGS =
+   // "C:/CV/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/Settings/";
+
    public static final String PATH_UPLOAD_FILE_SETTINGS = "/var/preserve/hojavidaclientes/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/Settings/";
 
-   //public static final String PATH_UPLOAD_FILE_ENGINEERING_SERVICE = "C:/CV/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/EngineeringService/";
+   // public static final String PATH_UPLOAD_FILE_ENGINEERING_SERVICE =
+   // "C:/CV/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/EngineeringService/";
+
    public static final String PATH_UPLOAD_FILE_ENGINEERING_SERVICE = "/var/preserve/hojavidaclientes/<TAG_ID_CLIENT>/<TAG_CODE_SERVICE>/EngineeringService/";
 
    public static final String SEARCH_DETAIL_PAGE = "search_detail";

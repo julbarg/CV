@@ -308,6 +308,7 @@ public class EditServiceController implements Serializable {
          noChangesUC = false;
 
          if (ultimaConfiguracionFile != null && ultimaConfiguracionFile.getFileName() != null) {
+
             String fileName = ultimaConfiguracionFile.getFileName();
 
             String idClient = clientServiceEdit.getClientProfile().getIdClient().toString();
@@ -400,6 +401,8 @@ public class EditServiceController implements Serializable {
          in.close();
          out.flush();
          out.close();
+
+         LOGGER.info("URL Last Settings: " + fileNameFinal);
 
          return fileNameFinal;
 
@@ -508,6 +511,10 @@ public class EditServiceController implements Serializable {
       boolean validateDescription = validate(clientServiceEdit.getDescription());
 
       boolean validateCountry = getCountry() != null;
+
+      LOGGER.info("ID CITY: " + idCity);
+      LOGGER.info("ID DEPARTAMENTO: " + idDepartament);
+
       boolean validateDepartamentoAndCity = getDepartament() != null && getCity() != null;
 
       boolean validateProveedor = validate(clientServiceEdit.getIdProviderLastMile());
@@ -517,11 +524,9 @@ public class EditServiceController implements Serializable {
       boolean general = validateServiceContacts && validateDirection && validateTypeService
          && validateCodeService && validateDescription;
       boolean location = false;
-      if (international) {
-         location = validateCountry;
-      } else {
-         location = validateDepartamentoAndCity;
-      }
+
+      location = validateCountry || validateDepartamentoAndCity;
+
       boolean proveedor = false;
       if (validateProveedor) {
          proveedor = validateCodeServiceUM;
@@ -582,7 +587,7 @@ public class EditServiceController implements Serializable {
          try {
             return editServiceService.loadCity(idCity);
          } catch (Exception e) {
-            LOGGER.error(Messages.LOAD_CITY_ERROR);
+            LOGGER.error(Messages.LOAD_CITY_ERROR, e);
          }
       }
       return null;

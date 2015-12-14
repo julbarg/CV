@@ -7,11 +7,17 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.claro.cv.controller.SearchController;
 import com.claro.cv.dto.UserDTO;
 import com.claro.cv.entity.MultivalueEntity;
 
 
 public class Util {
+
+   private static Logger LOGGER = LogManager.getLogger(SearchController.class.getName());
 
    private static final String SI = "S";
 
@@ -83,6 +89,7 @@ public class Util {
 
    public static String getRedirect(String page) {
       String redirect = page + Constant.XHTML + Constant.REDIRECT;
+      LOGGER.info("REDIRECT: " + redirect);
       return redirect;
    }
 

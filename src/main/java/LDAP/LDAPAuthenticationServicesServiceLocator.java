@@ -21,8 +21,8 @@ public class LDAPAuthenticationServicesServiceLocator extends org.apache.axis.cl
       super(wsdlLoc, sName);
    }
 
-   // Use to get a proxy class for LDAPAuthenticationServices
-   //private java.lang.String LDAPAuthenticationServices_address ="http://localhost:81/LdapAuthentication/services/LDAPAuthenticationServices";
+   // private java.lang.String LDAPAuthenticationServices_address =
+   // "http://localhost:81/LdapAuthentication/services/LDAPAuthenticationServices";
 
    private java.lang.String LDAPAuthenticationServices_address = "http://172.31.228.103:8080/LdapAuthentication/services/LDAPAuthenticationServices";
 
